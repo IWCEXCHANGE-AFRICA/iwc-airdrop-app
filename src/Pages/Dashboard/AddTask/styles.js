@@ -1,42 +1,30 @@
 import { makeStyles } from '@mui/styles'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   container: {
-    padding: theme.spacing(4),
-    backgroundColor: theme.palette.background.paper,
-    borderRadius: theme.shape.borderRadius,
-    boxShadow: theme.shadows[2],
-    maxWidth: 600,
+    padding: '',
+    maxWidth: '600px',
     margin: 'auto'
   },
   title: {
+    marginBottom: '',
     textAlign: 'center',
-    marginBottom: theme.spacing(2),
-    fontWeight: 600
+    fontWeight: 600,
+    fontSize: '1.5rem'
   },
-  form: {
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  fieldsContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: theme.spacing(3), // Increased spacing between input fields
-    marginBottom: theme.spacing(2)
-  },
-  input: {
-    '& .MuiInputBase-root': {
-      fontSize: '0.875rem', // Reduced font size to reduce height
-      padding: '10px 12px' // Reduced padding to minimize height
-    },
-    '& .MuiFormControl-root': {
-      height: 'auto' // Ensures input height doesn't exceed desired size
-    }
+  formField: {
+    marginBottom: '16px',
+    height: '30'
   },
   button: {
-    marginTop: theme.spacing(2),
-    padding: theme.spacing(1.5)
+    marginTop: '16px',
+    padding: '12px',
+    backgroundColor: '#1976d2',
+    color: '#fff',
+    '&:hover': {
+      backgroundColor: '#115293'
+    }
   }
-}))
+})
 
 export default useStyles

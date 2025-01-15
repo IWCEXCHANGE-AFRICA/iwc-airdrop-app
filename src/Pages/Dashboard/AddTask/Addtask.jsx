@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react'
 import {
   TextField,
   MenuItem,
@@ -10,63 +10,68 @@ import {
   Typography,
   Container,
   FormHelperText
-} from "@mui/material";
+} from '@mui/material'
 
 const TaskForm = () => {
   const [formData, setFormData] = useState({
-    category: "",
-    task_title: "",
-    task_link: "",
-    task_point: "",
-    task_description: "",
-    status: ""
-  });
+    category: '',
+    task_title: '',
+    task_link: '',
+    task_point: '',
+    task_description: '',
+    status: ''
+  })
 
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({})
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({ ...prevState, [name]: value }));
-  };
+  const handleChange = e => {
+    const { name, value } = e.target
+    setFormData(prevState => ({ ...prevState, [name]: value }))
+  }
 
   const validateForm = () => {
-    const newErrors = {};
-    if (!formData.category) newErrors.category = "Category is required";
-    if (!formData.task_title) newErrors.task_title = "Task Title is required";
-    if (!formData.task_point) newErrors.task_point = "Task Points are required";
-    return newErrors;
-  };
+    const newErrors = {}
+    if (!formData.category) newErrors.category = 'Category is required'
+    if (!formData.task_title) newErrors.task_title = 'Task Title is required'
+    if (!formData.task_point) newErrors.task_point = 'Task Points are required'
+    return newErrors
+  }
 
   const handleSubmit = () => {
-    const formErrors = validateForm();
+    const formErrors = validateForm()
     if (Object.keys(formErrors).length > 0) {
-      setErrors(formErrors);
-      return;
+      setErrors(formErrors)
+      return
     }
     // Add your form submission logic here
-    console.log("Form Submitted", formData);
-    setErrors({});
+    console.log('Form Submitted', formData)
+    setErrors({})
     setFormData({
-      category: "",
-      task_title: "",
-      task_link: "",
-      task_point: "",
-      task_description: "",
-      status: ""
-    });
-  };
+      category: '',
+      task_title: '',
+      task_link: '',
+      task_point: '',
+      task_description: '',
+      status: ''
+    })
+  }
+
+  const fieldStyles = {
+    width: '100%', // All fields take full width of the form container
+    height: '40px' // Reduced height for compact fields
+  }
 
   return (
-    <Container maxWidth="sm">
-      <Typography variant="h4" gutterBottom>
+    <Container maxWidth='sm'>
+      <Typography variant='h4' gutterBottom>
         Add New Task
       </Typography>
       <Grid container spacing={2}>
         {/* Category Field */}
         <Grid item xs={12}>
           <TextField
-            label="Category"
-            name="category"
+            label='Category'
+            name='category'
             fullWidth
             value={formData.category}
             onChange={handleChange}
@@ -78,8 +83,8 @@ const TaskForm = () => {
         {/* Task Title Field */}
         <Grid item xs={12}>
           <TextField
-            label="Task Title"
-            name="task_title"
+            label='Task Title'
+            name='task_title'
             fullWidth
             value={formData.task_title}
             onChange={handleChange}
@@ -91,8 +96,8 @@ const TaskForm = () => {
         {/* Task Link Field */}
         <Grid item xs={12}>
           <TextField
-            label="Task Link (Optional)"
-            name="task_link"
+            label='Task Link (Optional)'
+            name='task_link'
             fullWidth
             value={formData.task_link}
             onChange={handleChange}
@@ -104,8 +109,8 @@ const TaskForm = () => {
         {/* Task Description Field */}
         <Grid item xs={12}>
           <TextField
-            label="Task Description (Optional)"
-            name="task_description"
+            label='Task Description (Optional)'
+            name='task_description'
             fullWidth
             multiline
             rows={4}
@@ -119,10 +124,10 @@ const TaskForm = () => {
         {/* Task Points Field */}
         <Grid item xs={12}>
           <TextField
-            label="Task Points"
-            name="task_point"
+            label='Task Points'
+            name='task_point'
             fullWidth
-            type="number"
+            type='number'
             value={formData.task_point}
             onChange={handleChange}
             error={!!errors.task_point}
@@ -132,16 +137,16 @@ const TaskForm = () => {
 
         {/* Status Field */}
         <Grid item xs={12}>
-          <FormControl fullWidth error={!!errors.status}>
+          <FormControl fullWidth error={!!errors.status} sx={fieldStyles}>
             <InputLabel>Status (Optional)</InputLabel>
             <Select
-              name="status"
+              name='status'
               value={formData.status}
               onChange={handleChange}
             >
-              <MenuItem value="">Select Status</MenuItem>
-              <MenuItem value="1">Active</MenuItem>
-              <MenuItem value="2">Inactive</MenuItem>
+              <MenuItem value=''>Select Status</MenuItem>
+              <MenuItem value='1'>Active</MenuItem>
+              <MenuItem value='2'>Inactive</MenuItem>
             </Select>
             <FormHelperText>{errors.status}</FormHelperText>
           </FormControl>
@@ -150,9 +155,10 @@ const TaskForm = () => {
         {/* Submit Button */}
         <Grid item xs={12}>
           <Button
-            variant="contained"
-            color="primary"
+            variant='contained'
+            color='primary'
             fullWidth
+            sx={{ height: '40px' }}
             onClick={handleSubmit}
           >
             Add Task
@@ -160,7 +166,7 @@ const TaskForm = () => {
         </Grid>
       </Grid>
     </Container>
-  );
-};
+  )
+}
 
-export default TaskForm;
+export default TaskForm

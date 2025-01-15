@@ -88,7 +88,7 @@ const DailyTasks = () => {
   const filteredTasks = tasks.filter(
     task =>
       task.category ===
-      ['Basic Task', 'Social Media', 'YouTube Videos'][selectedTab]
+      ['Basic Task', 'Social Media Task', 'YouTube Task'][selectedTab]
   )
 
   return (
@@ -141,7 +141,7 @@ const DailyTasks = () => {
           }}
         >
           <Tab label='Basic Task' />
-          <Tab label='Social Media' />
+          <Tab label='Social Media Task' />
           <Tab label='YouTube Task' />
         </Tabs>
       </Box>
@@ -188,7 +188,10 @@ const DailyTasks = () => {
                 <Typography
                   variant='body2'
                   color='gold'
-                  sx={{ fontSize: '0.5rem', marginLeft: 0.5 }} // Add a small margin between title and reward
+                  sx={{
+                    fontSize: '0.5rem',
+                    marginLeft: 0.5
+                  }} // Add a small margin between title and reward
                 >
                   {task.reward}
                 </Typography>
