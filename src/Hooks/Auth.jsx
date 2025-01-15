@@ -63,11 +63,11 @@ export const uselogin = () => {
         }
       })
 
-      console.log('Login Response:', response)
-
       if (response.status === 200) {
         toast.success('Login successful!')
         authorizeLogin(response, _dispatch, setLoading, _nav, setUser)
+
+        console.log(response)
 
         const user = response?.data?.result?.user
         if (user?.user_type === 4) {

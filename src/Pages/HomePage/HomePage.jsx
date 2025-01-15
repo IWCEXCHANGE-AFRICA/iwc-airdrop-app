@@ -78,7 +78,8 @@ import CardCarousel from "../../Components/Homepage/carousel";
 import { useClaimTask } from "../../Hooks/Claim";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
-import CircularProgress from '@mui/material/CircularProgress'
+import CircularProgress from "@mui/material/CircularProgress";
+import HardwareIcon from "@mui/icons-material/Hardware";
 
 // Adding keyframes for spinning animation
 const spinKeyframes = `@keyframes spin {
@@ -94,15 +95,14 @@ const fadeInKeyframes = `@keyframes fadeIn {
 
 const HomePage = () => {
   const user = useSelector((state) => state.user);
-  const [balance, setBalance] = useState(120);
-  const [mined, setMined] = useState(9);
+  const grosspointbalance = useSelector((state) => state.grosspointbalance);
   const [miningRate, setMiningRate] = useState(user?.mining_power);
   const [boostModalOpen, setBoostModalOpen] = useState(false);
   const { claimTask, loading, error } = useClaimTask();
   const [timer, setTimer] = useState(0);
   const [buttonText, setButtonText] = useState("Claim");
 
-  console.log(user);
+  console.log(grosspointbalance);
 
   useEffect(() => {
     // Load timer from localStorage on mount
@@ -110,7 +110,7 @@ const HomePage = () => {
     if (storedTimer) {
       const timeRemaining = parseInt(storedTimer) - Date.now();
       if (timeRemaining > 0) {
-        setTimer(Math.ceil(timeRemaining / 1000));
+        setTimer(Math.ceil(timeRemaining / 1000)); // Convert ms to seconds
       } else {
         localStorage.removeItem("claimTimer");
       }
@@ -144,25 +144,16 @@ const HomePage = () => {
 
   const handleClaimTask = async (e) => {
     e.preventDefault();
-    const userData = { miningPower: user.mining_power, userId: user.id };
-    const result = await claimTask(userData);
-
-    console.log(result);
+    const result = await claimTask();
 
     if (result.success) {
       toast.success("Task Claimed Successfully");
-      setButtonText("Mine");
-      setTimer(60);
-      localStorage.setItem("claimTimer", Date.now() + 60000);
+      setButtonText("Claim");
+      setTimer(43200); // 12 hours in seconds
+      localStorage.setItem("claimTimer", Date.now() + 43200000); // 12 hours in ms
     } else {
       console.error("Task Claim Failed:", result.error);
     }
-  };
-
-  // Handle Boost Function
-  const handleBoost = (amount) => {
-    setBalance(balance + amount); // Add boost amount to balance
-    setBoostModalOpen(false); // Close modal
   };
 
   return (
@@ -175,7 +166,7 @@ const HomePage = () => {
       <Box sx={styles.header}>
         <Typography variant="h5">Account Balance</Typography>
         <Typography variant="h6" sx={styles.balance}>
-          {balance.toLocaleString()} IWCP
+          {grosspointbalance.toLocaleString()} IWCP
         </Typography>
       </Box>
 
@@ -190,13 +181,10 @@ const HomePage = () => {
 
       {/* Mining Details */}
       <Box sx={styles.miningDetails}>
-        <Typography variant="h6" fontWeight="bold">
-          IWCP Reward: {mined.toLocaleString()}
-        </Typography>
         <Typography variant="subtitle1" sx={{ marginTop: 2 }}>
-          Timer: {formatTime()}
+          Timer: {formatTime(timer)}
         </Typography>
-        <Typography variant="subtitle1" sx={{ marginTop: 1 }}>
+        <Typography variant="subtitle1">
           Mining Rate: {miningRate} IWCP per hour
         </Typography>
       </Box>
@@ -215,11 +203,12 @@ const HomePage = () => {
           sx={styles.claimButton}
           onClick={handleClaimTask}
           disabled={loading || timer > 0} // Disable when loading or timer active
+          startIcon={!loading && <HardwareIcon />}
         >
           {loading ? (
             <CircularProgress size={20} color="inherit" />
           ) : timer > 0 ? (
-            `Wait ${timer}s`
+            `Mining...`
           ) : (
             buttonText
           )}
@@ -253,12 +242,7 @@ const HomePage = () => {
             label="Amount (BNB or USDT)"
             sx={{ mb: 2 }}
           />
-          <Button
-            variant="contained"
-            sx={styles.boostButton}
-            fullWidth
-            onClick={() => handleBoost(1000)} // Example amount
-          >
+          <Button variant="contained" sx={styles.boostButton} fullWidth>
             Deposit
           </Button>
         </Box>
@@ -272,4 +256,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default HomePage
