@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import {
   Box,
   Button,
@@ -22,7 +22,7 @@ const SignUpPage = () => {
     email: '',
     password: '',
     username: '',
-    referralCode: ''
+    referral_code: ''
   })
   const [errors, setErrors] = useState({})
   const navigate = useNavigate()
@@ -39,8 +39,8 @@ const SignUpPage = () => {
     if (!formData.email) formErrors.email = 'Email is required'
     if (!formData.password) formErrors.password = 'Password is required'
     if (!formData.username) formErrors.username = 'Username is required'
-    if (!formData.referralCode)
-      formErrors.referralCode = 'Referral code is required'
+    if (!formData.referral_code)
+      formErrors.referral_code = 'Referral code is required'
 
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors)
@@ -48,6 +48,7 @@ const SignUpPage = () => {
     }
 
     const result = await register(formData)
+    console.log(formData)
 
     if (result) {
       navigate('/sign-up/otp') // Navigate to OTP screen
@@ -100,11 +101,11 @@ const SignUpPage = () => {
           />
           <CenteredLabelTextField
             label='Referral Code'
-            name='referralCode'
-            value={formData.referralCode}
+            name='referral_code'
+            value={formData.referral_code}
             onChange={handleInputChange}
-            error={!!errors.referralCode}
-            helperText={errors.referralCode}
+            error={!!errors.referral_code}
+            helperText={errors.referral_code}
           />
           {error && <FormHelperText error>{error}</FormHelperText>}
           <Button

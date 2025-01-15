@@ -31,7 +31,7 @@ export const useClaimTask = () => {
         toast.success('IWC Airdrop successful!')
         return { success: true, data: response.data } // Return success and data
       } else {
-        throw new Error(response.data?.message || 'Task claim failed.')
+        return(response.data?.message || 'Task claim failed.')
       }
     } catch (err) {
       const errMsg =
