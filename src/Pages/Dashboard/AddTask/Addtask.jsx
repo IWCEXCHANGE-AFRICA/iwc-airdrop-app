@@ -1,175 +1,158 @@
-import React, { useState, useEffect } from 'react'
-import { Box, TextField, Button, Typography } from '@mui/material'
-import axios from 'axios'
-import { toast } from 'react-toastify'
+import React, { useState } from 'react'
+import {
+  TextField,
+  MenuItem,
+  Select,
+  InputLabel,
+  FormControl,
+  Button,
+  Grid,
+  Typography,
+  Container,
+  FormHelperText
+} from '@mui/material'
 
-const BASE_URL = 'https://iwc-airdrop-backend-1.onrender.com/V1/tasks'
+const TaskForm = ({ onSubmit, initialData }) => {
+  const [category, setCategory] = useState(initialData?.category || '')
+  const [taskTitle, setTaskTitle] = useState(initialData?.task_title || '')
+  const [taskLink, setTaskLink] = useState(initialData?.task_link || '')
+  const [taskCode, setTaskCode] = useState(initialData?.task_code || '')
+  const [taskDescription, setTaskDescription] = useState(
+    initialData?.task_description || ''
+  )
+  const [taskPoint, setTaskPoint] = useState(initialData?.task_point || '')
+  const [status, setStatus] = useState(initialData?.status || 0)
+  const [errors, setErrors] = useState({})
 
-const TaskManager = ({ taskId, isEditMode = false }) => {
-  const [taskData, setTaskData] = useState({
-    category: '',
-    task_title: '',
-    task_link: '',
-    task_code: '',
-    task_description: '',
-    task_point: '',
-    status: ''
-  })
-
-  const [loading, setLoading] = useState(false)
-
-  // Fetch task data if in edit mode
-  useEffect(() => {
-    if (isEditMode && taskId) {
-      fetchTaskById()
-    }
-  }, [isEditMode, taskId])
-
-  const fetchTaskById = async () => {
-    try {
-      setLoading(true)
-      const response = await axios.get(`${BASE_URL}/getTask/${taskId}`)
-      const { success, data } = response.data
-      if (success) {
-        setTaskData(data)
-      } else {
-        toast.error('Failed to fetch task data')
-      }
-    } catch (error) {
-      toast.error('An error occurred while fetching task data')
-    } finally {
-      setLoading(false)
-    }
+  const validateForm = () => {
+    const newErrors = {}
+    if (!category) newErrors.category = 'Category is required'
+    if (!taskTitle) newErrors.taskTitle = 'Task Title is required'
+    if (!taskPoint) newErrors.taskPoint = 'Task Points are required'
+    return newErrors
   }
 
-  const handleInputChange = e => {
-    const { name, value } = e.target
-    setTaskData({ ...taskData, [name]: value })
-  }
-
-  const handleSubmit = async e => {
-    e.preventDefault()
-    const endpoint = isEditMode ? `/update/${taskId}` : '/add'
-    const method = isEditMode ? 'put' : 'post'
-
-    try {
-      setLoading(true)
-      const response = await axios[method](`${BASE_URL}${endpoint}`, taskData)
-      const { success, message } = response.data
-      if (success) {
-        toast.success(message)
-        if (!isEditMode) {
-          setTaskData({
-            category: '',
-            task_title: '',
-            task_link: '',
-            task_code: '',
-            task_description: '',
-            task_point: '',
-            status: ''
-          })
-        }
-      } else {
-        toast.error('Failed to save task')
-      }
-    } catch (error) {
-      toast.error('An error occurred while saving task')
-    } finally {
-      setLoading(false)
+  const handleSubmit = () => {
+    const formErrors = validateForm()
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors)
+      return
     }
+
+    // Call the onSubmit function passed from parent (either for adding or updating task)
+    onSubmit({
+      category,
+      task_title: taskTitle,
+      task_link: taskLink,
+      task_code: taskCode,
+      task_description: taskDescription,
+      task_point: taskPoint,
+      status
+    })
   }
 
   return (
-    <Box
-      sx={{
-        p: 4,
-        maxWidth: 600,
-        mx: 'auto',
-        backgroundColor: '#f9f9f9',
-        borderRadius: 4
-      }}
-    >
-      <Typography variant='h5' mb={2}>
-        {isEditMode ? 'Update Task' : 'Add Task'}
+    <Container maxWidth='sm'>
+      <Typography variant='h4' gutterBottom>
+        {initialData ? 'Update Task' : 'Add New Task'}
       </Typography>
-      <form onSubmit={handleSubmit}>
-        <TextField
-          fullWidth
-          label='Category'
-          name='category'
-          value={taskData.category}
-          onChange={handleInputChange}
-          required
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          fullWidth
-          label='Task Title'
-          name='task_title'
-          value={taskData.task_title}
-          onChange={handleInputChange}
-          required
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          fullWidth
-          label='Task Link (Optional)'
-          name='task_link'
-          value={taskData.task_link}
-          onChange={handleInputChange}
-          type='url'
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          fullWidth
-          label='Task Code (Optional)'
-          name='task_code'
-          value={taskData.task_code}
-          onChange={handleInputChange}
-          type='number'
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          fullWidth
-          label='Task Description (Optional)'
-          name='task_description'
-          value={taskData.task_description}
-          onChange={handleInputChange}
-          multiline
-          rows={3}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          fullWidth
-          label='Task Points'
-          name='task_point'
-          value={taskData.task_point}
-          onChange={handleInputChange}
-          type='number'
-          required
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          fullWidth
-          label='Status (Optional)'
-          name='status'
-          value={taskData.status}
-          onChange={handleInputChange}
-          type='number'
-          sx={{ mb: 2 }}
-        />
-        <Button
-          type='submit'
-          variant='contained'
-          color='primary'
-          disabled={loading}
-          fullWidth
-        >
-          {loading ? 'Saving...' : isEditMode ? 'Update Task' : 'Add Task'}
-        </Button>
-      </form>
-    </Box>
+
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <TextField
+            label='Category'
+            fullWidth
+            value={category}
+            onChange={e => setCategory(e.target.value)}
+            error={!!errors.category}
+            helperText={errors.category}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <TextField
+            label='Task Title'
+            fullWidth
+            value={taskTitle}
+            onChange={e => setTaskTitle(e.target.value)}
+            error={!!errors.taskTitle}
+            helperText={errors.taskTitle}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <TextField
+            label='Task Link (Optional)'
+            fullWidth
+            value={taskLink}
+            onChange={e => setTaskLink(e.target.value)}
+            error={!!errors.taskLink}
+            helperText={errors.taskLink}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <TextField
+            label='Task Code (Optional)'
+            fullWidth
+            type='number'
+            value={taskCode}
+            onChange={e => setTaskCode(e.target.value)}
+            error={!!errors.taskCode}
+            helperText={errors.taskCode}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <TextField
+            label='Task Description (Optional)'
+            fullWidth
+            multiline
+            rows={4}
+            value={taskDescription}
+            onChange={e => setTaskDescription(e.target.value)}
+            error={!!errors.taskDescription}
+            helperText={errors.taskDescription}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <TextField
+            label='Task Points'
+            fullWidth
+            type='number'
+            value={taskPoint}
+            onChange={e => setTaskPoint(e.target.value)}
+            error={!!errors.taskPoint}
+            helperText={errors.taskPoint}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <FormControl fullWidth error={!!errors.status}>
+            <InputLabel>Status (Optional)</InputLabel>
+            <Select value={status} onChange={e => setStatus(e.target.value)}>
+              <MenuItem value={0}>Select Status</MenuItem>
+              <MenuItem value={1}>Active</MenuItem>
+              <MenuItem value={2}>Inactive</MenuItem>
+            </Select>
+            {errors.status && <FormHelperText>{errors.status}</FormHelperText>}
+          </FormControl>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Button
+            variant='contained'
+            color='primary'
+            fullWidth
+            onClick={handleSubmit}
+          >
+            {initialData ? 'Update Task' : 'Add Task'}
+          </Button>
+        </Grid>
+      </Grid>
+    </Container>
   )
 }
 
-export default TaskManager
+export default TaskForm

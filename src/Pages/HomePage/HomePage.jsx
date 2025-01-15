@@ -102,6 +102,7 @@ const HomePage = () => {
 
   const { claimTask, loading, error } = useClaimTask() // Destructure from custom hook
 
+  console.log(user)
   // Timer countdown logic
   useEffect(() => {
     if (timer > 0) {
