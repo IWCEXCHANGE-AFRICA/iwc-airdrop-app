@@ -15,24 +15,19 @@ import logo5 from '../../Components/assets/logo.png'
 
 const cardData = [
   {
-    image: logo1,
-    description: 'Welcome to IWC AIRDROP'
+    image: logo1
   },
   {
-    image: logo2,
-    description: 'Welcome to IWC AIRDROP'
+    image: logo2
   },
   {
-    image: logo3,
-    description: 'Welcome to IWC AIRDROP'
+    image: logo3
   },
   {
-    image: logo4,
-    description: 'Welcome to IWC AIRDROP'
+    image: logo4
   },
   {
-    image: logo5,
-    description: 'Welcome to IWC AIRDROP'
+    image: logo5
   }
 ]
 
@@ -64,7 +59,7 @@ const Slider = () => {
             <Card
               sx={{
                 width: '100%',
-                height: '50vh',
+                height: '20vh', // Maintain height of the card
                 borderRadius: 2,
                 border: 'none', // Explicitly remove border
                 boxShadow: 3,
@@ -73,18 +68,15 @@ const Slider = () => {
             >
               <CardMedia
                 component='img'
-                height='200'
+                sx={{
+                  width: '100%', // Make sure the image spans the full width
+                  height: '100%', // Make sure the image spans the full height
+                  objectFit: 'cover', // Ensures the image covers the card without distortion
+                  borderRadius: 'inherit' // Matches the card's border radius for seamless edges
+                }}
                 image={card.image}
                 alt={card.description}
               />
-              <CardContent>
-                <Typography variant='h5' component='div'>
-                  {card.title || 'Default Title'}
-                </Typography>
-                <Typography variant='body2' color='text.secondary'>
-                  {card.description}
-                </Typography>
-              </CardContent>
             </Card>
           </SwiperSlide>
         ))}

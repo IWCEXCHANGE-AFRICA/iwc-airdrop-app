@@ -39,7 +39,6 @@ const TaskForm = ({ onSubmit, initialData }) => {
       return
     }
 
-    // Call the onSubmit function passed from parent (either for adding or updating task)
     onSubmit({
       category,
       task_title: taskTitle,
@@ -51,9 +50,24 @@ const TaskForm = ({ onSubmit, initialData }) => {
     })
   }
 
+  const fieldStyles = {
+    width: '100%', // All fields take full width of the form container
+    height: '40px' // Reduced height for compact fields
+  }
+
   return (
-    <Container maxWidth='sm'>
-      <Typography variant='h4' gutterBottom>
+    <Container
+      maxWidth='sm'
+      sx={{
+        width: '100%', // Ensure it adapts to smaller screens
+        maxWidth: '500px', // Set the maximum width for the form
+        padding: '20px', // Add some padding
+        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)', // Add a subtle shadow for a polished look
+        borderRadius: '8px', // Slightly rounded corners
+        backgroundColor: '#fff' // Optional: background color for the form
+      }}
+    >
+      <Typography variant='h5' gutterBottom>
         {initialData ? 'Update Task' : 'Add New Task'}
       </Typography>
 
@@ -62,6 +76,7 @@ const TaskForm = ({ onSubmit, initialData }) => {
           <TextField
             label='Category'
             fullWidth
+            sx={fieldStyles}
             value={category}
             onChange={e => setCategory(e.target.value)}
             error={!!errors.category}
@@ -73,6 +88,7 @@ const TaskForm = ({ onSubmit, initialData }) => {
           <TextField
             label='Task Title'
             fullWidth
+            sx={fieldStyles}
             value={taskTitle}
             onChange={e => setTaskTitle(e.target.value)}
             error={!!errors.taskTitle}
@@ -84,6 +100,7 @@ const TaskForm = ({ onSubmit, initialData }) => {
           <TextField
             label='Task Link (Optional)'
             fullWidth
+            sx={fieldStyles}
             value={taskLink}
             onChange={e => setTaskLink(e.target.value)}
             error={!!errors.taskLink}
@@ -96,6 +113,7 @@ const TaskForm = ({ onSubmit, initialData }) => {
             label='Task Code (Optional)'
             fullWidth
             type='number'
+            sx={fieldStyles}
             value={taskCode}
             onChange={e => setTaskCode(e.target.value)}
             error={!!errors.taskCode}
@@ -108,7 +126,8 @@ const TaskForm = ({ onSubmit, initialData }) => {
             label='Task Description (Optional)'
             fullWidth
             multiline
-            rows={4}
+            rows={3}
+            sx={{ ...fieldStyles, height: 'auto' }}
             value={taskDescription}
             onChange={e => setTaskDescription(e.target.value)}
             error={!!errors.taskDescription}
@@ -121,6 +140,7 @@ const TaskForm = ({ onSubmit, initialData }) => {
             label='Task Points'
             fullWidth
             type='number'
+            sx={fieldStyles}
             value={taskPoint}
             onChange={e => setTaskPoint(e.target.value)}
             error={!!errors.taskPoint}
@@ -129,9 +149,13 @@ const TaskForm = ({ onSubmit, initialData }) => {
         </Grid>
 
         <Grid item xs={12}>
-          <FormControl fullWidth error={!!errors.status}>
+          <FormControl fullWidth error={!!errors.status} sx={fieldStyles}>
             <InputLabel>Status (Optional)</InputLabel>
-            <Select value={status} onChange={e => setStatus(e.target.value)}>
+            <Select
+              value={status}
+              onChange={e => setStatus(e.target.value)}
+              sx={{ height: '40px' }}
+            >
               <MenuItem value={0}>Select Status</MenuItem>
               <MenuItem value={1}>Active</MenuItem>
               <MenuItem value={2}>Inactive</MenuItem>
@@ -145,6 +169,7 @@ const TaskForm = ({ onSubmit, initialData }) => {
             variant='contained'
             color='primary'
             fullWidth
+            sx={{ height: '40px' }}
             onClick={handleSubmit}
           >
             {initialData ? 'Update Task' : 'Add Task'}
