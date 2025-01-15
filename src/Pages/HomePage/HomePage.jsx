@@ -173,7 +173,7 @@ const HomePage = () => {
       {/* Spinning Wallet Image */}
       <Box sx={styles.spinningAnimation}>
         <img
-          src="/src/Components/assets/logo.png" // Ensure logo.png is in the correct folder
+          src="/assets/logo.png"
           alt="Spinning Wallet"
           style={{ width: "100%", height: "100%" }}
         />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import {
   Typography,
   Grid,
@@ -6,117 +6,117 @@ import {
   useMediaQuery,
   Box,
   Button
-} from '@mui/material'
-import CustomTextField from '../../../Components/authentications/Textfield/textfield'
-import useStyles from './styles'
-import { uselogin } from '../../../Hooks/Auth' // Import the hook
+} from "@mui/material";
+import CustomTextField from "../../../Components/authentications/Textfield/textfield";
+import useStyles from "./styles";
+import { uselogin } from "../../../Hooks/Auth"; // Import the hook
 
 const LoginPage = () => {
-  const classes = useStyles()
-  const isMobile = useMediaQuery('(max-width: 600px)')
+  const classes = useStyles();
+  const isMobile = useMediaQuery("(max-width: 600px)");
 
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  })
+    email: "",
+    password: ""
+  });
 
-  const { login, loading, error } = uselogin() // Destructure the hook
+  const { login, loading, error } = uselogin(); // Destructure the hook
 
-  const handleInputChange = e => {
+  const handleInputChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
-    })
-  }
+    });
+  };
 
-  const handleSubmit = async e => {
-    e.preventDefault()
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
     if (!formData.email || !formData.password) {
-      alert('Please fill in all fields.')
-      return
+      alert("Please fill in all fields.");
+      return;
     }
 
     // Call the login function from the hook
     try {
-      const userData = { email: formData.email, password: formData.password }
-      const response = await login(userData) // Pass form data to the login function
-      console.log('Login successful, response:', response)
+      const userData = { email: formData.email, password: formData.password };
+      const response = await login(userData); // Pass form data to the login function
+      console.log("Login successful, response:", response);
       // You can redirect or perform any action on successful login
     } catch (err) {
-      console.log('Login error:', err)
+      console.log("Login error:", err);
     }
-  }
+  };
 
   return (
     <Box className={classes.root}>
       <Box className={classes.formContainer}>
         {/* Updated image source to use public folder */}
         <img
-          src='/src/Components/assets/logo.png' // Logo placed in public/assets/ folder
-          alt='Logo'
+          src="/assets/logo.png"
+          alt="Logo"
           className={classes.logo}
           style={{
-            width: isMobile ? '50px' : '60px',
-            height: isMobile ? '50px' : '60px'
+            width: isMobile ? "50px" : "60px",
+            height: isMobile ? "50px" : "60px"
           }}
         />
-        <Typography variant='h4' component='h1' className={classes.title}>
+        <Typography variant="h4" component="h1" className={classes.title}>
           Login
         </Typography>
-        <Typography variant='body1' className={classes.description}>
+        <Typography variant="body1" className={classes.description}>
           Welcome to Iwc AirDrop. Please enter your details.
         </Typography>
         <form
           onSubmit={handleSubmit}
-          style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
+          style={{ display: "flex", flexDirection: "column", gap: "16px" }}
         >
           <CustomTextField
-            label='Email Address'
-            name='email'
+            label="Email Address"
+            name="email"
             value={formData.email}
             onChange={handleInputChange}
-            type='email'
+            type="email"
             required
           />
           <CustomTextField
-            label='Password'
-            name='password'
+            label="Password"
+            name="password"
             value={formData.password}
             onChange={handleInputChange}
-            type='password'
+            type="password"
             required
           />
           <Button
-            type='submit'
+            type="submit"
             fullWidth
             className={classes.loginButton}
             disabled={loading} // Disable the button while loading
             sx={{
-              backgroundColor: '#b79105', // Default color
-              color: '#fff', // Text color white
-              borderRadius: '50px',
-              fontWeight: 'bold',
-              '&:hover': { backgroundColor: '#a57d04' } // Darker shade for hover effect
+              backgroundColor: "#b79105", // Default color
+              color: "#fff", // Text color white
+              borderRadius: "50px",
+              fontWeight: "bold",
+              "&:hover": { backgroundColor: "#a57d04" } // Darker shade for hover effect
             }}
           >
-            {loading ? 'Logging in...' : 'Login'} {/* Show loading text */}
+            {loading ? "Logging in..." : "Login"} {/* Show loading text */}
           </Button>
         </form>
 
         {/*{error && <Typography variant="body2" color="error">{error}</Typography>}*/}
 
         <Grid container className={classes.linkContainer}>
-          <Link href='/forgot-password' variant='body2'>
+          <Link href="/forgot-password" variant="body2">
             Forgot password?
           </Link>
-          <Link href='/sign-up' variant='body2'>
+          <Link href="/sign-up" variant="body2">
             Sign Up
           </Link>
         </Grid>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default LoginPage
+export default LoginPage;

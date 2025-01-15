@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Box, Button, Typography, Stack, Tab, Tabs } from '@mui/material'
-import logoImage from '../../Components/assets/logo.png'
+import logoImage from "../../../public/assets/logo.png"
 import Carousel from '../../Components/Homepage/carousel'
 import { useClaimbyID } from '../../Hooks/Claim'
 

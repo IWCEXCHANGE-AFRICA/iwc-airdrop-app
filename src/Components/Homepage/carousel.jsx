@@ -7,27 +7,23 @@ import 'swiper/css/pagination'
 import { Card, CardContent, CardMedia, Typography, Box } from '@mui/material'
 
 // Import local images
-import logo1 from '../../Components/assets/logo.png'
-import logo2 from '../../Components/assets/logo.png'
-import logo3 from '../../Components/assets/logo.png'
-import logo4 from '../../Components/assets/logo.png'
-import logo5 from '../../Components/assets/logo.png'
+import logo1 from "../../../public/assets/logo.png"
 
 const cardData = [
   {
     image: logo1
   },
   {
-    image: logo2
+    image: logo1
   },
   {
-    image: logo3
+    image: logo1
   },
   {
-    image: logo4
+    image: logo1
   },
   {
-    image: logo5
+    image: logo1
   }
 ]
 
