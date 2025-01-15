@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import {
   TextField,
   MenuItem,
@@ -12,23 +12,28 @@ import {
   FormHelperText
 } from '@mui/material'
 
-const TaskForm = ({ onSubmit, initialData }) => {
-  const [category, setCategory] = useState(initialData?.category || '')
-  const [taskTitle, setTaskTitle] = useState(initialData?.task_title || '')
-  const [taskLink, setTaskLink] = useState(initialData?.task_link || '')
-  const [taskCode, setTaskCode] = useState(initialData?.task_code || '')
-  const [taskDescription, setTaskDescription] = useState(
-    initialData?.task_description || ''
-  )
-  const [taskPoint, setTaskPoint] = useState(initialData?.task_point || '')
-  const [status, setStatus] = useState(initialData?.status || 0)
+const TaskForm = () => {
+  const [formData, setFormData] = useState({
+    category: '',
+    task_title: '',
+    task_link: '',
+    task_point: '',
+    task_description: '',
+    status: ''
+  })
+
   const [errors, setErrors] = useState({})
+
+  const handleChange = e => {
+    const { name, value } = e.target
+    setFormData(prevState => ({ ...prevState, [name]: value }))
+  }
 
   const validateForm = () => {
     const newErrors = {}
-    if (!category) newErrors.category = 'Category is required'
-    if (!taskTitle) newErrors.taskTitle = 'Task Title is required'
-    if (!taskPoint) newErrors.taskPoint = 'Task Points are required'
+    if (!formData.category) newErrors.category = 'Category is required'
+    if (!formData.task_title) newErrors.task_title = 'Task Title is required'
+    if (!formData.task_point) newErrors.task_point = 'Task Points are required'
     return newErrors
   }
 
@@ -38,15 +43,16 @@ const TaskForm = ({ onSubmit, initialData }) => {
       setErrors(formErrors)
       return
     }
-
-    onSubmit({
-      category,
-      task_title: taskTitle,
-      task_link: taskLink,
-      task_code: taskCode,
-      task_description: taskDescription,
-      task_point: taskPoint,
-      status
+    // Add your form submission logic here
+    console.log('Form Submitted', formData)
+    setErrors({})
+    setFormData({
+      category: '',
+      task_title: '',
+      task_link: '',
+      task_point: '',
+      task_description: '',
+      status: ''
     })
   }
 
@@ -56,114 +62,97 @@ const TaskForm = ({ onSubmit, initialData }) => {
   }
 
   return (
-    <Container
-      maxWidth='sm'
-      sx={{
-        width: '100%', // Ensure it adapts to smaller screens
-        maxWidth: '500px', // Set the maximum width for the form
-        padding: '20px', // Add some padding
-        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)', // Add a subtle shadow for a polished look
-        borderRadius: '8px', // Slightly rounded corners
-        backgroundColor: '#fff' // Optional: background color for the form
-      }}
-    >
-      <Typography variant='h5' gutterBottom>
-        {initialData ? 'Update Task' : 'Add New Task'}
+    <Container maxWidth='sm'>
+      <Typography variant='h4' gutterBottom>
+        Add New Task
       </Typography>
-
       <Grid container spacing={2}>
+        {/* Category Field */}
         <Grid item xs={12}>
           <TextField
             label='Category'
+            name='category'
             fullWidth
-            sx={fieldStyles}
-            value={category}
-            onChange={e => setCategory(e.target.value)}
+            value={formData.category}
+            onChange={handleChange}
             error={!!errors.category}
             helperText={errors.category}
           />
         </Grid>
 
+        {/* Task Title Field */}
         <Grid item xs={12}>
           <TextField
             label='Task Title'
+            name='task_title'
             fullWidth
-            sx={fieldStyles}
-            value={taskTitle}
-            onChange={e => setTaskTitle(e.target.value)}
-            error={!!errors.taskTitle}
-            helperText={errors.taskTitle}
+            value={formData.task_title}
+            onChange={handleChange}
+            error={!!errors.task_title}
+            helperText={errors.task_title}
           />
         </Grid>
 
+        {/* Task Link Field */}
         <Grid item xs={12}>
           <TextField
             label='Task Link (Optional)'
+            name='task_link'
             fullWidth
-            sx={fieldStyles}
-            value={taskLink}
-            onChange={e => setTaskLink(e.target.value)}
-            error={!!errors.taskLink}
-            helperText={errors.taskLink}
+            value={formData.task_link}
+            onChange={handleChange}
+            error={!!errors.task_link}
+            helperText={errors.task_link}
           />
         </Grid>
 
-        <Grid item xs={12}>
-          <TextField
-            label='Task Code (Optional)'
-            fullWidth
-            type='number'
-            sx={fieldStyles}
-            value={taskCode}
-            onChange={e => setTaskCode(e.target.value)}
-            error={!!errors.taskCode}
-            helperText={errors.taskCode}
-          />
-        </Grid>
-
+        {/* Task Description Field */}
         <Grid item xs={12}>
           <TextField
             label='Task Description (Optional)'
+            name='task_description'
             fullWidth
             multiline
-            rows={3}
-            sx={{ ...fieldStyles, height: 'auto' }}
-            value={taskDescription}
-            onChange={e => setTaskDescription(e.target.value)}
-            error={!!errors.taskDescription}
-            helperText={errors.taskDescription}
+            rows={4}
+            value={formData.task_description}
+            onChange={handleChange}
+            error={!!errors.task_description}
+            helperText={errors.task_description}
           />
         </Grid>
 
+        {/* Task Points Field */}
         <Grid item xs={12}>
           <TextField
             label='Task Points'
+            name='task_point'
             fullWidth
             type='number'
-            sx={fieldStyles}
-            value={taskPoint}
-            onChange={e => setTaskPoint(e.target.value)}
-            error={!!errors.taskPoint}
-            helperText={errors.taskPoint}
+            value={formData.task_point}
+            onChange={handleChange}
+            error={!!errors.task_point}
+            helperText={errors.task_point}
           />
         </Grid>
 
+        {/* Status Field */}
         <Grid item xs={12}>
           <FormControl fullWidth error={!!errors.status} sx={fieldStyles}>
             <InputLabel>Status (Optional)</InputLabel>
             <Select
-              value={status}
-              onChange={e => setStatus(e.target.value)}
-              sx={{ height: '40px' }}
+              name='status'
+              value={formData.status}
+              onChange={handleChange}
             >
-              <MenuItem value={0}>Select Status</MenuItem>
-              <MenuItem value={1}>Active</MenuItem>
-              <MenuItem value={2}>Inactive</MenuItem>
+              <MenuItem value=''>Select Status</MenuItem>
+              <MenuItem value='1'>Active</MenuItem>
+              <MenuItem value='2'>Inactive</MenuItem>
             </Select>
-            {errors.status && <FormHelperText>{errors.status}</FormHelperText>}
+            <FormHelperText>{errors.status}</FormHelperText>
           </FormControl>
         </Grid>
 
+        {/* Submit Button */}
         <Grid item xs={12}>
           <Button
             variant='contained'
@@ -172,7 +161,7 @@ const TaskForm = ({ onSubmit, initialData }) => {
             sx={{ height: '40px' }}
             onClick={handleSubmit}
           >
-            {initialData ? 'Update Task' : 'Add Task'}
+            Add Task
           </Button>
         </Grid>
       </Grid>

@@ -1,43 +1,38 @@
-import { useState } from 'react'
-import axios from 'axios'
-import { BASE_URL } from '../config/path'
-import { toast } from 'react-toastify'
+import { useState } from "react";
+import axios from "axios";
+import { BASE_URL } from "../config/path";
+import { toast } from "react-toastify";
 
-const useTaskApi = () => {
-  const [loading, setLoading] = useState(false)
+export const useStoreTasks = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  // Fetch task by ID
-  const fetchTaskById = async (taskId, setTaskData) => {
-    setLoading(true)
+  const storeTask = async (tasksInfo) => {
+    setLoading(true);
+    setError(null);
+
     try {
-      const response = await axios.get(`${BASE_URL}/api/tasks/${taskId}`)
-      setTaskData(response.data)
-    } catch (error) {
-      console.error('Error fetching task:', error)
-      throw error
+      const response = await axios.post(`${BASE_URL}`, tasksInfo, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (response.status === 201) {
+        toast.success("Fetch Successful!");
+        return response.data;
+      } else {
+        throw new Error(response.data.message || "Fetch failed.");
+      }
+    } catch (err) {
+      const errMsg = err.response?.data?.message || "Network or server error";
+      toast.error(errMsg);
+      setError(errMsg);
+      return null;
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
-  // Submit task (either create or update)
-  // Submit task (either create or update)
-  const submitTask = async (taskData, taskId, isEditMode, setTaskData) => {
-    setLoading(true)
-    try {
-      const response = isEditMode
-        ? await axios.put(`/api/tasks/${taskId}`, taskData) // PUT for update
-        : await axios.post('/api/tasks', taskData) // POST for creating new task
-      setTaskData(response.data) // Update task data state
-    } catch (error) {
-      console.error('Error submitting task:', error)
-      throw error
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  return { fetchTaskById, submitTask, loading }
-}
-
-export default useTaskApi
+  return { storeTask, loading, error };
+};
