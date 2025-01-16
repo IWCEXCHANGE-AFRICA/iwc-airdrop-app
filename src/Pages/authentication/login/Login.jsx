@@ -5,7 +5,7 @@ import {
   Link,
   useMediaQuery,
   Box,
-  Button
+  Button,
 } from "@mui/material";
 import CustomTextField from "../../../Components/authentications/Textfield/textfield";
 import useStyles from "./styles";
@@ -17,15 +17,15 @@ const LoginPage = () => {
 
   const [formData, setFormData] = useState({
     email: "",
-    password: ""
+    password: "",
   });
 
-  const { login, loading, error } = uselogin(); // Destructure the hook
+  const { login, loading, error } = uselogin();
 
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -58,7 +58,7 @@ const LoginPage = () => {
           className={classes.logo}
           style={{
             width: isMobile ? "50px" : "60px",
-            height: isMobile ? "50px" : "60px"
+            height: isMobile ? "50px" : "60px",
           }}
         />
         <Typography variant="h4" component="h1" className={classes.title}>
@@ -97,7 +97,7 @@ const LoginPage = () => {
               color: "#fff", // Text color white
               borderRadius: "50px",
               fontWeight: "bold",
-              "&:hover": { backgroundColor: "#a57d04" } // Darker shade for hover effect
+              "&:hover": { backgroundColor: "#a57d04" }, // Darker shade for hover effect
             }}
           >
             {loading ? "Logging in..." : "Login"} {/* Show loading text */}
