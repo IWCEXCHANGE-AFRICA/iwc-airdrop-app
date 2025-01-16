@@ -96,9 +96,8 @@ export const useVerifyEmail = () => {
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(null)
   const [error, setError] = useState(null)
-  const { login } = uselogin() // Reuse the login function from the uselogin hook
 
-  const verifyAndLogin = async (token, userData) => {
+  const verifyAndLogin = async (token, ) => {
     setLoading(true)
     setError(null)
     setSuccess(null)
@@ -113,7 +112,6 @@ export const useVerifyEmail = () => {
       if (response.status === 200) {
         setSuccess('Email verification successful!')
         toast.success('Email verified successfully!')
-        await login(userData) // Automatically log in
       }
     } catch (err) {
       const errMsg =
