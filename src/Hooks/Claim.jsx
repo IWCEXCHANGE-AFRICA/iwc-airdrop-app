@@ -31,7 +31,7 @@ export const useClaimTask = () => {
         toast.success('IWC Airdrop successful!')
         return { success: true, data: response.data } // Return success and data
       } else {
-        return(response.data?.message || 'Task claim failed.')
+        return response.data?.message || 'Task claim failed.'
       }
     } catch (err) {
       const errMsg =
@@ -61,7 +61,7 @@ export const useClaimbyID = () => {
     try {
       // API request to claim task
       const response = await axios.post(
-        `${BASE_URL}/tasks/claim/:id
+        `${BASE_URL}/airdrop/tasks/claim/:id
 `,
         userData,
         {

@@ -11,23 +11,26 @@ import {
 
 const ParticipantsTable = ({ participants, setParticipants }) => {
   return (
-    <TableContainer
-      component={Paper}
-      sx={{ backgroundColor: '', color: 'white' }}
-    >
+    <TableContainer component={Paper} sx={{ backgroundColor: '#f5f5f5' }}>
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Wallet Address</TableCell>
-            <TableCell>Tokens</TableCell>
+            <TableCell>ID</TableCell>
+            <TableCell>Name</TableCell>
+            <TableCell>Email</TableCell>
+            <TableCell>Username</TableCell>
+            <TableCell>Points</TableCell>
             <TableCell>Status</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {participants.map(participant => (
             <TableRow key={participant.id}>
-              <TableCell>{participant.wallet}</TableCell>
-              <TableCell>{participant.tokens}</TableCell>
+              <TableCell>{participant.id}</TableCell>
+              <TableCell>{participant.Name}</TableCell>
+              <TableCell>{participant.email}</TableCell>
+              <TableCell>{participant.Username}</TableCell>
+              <TableCell>{participant.points}</TableCell>
               <TableCell>{participant.status}</TableCell>
             </TableRow>
           ))}

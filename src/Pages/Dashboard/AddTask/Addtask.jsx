@@ -11,6 +11,14 @@ import {
   Container,
   FormHelperText
 } from '@mui/material'
+import {
+  containerStyle,
+  titleStyle,
+  textFieldStyle,
+  textAreaStyle,
+  selectStyle,
+  buttonStyle
+} from './styles'
 
 const TaskForm = () => {
   const [formData, setFormData] = useState({
@@ -56,17 +64,12 @@ const TaskForm = () => {
     })
   }
 
-  const fieldStyles = {
-    width: '100%', // All fields take full width of the form container
-    height: '40px' // Reduced height for compact fields
-  }
-
   return (
-    <Container maxWidth='sm'>
-      <Typography variant='h4' gutterBottom>
+    <Container maxWidth='sm' sx={containerStyle}>
+      <Typography variant='h4' gutterBottom sx={titleStyle}>
         Add New Task
       </Typography>
-      <Grid container spacing={2}>
+      <Grid container spacing={3}>
         {/* Category Field */}
         <Grid item xs={12}>
           <TextField
@@ -77,6 +80,7 @@ const TaskForm = () => {
             onChange={handleChange}
             error={!!errors.category}
             helperText={errors.category}
+            sx={textFieldStyle}
           />
         </Grid>
 
@@ -90,6 +94,7 @@ const TaskForm = () => {
             onChange={handleChange}
             error={!!errors.task_title}
             helperText={errors.task_title}
+            sx={textFieldStyle}
           />
         </Grid>
 
@@ -103,6 +108,7 @@ const TaskForm = () => {
             onChange={handleChange}
             error={!!errors.task_link}
             helperText={errors.task_link}
+            sx={textFieldStyle}
           />
         </Grid>
 
@@ -118,6 +124,7 @@ const TaskForm = () => {
             onChange={handleChange}
             error={!!errors.task_description}
             helperText={errors.task_description}
+            sx={textAreaStyle}
           />
         </Grid>
 
@@ -132,17 +139,19 @@ const TaskForm = () => {
             onChange={handleChange}
             error={!!errors.task_point}
             helperText={errors.task_point}
+            sx={textFieldStyle}
           />
         </Grid>
 
         {/* Status Field */}
         <Grid item xs={12}>
-          <FormControl fullWidth error={!!errors.status} sx={fieldStyles}>
+          <FormControl fullWidth error={!!errors.status}>
             <InputLabel>Status (Optional)</InputLabel>
             <Select
               name='status'
               value={formData.status}
               onChange={handleChange}
+              sx={selectStyle}
             >
               <MenuItem value=''>Select Status</MenuItem>
               <MenuItem value='1'>Active</MenuItem>
@@ -158,8 +167,8 @@ const TaskForm = () => {
             variant='contained'
             color='primary'
             fullWidth
-            sx={{ height: '40px' }}
             onClick={handleSubmit}
+            sx={buttonStyle}
           >
             Add Task
           </Button>
