@@ -113,7 +113,7 @@ export const useVerifyEmail = () => {
       if (response.status === 200) {
         setSuccess("Email verification successful!");
         toast.success("Email verified successfully!");
-        navigate("/authentication/login/login");
+        navigate("/");
       }
     } catch (err) {
       const errMsg =
