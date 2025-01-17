@@ -115,7 +115,7 @@ const SignUpForm = () => {
         <Typography variant="h5" fontWeight="bold">
           Welcome
         </Typography>
-        <Typography color="text.secondary">
+        <Typography variant="body2" color="text.secondary">
           Please enter your details to sign Up
         </Typography>
         {error && <FormHelperText error>{error}</FormHelperText>}

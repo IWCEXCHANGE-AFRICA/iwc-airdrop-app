@@ -6,6 +6,7 @@ import "./index.css";
 import { Provider } from "react-redux";
 import store from "./stores";
 import UserContextProvider from "./contexts/userContext";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <UserContextProvider>
+            <ToastContainer />
             <Router />
           </UserContextProvider>
         </ThemeProvider>

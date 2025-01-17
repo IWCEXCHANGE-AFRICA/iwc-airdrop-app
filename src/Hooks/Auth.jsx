@@ -62,12 +62,11 @@ export const uselogin = () => {
           "Content-Type": "application/json"
         }
       });
-      console.log({response});
+      console.log({ response });
 
       if (response.status === 200) {
         toast.success("Login successful!");
         authorizeLogin(response, _dispatch, setLoading, _nav, setUser);
-
 
         const user = response?.data?.result?.user;
         if (user?.user_type === 4) {
@@ -129,28 +128,32 @@ export const useVerifyEmail = () => {
   return { verifyAndLogin, loading, success, error };
 };
 
-export const useResetOTP = () => {
+export const useForgotPwd = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(null);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
 
-  const resetOTP = async (token) => {
+  const forgotPwd = async (email) => {
     setLoading(true);
     setError(null);
     setSuccess(null);
 
     try {
-      console.log("Sending OTP:", token); // Debug log for OTP being sent
-      const response = await axios.post(`${BASE_URL}/auth/verify-email`, {
-        otp: token // Use `otp` as the key in the payload
-      });
+      console.log(" email:", email); // Debug log for OTP being sent
+      const response = await axios.post(
+        `${BASE_URL}/user/forgot-password`,
+        email,
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      );
       console.log("Server Response:", response.data); // Log the server response
 
-      if (response.status === 200) {
-        setSuccess("Email verification successful!");
-        toast.success("Email verified successfully!");
-        navigate("/");
+      if (response.data.success) {
+        setSuccess("Password Reset token sent successful!");
+        return response.data;
       }
     } catch (err) {
       const errMsg =
@@ -163,5 +166,47 @@ export const useResetOTP = () => {
     }
   };
 
-  return { verifyAndLogin, loading, success, error };
+  return { forgotPwd, loading, success, error };
+};
+
+export const useResetPwd = () => {
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(null);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  const resetPwd = async (data) => {
+    setLoading(true);
+    setError(null);
+    setSuccess(null);
+
+    try {
+      console.log(" data:", data);
+      const response = await axios.post(
+        `${BASE_URL}/user/reset-password`,
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      );
+      console.log("Server Response:", response.data); // Log the server response
+
+      if (response.data.success) {
+        setSuccess("Password Reset successful!");
+        return response.data;
+      }
+    } catch (err) {
+      const errMsg =
+        err.response?.data?.message || err.message || "Network or server error";
+      setError(errMsg); // Set the error message in state
+      toast.error(errMsg);
+      console.error("Error Response:", err.response?.data); // Log the error
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { resetPwd, loading, success, error };
 };

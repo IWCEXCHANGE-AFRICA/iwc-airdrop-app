@@ -57,7 +57,7 @@ const OtpPage = () => {
         <Typography variant="h5" component="h1" mb={2}>
           Enter OTP
         </Typography>
-        <Typography variant="body1" color="textSecondary" mb={4}>
+        <Typography variant="body2" color="textSecondary" mb={4}>
           Please enter the 6-digit OTP sent to your email.
         </Typography>
 
@@ -66,6 +66,7 @@ const OtpPage = () => {
           value={otp}
           onChange={handleOtpChange}
           autoFocus
+          sx={{color: '#000000'}}
           inputStyle={{
             width: "2.5rem",
             height: "3rem",
@@ -73,7 +74,7 @@ const OtpPage = () => {
             fontSize: "1.5rem",
             borderRadius: "5px",
             border: "1px solid #ccc",
-            textAlign: "center"
+            textAlign: "center",
           }}
           focusStyle={{
             border: "2px solid #D0A106"

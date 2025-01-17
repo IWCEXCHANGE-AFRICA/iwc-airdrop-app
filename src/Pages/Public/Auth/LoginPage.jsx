@@ -97,7 +97,7 @@ const SignInForm = () => {
         <Typography variant="h5" fontWeight="bold">
           Welcome back
         </Typography>
-        <Typography color="text.secondary" sx={{ mt: 1 }}>
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
           Please enter your details to sign in
         </Typography>
         {error && <FormHelperText error>{error}</FormHelperText>}

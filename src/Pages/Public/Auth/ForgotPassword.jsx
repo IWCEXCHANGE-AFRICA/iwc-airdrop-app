@@ -4,48 +4,48 @@ import {
   Typography,
   TextField,
   Button,
-  Checkbox,
-  FormControlLabel,
-  InputAdornment,
-  IconButton,
-  Divider,
-  CircularProgress
+  CircularProgress,
+  FormHelperText
 } from "@mui/material";
-import GoogleIcon from "@mui/icons-material/Google";
-import AppleIcon from "@mui/icons-material/Apple";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useNavigate } from "react-router-dom";
-import { uselogin } from "../../../Hooks/Auth";
-import { grey, native } from "../../../constants/colors";
+import { useForgotPwd } from "../../../Hooks/Auth";
+import { toast } from "react-toastify";
+import { native } from "../../../constants/colors";
 
-const SignInForm = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({ email: "", password: "" });
-  const { login, loading } = uselogin();
+const ForgotPasswordForm = () => {
+  const [email, setEmail] = useState("");
+  const { forgotPwd, loading, error } = useForgotPwd();
   const navigate = useNavigate();
 
-  const handleTogglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
-  };
-
   const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setEmail(e.target.value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.email || !formData.password) {
-      alert("Please fill in all fields.");
+    if (!email) {
+      toast.error("Please enter your email.");
+      return;
+    }
+    if (!/^\S+@\S+\.\S+$/.test(email)) {
+      toast.error("Invalid email format.");
       return;
     }
 
     try {
-      const response = await login(formData);
-      console.log("Login successful:", response);
+      const response = await forgotPwd({ email });
+      console.log(response)
+
+      if (response) {
+        toast.success("Password reset link sent. Check your email!");
+        
+        setTimeout(() => {
+          navigate("/reset-password");
+        }, 5000);
+      }
     } catch (err) {
-      console.error("Login error:", err);
+      toast.error("Failed to send reset link. Please try again.");
+      console.error("Error:", err);
     }
   };
 
@@ -85,7 +85,7 @@ const SignInForm = () => {
           >
             <img
               style={{ maxWidth: "100%", height: "auto" }}
-              src={"/assets/logo.png"}
+              src="/assets/logo.png"
               alt="Logo"
             />
           </Box>
@@ -93,11 +93,12 @@ const SignInForm = () => {
 
         {/* Welcome Message */}
         <Typography variant="h5" fontWeight="bold">
-          Reset Password
+          Forgot Password
         </Typography>
-        <Typography color="text.secondary" sx={{ mt: 1 }}>
-          Please enter your details to reset password
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+          Enter your registered email to reset your password
         </Typography>
+        {error && <FormHelperText error>{error}</FormHelperText>}
 
         {/* Form */}
         <Box sx={{ mt: 2 }}>
@@ -108,7 +109,7 @@ const SignInForm = () => {
             variant="outlined"
             placeholder="Enter your email"
             sx={{ mb: 2 }}
-            value={formData.email}
+            value={email}
             onChange={handleInputChange}
           />
         </Box>
@@ -125,8 +126,13 @@ const SignInForm = () => {
             "&:hover": { bgcolor: "primary.dark" }
           }}
           onClick={handleSubmit}
+          disabled={loading}
         >
-          {loading ? <CircularProgress size={20} color="inherit" /> : "Reset Password"}
+          {loading ? (
+            <CircularProgress size={20} color="inherit" />
+          ) : (
+            "Reset Password"
+          )}
         </Button>
 
         {/* Footer */}
@@ -144,4 +150,4 @@ const SignInForm = () => {
   );
 };
 
-export default SignInForm;
+export default ForgotPasswordForm;
