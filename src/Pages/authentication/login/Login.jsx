@@ -53,7 +53,7 @@ const LoginPage = () => {
       <Box className={classes.formContainer}>
         {/* Updated image source to use public folder */}
         <img
-          src="/assets/logo.png"
+          src="/src/assets/logo.png"
           alt="Logo"
           className={classes.logo}
           style={{
