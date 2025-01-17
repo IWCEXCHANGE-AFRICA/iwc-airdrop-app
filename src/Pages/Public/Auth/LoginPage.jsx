@@ -1,121 +1,215 @@
 import { useState } from "react";
 import {
-  Typography,
-  Grid,
-  Link,
-  useMediaQuery,
   Box,
+  Typography,
+  TextField,
   Button,
+  Checkbox,
+  FormControlLabel,
+  InputAdornment,
+  IconButton,
+  Divider,
+  CircularProgress,
+  FormHelperText
 } from "@mui/material";
-import CustomTextField from "../../../Components/authentications/Textfield/textfield";
-import { uselogin } from "../../../Hooks/Auth"; // Import the hook
+import GoogleIcon from "@mui/icons-material/Google";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { useNavigate } from "react-router-dom";
+import { uselogin } from "../../../Hooks/Auth";
+import { grey, native } from "../../../constants/colors";
+import { toast } from "react-toastify";
 
-const SignIn = () => {
-  const classes = useStyles();
-  const isMobile = useMediaQuery("(max-width: 600px)");
-
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
+const SignInForm = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const { login, loading, error } = uselogin();
+  const navigate = useNavigate();
+
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
 
   const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!formData.email || !formData.password) {
-      alert("Please fill in all fields.");
+      toast.error("Please fill in all fields.");
       return;
     }
 
-    // Call the login function from the hook
     try {
-      const userData = { email: formData.email, password: formData.password };
-      const response = await login(userData); // Pass form data to the login function
-      console.log("Login successful, response:", response);
-      // You can redirect or perform any action on successful login
+      const response = await login(formData);
+      console.log("Login successful:", response);
     } catch (err) {
-      console.log("Login error:", err);
+      console.error("Login error:", err);
     }
   };
 
   return (
-    <Box className={classes.root}>
-      <Box className={classes.formContainer}>
-        {/* Updated image source to use public folder */}
-        <img
-          src="/assets/logo.png"
-          alt="Logo"
-          className={classes.logo}
-          style={{
-            width: isMobile ? "50px" : "60px",
-            height: isMobile ? "50px" : "60px",
-          }}
-        />
-        <Typography variant="h4" component="h1" className={classes.title}>
-          Login
-        </Typography>
-        <Typography variant="body1" className={classes.description}>
-          Welcome to Iwc AirDrop. Please enter your details.
-        </Typography>
-        <form
-          onSubmit={handleSubmit}
-          style={{ display: "flex", flexDirection: "column", gap: "16px" }}
-        >
-          <CustomTextField
-            label="Email Address"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            type="email"
-            required
-          />
-          <CustomTextField
-            label="Password"
-            name="password"
-            value={formData.password}
-            onChange={handleInputChange}
-            type="password"
-            required
-          />
-          <Button
-            type="submit"
-            fullWidth
-            className={classes.loginButton}
-            disabled={loading} // Disable the button while loading
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        bgcolor: "#f8f9fc"
+      }}
+    >
+      <Box
+        sx={{
+          width: "100%",
+          maxWidth: 400,
+          bgcolor: "white",
+          p: 4,
+          borderRadius: 2,
+          boxShadow: "0px 10px 20px rgba(0,0,0,0.1)",
+          textAlign: "center"
+        }}
+      >
+        {/* Logo */}
+        <Box sx={{ mb: 2, display: "flex", justifyContent: "center" }}>
+          <Box
             sx={{
-              backgroundColor: "#b79105", // Default color
-              color: "#fff", // Text color white
-              borderRadius: "50px",
-              fontWeight: "bold",
-              "&:hover": { backgroundColor: "#a57d04" }, // Darker shade for hover effect
+              width: 50,
+              height: 50,
+              bgcolor: "#e0e7ff",
+              borderRadius: "50%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center"
             }}
           >
-            {loading ? "Logging in..." : "Login"} {/* Show loading text */}
+            <img
+              style={{ maxWidth: "100%", height: "auto" }}
+              src={"/assets/logo.png"}
+              alt="Logo"
+            />
+          </Box>
+        </Box>
+
+        {/* Welcome Message */}
+        <Typography variant="h5" fontWeight="bold">
+          Welcome back
+        </Typography>
+        <Typography color="text.secondary" sx={{ mt: 1 }}>
+          Please enter your details to sign in
+        </Typography>
+        {error && <FormHelperText error>{error}</FormHelperText>}
+
+        {/* Social Login Buttons */}
+        <Box sx={{ display: "flex", gap: 1, mt: 3, mb: 2 }}>
+          <Button
+            variant="contained"
+            startIcon={<GoogleIcon />}
+            sx={{ flex: 1, textTransform: "none" }}
+          >
+            Google
           </Button>
-        </form>
+          <Button
+            variant="contained"
+            startIcon={<FacebookIcon />}
+            sx={{ flex: 1, textTransform: "none" }}
+          >
+            Facebook
+          </Button>
+        </Box>
+        <Divider>or</Divider>
 
-        {/*{error && <Typography variant="body2" color="error">{error}</Typography>}*/}
+        {/* Form */}
+        <Box sx={{ mt: 2 }}>
+          <TextField
+            fullWidth
+            name="email"
+            label="Email address"
+            variant="outlined"
+            placeholder="Enter your email"
+            sx={{ mb: 2 }}
+            value={formData.email}
+            onChange={handleInputChange}
+          />
+          <TextField
+            fullWidth
+            name="password"
+            type={showPassword ? "text" : "password"}
+            label="Password"
+            placeholder="Enter your password"
+            value={formData.password}
+            onChange={handleInputChange}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={handleTogglePasswordVisibility}>
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              )
+            }}
+          />
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              mt: 1
+            }}
+          >
+            <FormControlLabel
+              control={<Checkbox />}
+              label="Remember me"
+              size="small"
+            />
+            <Typography
+              variant="body2"
+              sx={{
+                textDecoration: "none",
+                color: grey.one,
+                cursor: "pointer"
+              }}
+              onClick={() => navigate("/forgot-password")}
+            >
+              Forgot password?
+            </Typography>
+          </Box>
+        </Box>
 
-        <Grid container className={classes.linkContainer}>
-          <Link href="/forgot-password" variant="body2">
-            Forgot password?
-          </Link>
-          <Link href="/sign-up" variant="body2">
-            Sign Up
-          </Link>
-        </Grid>
+        {/* Submit Button */}
+        <Button
+          fullWidth
+          variant="contained"
+          sx={{
+            mt: 3,
+            py: 1.2,
+            textTransform: "none",
+            bgcolor: "primary.main",
+            "&:hover": { bgcolor: "primary.dark" }
+          }}
+          onClick={handleSubmit}
+        >
+          {loading ? <CircularProgress size={20} color="inherit" /> : "Sign In"}
+        </Button>
+
+        {/* Footer */}
+        <Box sx={{ mt: 2, textAlign: "center" }}>
+          <Typography variant="body2">
+            Don&apos;t have an account?{" "}
+            <Typography
+              component="span"
+              variant="body2"
+              sx={{ color: native.primary, cursor: "pointer" }}
+              onClick={() => navigate("/sign-up")}
+            >
+              Create account
+            </Typography>
+          </Typography>
+        </Box>
       </Box>
     </Box>
   );
 };
 
-export default SignIn;
+export default SignInForm;

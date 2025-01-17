@@ -1,93 +1,147 @@
-import React, { useState } from 'react'
-import { Box, TextField, Button, Typography, Grid, Link } from '@mui/material'
+import { useState } from "react";
+import {
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  InputAdornment,
+  IconButton,
+  Divider,
+  CircularProgress
+} from "@mui/material";
+import GoogleIcon from "@mui/icons-material/Google";
+import AppleIcon from "@mui/icons-material/Apple";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { useNavigate } from "react-router-dom";
+import { uselogin } from "../../../Hooks/Auth";
+import { grey, native } from "../../../constants/colors";
 
-const ForgotPassword = () => {
-  const [email, setEmail] = useState('')
-  const [message, setMessage] = useState('')
+const SignInForm = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const { login, loading } = uselogin();
+  const navigate = useNavigate();
 
-  const handleEmailChange = e => {
-    setEmail(e.target.value)
-  }
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
 
-  const handleSubmit = () => {
-    if (!email) {
-      setMessage('Please enter a valid email address.')
-      return
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.email || !formData.password) {
+      alert("Please fill in all fields.");
+      return;
     }
 
-    // Handle password reset request here
-    setMessage('A password reset link has been sent to your email.')
-  }
+    try {
+      const response = await login(formData);
+      console.log("Login successful:", response);
+    } catch (err) {
+      console.error("Login error:", err);
+    }
+  };
 
   return (
     <Box
       sx={{
-        minHeight: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#f5f5f5',
-        padding: 4
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        bgcolor: "#f8f9fc"
       }}
     >
       <Box
         sx={{
+          width: "100%",
           maxWidth: 400,
-          width: '100%',
-          padding: 4,
-          backgroundColor: '#fff',
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+          bgcolor: "white",
+          p: 4,
           borderRadius: 2,
-          textAlign: 'center'
+          boxShadow: "0px 10px 20px rgba(0,0,0,0.1)",
+          textAlign: "center"
         }}
       >
-        <Typography variant='h5' component='h1' mb={2}>
-          Forgot Password
-        </Typography>
-        <Typography variant='body1' color='textSecondary' mb={4}>
-          Please enter your email address to receive a password reset link.
-        </Typography>
-
-        <Box component='form'>
-          <TextField />
-          {message && (
-            <Typography
-              variant='body2'
-              color={message.includes('sent') ? 'green' : 'red'}
-              mb={2}
-            >
-              {message}
-            </Typography>
-          )}
-          <Button
-            variant='contained'
-            onClick={handleSubmit}
-            fullWidth
+        {/* Logo */}
+        <Box sx={{ mb: 2, display: "flex", justifyContent: "center" }}>
+          <Box
             sx={{
-              py: 1.5,
-              mb: 2,
-              height: 40,
-              textTransform: 'none',
-              fontSize: '1rem',
-              borderRadius: 50,
-              backgroundColor: '#D0A106',
-              '&:hover': {
-                backgroundColor: '#b78c07'
-              }
+              width: 50,
+              height: 50,
+              bgcolor: "#e0e7ff",
+              borderRadius: "50%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center"
             }}
           >
-            Send Reset Link
-          </Button>
+            <img
+              style={{ maxWidth: "100%", height: "auto" }}
+              src={"/assets/logo.png"}
+              alt="Logo"
+            />
+          </Box>
         </Box>
 
-        <Grid container justifyContent='center'>
-          <Link href='/' variant='body2'>
+        {/* Welcome Message */}
+        <Typography variant="h5" fontWeight="bold">
+          Reset Password
+        </Typography>
+        <Typography color="text.secondary" sx={{ mt: 1 }}>
+          Please enter your details to reset password
+        </Typography>
+
+        {/* Form */}
+        <Box sx={{ mt: 2 }}>
+          <TextField
+            fullWidth
+            name="email"
+            label="Email address"
+            variant="outlined"
+            placeholder="Enter your email"
+            sx={{ mb: 2 }}
+            value={formData.email}
+            onChange={handleInputChange}
+          />
+        </Box>
+
+        {/* Submit Button */}
+        <Button
+          fullWidth
+          variant="contained"
+          sx={{
+            mt: 3,
+            py: 1.2,
+            textTransform: "none",
+            bgcolor: "primary.main",
+            "&:hover": { bgcolor: "primary.dark" }
+          }}
+          onClick={handleSubmit}
+        >
+          {loading ? <CircularProgress size={20} color="inherit" /> : "Reset Password"}
+        </Button>
+
+        {/* Footer */}
+        <Box sx={{ mt: 2, textAlign: "center" }}>
+          <Typography
+            variant="body2"
+            sx={{ color: native.primary, cursor: "pointer" }}
+            onClick={() => navigate("/")}
+          >
             Back to Login
-          </Link>
-        </Grid>
+          </Typography>
+        </Box>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default ForgotPassword
+export default SignInForm;

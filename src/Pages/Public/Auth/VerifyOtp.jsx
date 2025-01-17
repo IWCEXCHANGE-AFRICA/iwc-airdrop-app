@@ -1,157 +1,133 @@
-import { useState } from 'react'
-import { Box, TextField, Button, Typography, Grid } from '@mui/material'
-import { useVerifyEmail } from '../../../Hooks/Auth' // Adjust import path
+import { useState } from "react";
+import { Box, Button, Typography } from "@mui/material";
+import { useVerifyEmail } from "../../../Hooks/Auth"; // Adjust import
+import { MuiOtpInput } from "mui-one-time-password-input";
 
 const OtpPage = () => {
-  const [otp, setOtp] = useState(['', '', '', '', '', '']) // OTP state
-  const [isResending, setIsResending] = useState(false) // State for resend button
+  const [otp, setOtp] = useState(""); // OTP state
+  const [isResending, setIsResending] = useState(false); // State for resend button
   const { verifyAndLogin, loading, success, error, resendOtp } =
-    useVerifyEmail() // Assuming resendOtp is part of the custom hook
+    useVerifyEmail();
 
-  const handleChange = (e, index) => {
-    const value = e.target.value
-    if (/[^0-9]/.test(value)) return // Allow only numbers
-    const newOtp = [...otp]
-    newOtp[index] = value
-    setOtp(newOtp)
-    if (value && index < 5) {
-      document.getElementById(`otp-input-${index + 1}`).focus() // Focus next input
-    }
-  }
+  const handleOtpChange = (value) => {
+    if (/^\d*$/.test(value)) setOtp(value); // Ensure only numeric input
+  };
 
   const handleSubmit = async () => {
-    const token = otp.join('') // Combine OTP array into a token
-    const userData = {
-      email: 'user@example.com', // Replace with actual user data if necessary
-      password: 'password123' // Replace with actual user data if necessary
+    if (otp.length === 6) {
+      await verifyAndLogin(otp); // Pass the token
+    } else {
+      console.error("OTP must be 6 digits");
     }
-
-    await verifyAndLogin(token, userData) // Pass the token and user data
-  }
+  };
 
   const handleResend = async () => {
-    setIsResending(true)
+    setIsResending(true);
     try {
-      await resendOtp() // Assuming resendOtp triggers OTP resend process
-      // Optionally, display a success message for resend
+      await resendOtp();
     } catch (error) {
-      // Handle any errors that occur during resend (e.g., network error)
-      console.error('Error resending OTP:', error)
+      console.error("Error resending OTP:", error);
     } finally {
-      setIsResending(false)
+      setIsResending(false);
     }
-  }
+  };
 
   return (
     <Box
       sx={{
-        minHeight: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#f5f5f5',
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#f5f5f5",
         padding: 2
       }}
     >
       <Box
         sx={{
           maxWidth: 400,
-          width: '100%',
+          width: "100%",
           padding: 4,
-          backgroundColor: '#fff',
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+          backgroundColor: "#fff",
+          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
           borderRadius: 2,
-          textAlign: 'center'
+          textAlign: "center"
         }}
       >
-        <Typography variant='h5' component='h1' mb={2}>
+        <Typography variant="h5" component="h1" mb={2}>
           Enter OTP
         </Typography>
-        <Typography variant='body1' color='textSecondary' mb={4}>
+        <Typography variant="body1" color="textSecondary" mb={4}>
           Please enter the 6-digit OTP sent to your email.
         </Typography>
 
-        <Grid container spacing={2} justifyContent='center' mb={3}>
-          {otp.map((digit, index) => (
-            <Grid item key={index}>
-              <TextField
-                id={`otp-input-${index}`}
-                value={digit}
-                onChange={e => handleChange(e, index)}
-                variant='outlined'
-                inputProps={{
-                  maxLength: 1,
-                  style: {
-                    textAlign: 'center',
-                    width: 30,
-                    height: 30,
-                    fontSize: '1.5rem',
-                    padding: '0'
-                  }
-                }}
-                sx={{
-                  '& .MuiOutlinedInput-root': {
-                    borderRadius: 2
-                  }
-                }}
-              />
-            </Grid>
-          ))}
-        </Grid>
+        <MuiOtpInput
+          length={6}
+          value={otp}
+          onChange={handleOtpChange}
+          autoFocus
+          inputStyle={{
+            width: "2.5rem",
+            height: "3rem",
+            margin: "0.5rem",
+            fontSize: "1.5rem",
+            borderRadius: "5px",
+            border: "1px solid #ccc",
+            textAlign: "center"
+          }}
+          focusStyle={{
+            border: "2px solid #D0A106"
+          }}
+        />
 
         <Button
-          variant='contained'
+          variant="contained"
           onClick={handleSubmit}
           fullWidth
           sx={{
             py: 1.5,
-            backgroundColor: '#D0A106',
-            '&:hover': {
-              backgroundColor: '#b78c07'
-            },
-            borderRadius: 50,
-            textTransform: 'none',
-            height: 40
+            backgroundColor: "#D0A106",
+            "&:hover": { backgroundColor: "#b78c07" },
+            textTransform: "none",
+            height: 40,
+            mt: 3
           }}
+          disabled={loading}
         >
-          {loading ? 'Verifying...' : 'Submit OTP'}
+          {loading ? "Verifying..." : "Submit OTP"}
         </Button>
 
-        {/* Resend OTP Button */}
         <Button
-          variant='text'
+          variant="outlined"
           onClick={handleResend}
           fullWidth
           sx={{
             py: 1.5,
-            textTransform: 'none',
-            color: '#D0A106',
-            '&:hover': {
-              backgroundColor: 'transparent',
-              color: '#b78c07'
-            },
+            height: 40,
+            textTransform: "none",
+            color: "#D0A106",
+            "&:hover": { backgroundColor: "transparent", color: "#b78c07" },
             mt: 2
           }}
-          disabled={isResending} // Disable button while resending
+          disabled={isResending}
         >
-          {isResending ? 'Resending...' : 'Resend OTP'}
+          {isResending ? "Resending..." : "Resend OTP"}
         </Button>
 
-        {/* Success or error message */}
         {success && (
-          <Typography variant='body2' color='green' mt={2}>
+          <Typography variant="body2" color="green" mt={2}>
             {success}
           </Typography>
         )}
 
         {error && (
-          <Typography variant='body2' color='red' mt={2}>
+          <Typography variant="body2" color="red" mt={2}>
             {error}
           </Typography>
         )}
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default OtpPage
+export default OtpPage;

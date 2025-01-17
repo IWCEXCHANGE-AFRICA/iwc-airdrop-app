@@ -26,10 +26,11 @@ const Router = () => {
     <Routes>
       {/* Public Routes */}
       <Route path="/sign-up" element={<RegisterPage />} />
-      <Route path="/sign-up/otp" element={<VerifyOtp />} />
+      <Route path="/verify-otp" element={<VerifyOtp />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/" element={<LoginPage />} />
+
 
       {/* Unauthorized Route */}
       <Route

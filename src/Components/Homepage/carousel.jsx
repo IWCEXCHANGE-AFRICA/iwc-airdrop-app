@@ -1,4 +1,3 @@
-import React from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination, Autoplay } from 'swiper/modules'
 import 'swiper/css'
@@ -7,7 +6,7 @@ import 'swiper/css/pagination'
 import { Card, CardContent, CardMedia, Typography, Box } from '@mui/material'
 
 // Import local images
-import logo1 from "../../../src/assets/logo.png"
+import logo1 from "/src/assets/logo.png"
 
 const cardData = [
   {

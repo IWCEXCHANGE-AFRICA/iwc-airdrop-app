@@ -90,8 +90,7 @@ const baseTheme = createTheme({
           color: "#FFFFFF",
           fontWeight: 500,
           textTransform: "none",
-          borderRadius: 999,
-          fontSize: "12px"
+          fontSize: "14spx"
         },
         sizeMedium: {
           padding: "8px 40px"
