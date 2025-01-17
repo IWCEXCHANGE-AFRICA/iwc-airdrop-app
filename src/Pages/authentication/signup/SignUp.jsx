@@ -57,7 +57,7 @@ const SignUpPage = () => {
   return (
     <Box sx={styles.container}>
       <Box sx={styles.formContainer}>
-        <img src="/assets/logo.png" alt="Logo" style={styles.logo(isMobile)} />
+        <img src="/src/assets/logo.png" alt="Logo" style={styles.logo(isMobile)} />
         <Typography variant="h4" sx={styles.heading}>
           Sign Up
         </Typography>
