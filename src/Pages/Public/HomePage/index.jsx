@@ -172,7 +172,11 @@ const HomePage = () => {
 
       {/* Spinning Wallet Image */}
       <Box sx={styles.spinningAnimation}>
-
+        <img
+          style={{ maxWidth: "100%", height: "auto" }}
+          src={"/assets/logo.png"}
+          alt="Logo"
+        />
       </Box>
 
       {/* Mining Details */}
