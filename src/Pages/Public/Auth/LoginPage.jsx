@@ -43,7 +43,8 @@ const SignInForm = () => {
     }
 
     try {
-      const response = await login(formData);
+      const userData = { email: formData.email, password: formData.password }
+      const response = await login(userData);
       console.log("Login successful:", response);
     } catch (err) {
       console.error("Login error:", err);
