@@ -9,11 +9,10 @@ import {
   FormHelperText
 } from "@mui/material";
 import CenteredLabelTextField from "../../../Components/authentications/Textfield/textfield";
-import styles from "./styles";
 import { useRegister } from "../../../Hooks/Auth";
 import { useNavigate } from "react-router-dom";
 
-const SignUpPage = () => {
+const SignUp = () => {
   const isMobile = useMediaQuery("(max-width: 600px)");
   const { register, error, loading } = useRegister();
   const [formData, setFormData] = useState({
@@ -55,16 +54,16 @@ const SignUpPage = () => {
   };
 
   return (
-    <Box sx={styles.container}>
-      <Box sx={styles.formContainer}>
-        <img src="/assets/logo.png" alt="Logo" style={styles.logo(isMobile)} />
-        <Typography variant="h4" sx={styles.heading}>
+    <Box >
+      <Box>
+        <img src="/assets/logo.png" alt="Logo"/>
+        <Typography variant="h4">
           Sign Up
         </Typography>
-        <Typography variant="body1" sx={styles.subHeading}>
+        <Typography variant="body1" >
           Create your account
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} sx={styles.form}>
+        <Box component="form" onSubmit={handleSubmit} >
           <CenteredLabelTextField
             label="Username"
             name="username"
@@ -111,13 +110,12 @@ const SignUpPage = () => {
             variant="contained"
             type="submit"
             fullWidth
-            sx={styles.button}
             disabled={loading}
           >
             {loading ? "Signing Up..." : "Sign Up"}
           </Button>
         </Box>
-        <Grid container sx={styles.linkContainer}>
+        <Grid container >
           <Link href="/" variant="body2">
             Already have an account? Login
           </Link>
@@ -127,4 +125,4 @@ const SignUpPage = () => {
   );
 };
 
-export default SignUpPage;
+export default SignUp;

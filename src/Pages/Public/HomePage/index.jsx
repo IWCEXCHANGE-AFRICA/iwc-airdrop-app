@@ -74,8 +74,8 @@ const styles = {
 };
 import { Box, Button, Typography, Modal, TextField } from "@mui/material";
 import { useSelector } from "react-redux";
-import CardCarousel from "../../Components/Homepage/carousel";
-import { useClaimTask } from "../../Hooks/Claim";
+import CardCarousel from "../../../Components/Homepage/carousel";
+import { useClaimTask } from "../../../Hooks/Claim";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";

@@ -5,15 +5,15 @@ import { styled } from '@mui/system'
 // Styled TextField
 const CustomTextField = styled(TextField)(({ theme }) => ({
   '& .MuiOutlinedInput-root': {
-    borderRadius: '100px', // Custom border radius
-    height: '40px', // Reduced height
+    borderRadius: '10px', // Custom border radius
+    height: '50px', // Reduced height
     '& fieldset': {
       borderColor: 'black' // Default border color
     },
 
     '&.Mui-focused fieldset': {
       borderColor: 'black', // Focused border color
-      borderWidth: '2px' // Focused border width
+      borderWidth: '1px' // Focused border width
     }
   }
 }))

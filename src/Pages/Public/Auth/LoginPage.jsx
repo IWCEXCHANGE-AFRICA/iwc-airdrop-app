@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Typography,
   Grid,
@@ -8,10 +8,9 @@ import {
   Button,
 } from "@mui/material";
 import CustomTextField from "../../../Components/authentications/Textfield/textfield";
-import useStyles from "./styles";
 import { uselogin } from "../../../Hooks/Auth"; // Import the hook
 
-const LoginPage = () => {
+const SignIn = () => {
   const classes = useStyles();
   const isMobile = useMediaQuery("(max-width: 600px)");
 
@@ -119,4 +118,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default SignIn;

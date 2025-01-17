@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Box, Button, Typography, Stack, Tab, Tabs } from '@mui/material'
-import logoImage from "../../../public/assets/logo.png"
-import Carousel from '../../Components/Homepage/carousel'
-import { useClaimbyID } from '../../Hooks/Claim'
+import logoImage from "../../../../src/assets/logo.png"
+import Carousel from '../../../Components/Homepage/carousel'
+import { useClaimbyID } from '../../../Hooks/Claim'
 
 const DailyTasks = () => {
   const [tasks, setTasks] = useState([
