@@ -173,7 +173,7 @@ const HomePage = () => {
       {/* Spinning Wallet Image */}
       <Box sx={styles.spinningAnimation}>
         <img
-          src="/assets/logo.png"
+          src="/src/assets/logo.png"
           alt="Spinning Wallet"
           style={{ width: "100%", height: "100%" }}
         />
@@ -256,4 +256,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage
+export default HomePage;
