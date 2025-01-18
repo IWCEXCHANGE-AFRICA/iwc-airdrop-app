@@ -115,6 +115,7 @@ const FriendsReward = () => {
     <Box
       sx={{
         backgroundColor: "#000",
+        opacity: 0.7,
         color: "#fff",
         padding: 3
       }}

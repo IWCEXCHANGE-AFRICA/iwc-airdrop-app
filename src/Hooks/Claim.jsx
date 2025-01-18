@@ -115,7 +115,7 @@ export const useGetReferrals = () => {
       }
     } catch (error) {
       console.log("Error:", error);
-      toast.error("Invite Friends to get more..");
+      // toast.error("Something went wrong!");
     } finally {
       setLoading(false);
     }
