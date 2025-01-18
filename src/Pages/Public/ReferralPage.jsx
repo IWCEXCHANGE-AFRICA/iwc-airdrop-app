@@ -28,15 +28,14 @@ const FriendsReward = () => {
   return (
     <Box
       sx={{
-        minHeight: '100vh',
         backgroundColor: '#000',
         color: '#fff',
         padding: 3
       }}
     >
       {/* Header Section */}
-      <Typography variant='h5' fontWeight='bold' textAlign='center' mb={2}>
-        Invite friends & get more <span style={{ color: '#D0A106' }}>IWCP</span>
+      <Typography variant='h5' textAlign='center' mb={2}>
+        Invite friends to get more <span style={{ color: '#D0A106' }}>IWCP</span>
       </Typography>
       <Typography variant='body2' textAlign='center' color='#888' mb={3}>
         Use your referral code to invite and earn rewards

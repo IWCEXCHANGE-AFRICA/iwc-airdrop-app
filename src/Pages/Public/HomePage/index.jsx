@@ -93,7 +93,7 @@ const HomePage = () => {
         sx={{
           width: "100%",
           p: 2,
-          maxWidth: 600,
+          maxWidth: 550,
           textAlign: "center"
         }}
       >
@@ -173,7 +173,7 @@ const HomePage = () => {
         </Box>
 
         {/* Scrolling Announcements */}
-        <Box sx={{ mt: { xs: 15, md: 5 } }}>
+        <Box sx={{ mt: { xs: 10, md: 5 } }}>
           <CardCarousel />
         </Box>
       </Box>

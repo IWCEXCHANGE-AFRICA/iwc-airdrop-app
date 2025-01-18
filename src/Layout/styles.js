@@ -105,6 +105,7 @@ export const styles = {
     padding: "10px 20px",
     marginBottom: "-15px",
     boxShadow: `0 -1px 3px rgba(0, 0, 0, 0.1)`,
-    transition: "width 0.3s"
+    transition: "width 0.3s",
+    zIndex: 1990
   }
 };

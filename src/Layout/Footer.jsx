@@ -30,7 +30,15 @@ const Footer = () => {
   return (
     <>
       <Box position="fixed" sx={styles.footer}>
-        <Stack direction={"row"} gap={2}>
+        <Stack
+          direction={"row"}
+          gap={2}
+          sx={{
+            justifyContent: "center",
+            alignItems: "center",
+            pb: 1
+          }}
+        >
           <Tabs
             value={value}
             onChange={handleChange}
@@ -40,9 +48,6 @@ const Footer = () => {
               color: "#fff"
             }}
             sx={{
-              justifyContent: "center",
-              alignItems: "center",
-              pb: 1,
               "& .MuiTab-root": {
                 color: "gray" // Inactive tab color
               },
