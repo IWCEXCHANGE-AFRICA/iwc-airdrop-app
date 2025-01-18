@@ -17,10 +17,10 @@ const baseTheme = createTheme({
       main: native.primary
     },
     secondary: {
-      main: native.secondary
+      main: native.bg
     },
     success: {
-      main: native.success
+      main: native.primary
     }
   },
   typography: {

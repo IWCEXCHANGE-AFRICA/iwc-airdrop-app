@@ -1,7 +1,6 @@
 export const native = {
   primary: "#D0A106",
-  secondary: "#D0A106",
-  success: "#D0A106"
+  bg: "#121212",
 };
 
 export const black = {

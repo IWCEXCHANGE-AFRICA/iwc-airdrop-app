@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "../utilities/protectedRoute";
-import Layout from "../Layout/mainlayout";
-import DashboardLayout from "../Layout/dashboard";
+import Layout from "../Layout/UserLayout";
+import DashboardLayout from "../Layout/AdminLayout";
 import Dashboard from "../Pages/Dashboard/AdminDashboard/dashboard";
 import Users from "../Pages/Dashboard/Users/User";
 import AddTask from "../Pages/Dashboard/AddTask/Addtask";

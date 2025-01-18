@@ -45,11 +45,11 @@ const OtpPage = () => {
     >
       <Box
         sx={{
-          maxWidth: 400,
+          maxWidth: 300,
           width: "100%",
           padding: 4,
           backgroundColor: "#fff",
-          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+          boxShadow: "0px 10px 20px rgba(224, 187, 22, 0.65)",
           borderRadius: 2,
           textAlign: "center"
         }}

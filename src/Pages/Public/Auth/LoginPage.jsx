@@ -64,11 +64,11 @@ const SignInForm = () => {
       <Box
         sx={{
           width: "100%",
-          maxWidth: 400,
+          maxWidth: 300,
           bgcolor: "white",
           p: 4,
           borderRadius: 2,
-          boxShadow: "0px 10px 20px rgba(0,0,0,0.1)",
+          boxShadow: "0px 10px 20px rgba(224, 187, 22, 0.65)",
           textAlign: "center"
         }}
       >

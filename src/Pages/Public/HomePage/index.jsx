@@ -1,87 +1,14 @@
-const styles = {
-  container: {
-    padding: "16px",
-    backgroundColor: "#121212",
-    minHeight: "100vh",
-    color: "#fff"
-  },
-  header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "32px"
-  },
-  balance: {
-    color: "#D0A106",
-    fontWeight: "bold"
-  },
-  spinningAnimation: {
-    width: "150px",
-    height: "150px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    animation: "spin 2s linear infinite", // Ensure the image spins
-    margin: "0 auto", // Centers the container horizontally
-    marginTop: "40px" // Adds space above the spinning container
-  },
-  miningDetails: {
-    textAlign: "center",
-    marginTop: "32px",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center", // Ensures the text is horizontally centered
-    gap: "15px", // Optional: Adds spacing between elements
-    animation: "fadeIn 2s ease-in-out" // Add fade-in animation
-  },
-  buttonsStack: {
-    marginTop: "16px",
-    display: "flex",
-    justifyContent: "center",
-    gap: "16px"
-  },
-  boostButton: {
-    backgroundColor: "#D0A106",
-    color: "#000",
-    borderRadius: "50px",
-    fontWeight: "bold",
-    "&:hover": { backgroundColor: "#b78c07" }
-  },
-  claimButton: {
-    backgroundColor: "green",
-    color: "#fff",
-    borderRadius: "50px",
-    fontWeight: "bold",
-    "&:disabled": { backgroundColor: "#333", color: "#fff" }
-  },
-  claimButtonDisabled: {
-    backgroundColor: "#fff",
-    color: "#fff",
-    cursor: "not-allowed"
-  },
-  claimButtonSuccess: {
-    backgroundColor: "green", // Green when claimed successfully
-    color: "#fff",
-    borderRadius: "50px",
-    fontWeight: "bold",
-    "&:hover": { backgroundColor: "#388e3c" }
-  },
-  marquee: {
-    marginTop: "32px",
-    padding: "16px",
-    borderRadius: "8px"
-  }
-};
-import { Box, Button, Typography, Modal, TextField } from "@mui/material";
-import { useSelector } from "react-redux";
-import CardCarousel from "../../../Components/Homepage/carousel";
-import { useClaimTask } from "../../../Hooks/Claim";
+import { useState, useEffect } from "react";
+import { Box, Typography, Button, CircularProgress } from "@mui/material";
+import { grey } from "../../../constants/colors";
 import { toast } from "react-toastify";
-import { useEffect, useState } from "react";
-import CircularProgress from "@mui/material/CircularProgress";
+import { useSelector } from "react-redux";
+import { styles } from "./styles";
+import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
+import { useClaimTask } from "../../../Hooks/Claim";
 import HardwareIcon from "@mui/icons-material/Hardware";
+import CardCarousel from "../../../Components/Homepage/carousel";
 
-// Adding keyframes for spinning animation
 const spinKeyframes = `@keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
@@ -95,14 +22,17 @@ const fadeInKeyframes = `@keyframes fadeIn {
 
 const HomePage = () => {
   const user = useSelector((state) => state.user);
-  const grosspointbalance = useSelector((state) => state.grosspointbalance);
-  const [miningRate, setMiningRate] = useState(user?.mining_power);
-  const [boostModalOpen, setBoostModalOpen] = useState(false);
-  const { claimTask, loading, error } = useClaimTask();
   const [timer, setTimer] = useState(0);
+  const { claimTask, loading, error } = useClaimTask();
   const [buttonText, setButtonText] = useState("Claim");
+  const [miningRate, setMiningRate] = useState(user?.mining_power);
 
-  console.log(grosspointbalance);
+  const formatTime = (seconds) => {
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    return `${hrs}hr(s) ${mins}m ${secs}s`;
+  };
 
   useEffect(() => {
     // Load timer from localStorage on mount
@@ -134,123 +64,118 @@ const HomePage = () => {
     }
   }, [timer]);
 
-  // Format time function
-  const formatTime = (seconds) => {
-    const hrs = Math.floor(seconds / 3600);
-    const mins = Math.floor((seconds % 3600) / 60);
-    const secs = seconds % 60;
-    return `${hrs}hr(s) ${mins}m ${secs}s`;
-  };
-
   const handleClaimTask = async (e) => {
     e.preventDefault();
     const result = await claimTask();
 
     if (result.success) {
-      toast.success("Task Claimed Successfully");
+      toast.success("Claim Successful");
       setButtonText("Claim");
       setTimer(43200); // 12 hours in seconds
       localStorage.setItem("claimTimer", Date.now() + 43200000); // 12 hours in ms
     } else {
-      console.error("Task Claim Failed:", result.error);
+      console.error("Claim Failed:", result.error);
     }
   };
 
   return (
-    <Box sx={styles.container}>
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+      }}
+    >
       {/* Inject keyframes for spinning and fade-in animations */}
       <style>{spinKeyframes}</style>
       <style>{fadeInKeyframes}</style>
-
-      {/* Header Section */}
-      <Box sx={styles.header}>
-        <Typography variant="h5">Account Balance</Typography>
-        <Typography variant="h6" sx={styles.balance}>
-          {grosspointbalance.toLocaleString()} IWCP
-        </Typography>
-      </Box>
-
-      {/* Spinning Wallet Image */}
-      <Box sx={styles.spinningAnimation}>
-        <img
-          style={{ maxWidth: "100%", height: "auto" }}
-          src={"/assets/logo.png"}
-          alt="Logo"
-        />
-      </Box>
-
-      {/* Mining Details */}
-      <Box sx={styles.miningDetails}>
-        <Typography variant="subtitle1" sx={{ marginTop: 2 }}>
-          Timer: {formatTime(timer)}
-        </Typography>
-        <Typography variant="subtitle1">
-          Mining Rate: {miningRate} IWCP per hour
-        </Typography>
-      </Box>
-
-      {/* Buttons */}
-      <Box sx={styles.buttonsStack}>
-        <Button
-          variant="contained"
-          sx={styles.boostButton}
-          onClick={() => setBoostModalOpen(true)}
-        >
-          Boost
-        </Button>
-        <Button
-          variant="contained"
-          sx={styles.claimButton}
-          onClick={handleClaimTask}
-          disabled={loading || timer > 0} // Disable when loading or timer active
-          startIcon={!loading && <HardwareIcon />}
-        >
-          {loading ? (
-            <CircularProgress size={20} color="inherit" />
-          ) : timer > 0 ? (
-            `Mining...`
-          ) : (
-            buttonText
-          )}
-        </Button>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-      </Box>
-
-      {/* Boost Modal */}
-      <Modal open={boostModalOpen} onClose={() => setBoostModalOpen(false)}>
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            p: 4,
-            bgcolor: "#222",
-            color: "#fff",
-            boxShadow: 24,
-            borderRadius: "8px",
-            width: "300px",
-            textAlign: "center"
-          }}
-        >
-          <Typography variant="h6" mb={2}>
-            Boost Options
-          </Typography>
-          <TextField
-            fullWidth
-            type="number"
-            label="Amount (BNB or USDT)"
-            sx={{ mb: 2 }}
-          />
-          <Button variant="contained" sx={styles.boostButton} fullWidth>
-            Deposit
-          </Button>
+      <Box
+        sx={{
+          width: "100%",
+          p: 2,
+          maxWidth: 600,
+          textAlign: "center"
+        }}
+      >
+        {/* Logo */}
+        <Box sx={{ mb: 2, display: "flex", justifyContent: "center" }}>
+          <Box
+            sx={[
+              styles.spinningAnimation,
+              {
+                width: 50,
+                height: 50,
+                bgcolor: "#e0e7ff",
+                borderRadius: "50%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center"
+              }
+            ]}
+          >
+            <img
+              style={{ maxWidth: "100%", height: "auto" }}
+              src={"/assets/logo.png"}
+              alt="Logo"
+            />
+          </Box>
         </Box>
-      </Modal>
 
-      {/* Scrolling Announcements */}
-      <Box sx={styles.marquee}>
-        <CardCarousel />
+        {/* Welcome Message */}
+        <Typography variant="h5" fontWeight="bold" color="#fff">
+          Welcome back
+        </Typography>
+        <Typography variant="body2" color="#fff" sx={{ mt: 1 }}>
+          {user?.username}
+        </Typography>
+
+        {/* Mining Details */}
+        <Box sx={{ color: "#fff" }}>
+          <Typography variant="h4" sx={{ marginTop: 2 }}>
+            Timer: {formatTime(timer)}
+          </Typography>
+          <Typography variant="body2" sx={{ color: grey.three }}>
+            Mining Rate: {miningRate} IWCP per hour
+          </Typography>
+        </Box>
+
+        {/* Buttons */}
+        <Box sx={{ display: "flex", gap: 1, mt: 5, mb: 2 }}>
+          <Button
+            variant="contained"
+            startIcon={<RocketLaunchIcon />}
+            sx={[
+              styles.boostButton,
+              {
+                flex: 1,
+                textTransform: "none"
+              }
+            ]}
+          >
+            Boost
+          </Button>
+
+          <Button
+            onClick={handleClaimTask}
+            disabled={loading || timer > 0} // Disable when loading or timer active
+            startIcon={!loading && <HardwareIcon />}
+            sx={[styles.claimButton, { flex: 1, textTransform: "none" }]}
+          >
+            {loading ? (
+              <CircularProgress size={20} color="inherit" />
+            ) : timer > 0 ? (
+              `Mining...`
+            ) : (
+              buttonText
+            )}
+          </Button>
+          {error && <p style={{ color: "red" }}>{error}</p>}
+        </Box>
+
+        {/* Scrolling Announcements */}
+        <Box sx={{ mt: { xs: 15, md: 5 } }}>
+          <CardCarousel />
+        </Box>
       </Box>
     </Box>
   );
