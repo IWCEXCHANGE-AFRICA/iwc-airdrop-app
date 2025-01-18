@@ -173,7 +173,7 @@ const HomePage = () => {
         </Box>
 
         {/* Scrolling Announcements */}
-        <Box sx={{ mt: { xs: 10, md: 5 } }}>
+        <Box sx={{ mt: 6 }}>
           <CardCarousel />
         </Box>
       </Box>

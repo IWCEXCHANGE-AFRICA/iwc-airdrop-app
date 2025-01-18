@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { BASE_URL } from "../config/path";
 import { toast } from "react-toastify";
@@ -93,4 +93,36 @@ export const useClaimbyID = () => {
   };
 
   return { claimTask, loading, error };
+};
+
+export const useGetReferrals = () => {
+  const [refData, setRefData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { config } = useUserContext();
+
+  const fetchReferrals = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/user/referrals`, config);
+      const data = response.data;
+      console.log("data:", response)
+
+      if (data?.error === 0) {
+        setRefData(data?.result);
+      }
+      if (data?.error) {
+        toast.error(data?.message);
+        return false;
+      }
+    } catch (error) {
+      console.log("Error:", error);
+      toast.error("Something went wrong!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchReferrals();
+  }, []);
+  return { refData, loading, fetchReferrals };
 };

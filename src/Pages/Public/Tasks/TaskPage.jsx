@@ -46,7 +46,15 @@ const DailyTasks = () => {
       reward: "+10K",
       description: "Share and react to the social media post.",
       claimed: false
-    }
+    },
+    {
+      id: 6,
+      category: "Basic",
+      title: "Daily Check-in",
+      reward: "+1M",
+      description: "Log in daily to claim your reward.",
+      claimed: false
+    },
   ]);
 
   const [selectedTab, setSelectedTab] = useState(0);
@@ -135,35 +143,34 @@ const DailyTasks = () => {
           zIndex: 2 // Ensure tasks are above overlay and other background elements
         }}
       >
-        {filteredTasks.map((task) => (
-          <Box
-            key={task.id}
-            sx={{
-              backgroundColor: "#1a1a1a",
-              borderRadius: 2,
-              padding: 1.5,
-              position: "relative",
-              display: "flex",
-              flexDirection: "column", // Set the flex direction to column for content stacking
-              alignItems: "center",
-              height: "auto",
-              overflow: "hidden",
-              textAlign: "center",
-              zIndex: 2 // Ensure tasks are above the background overlay
-            }}
-          >
+        <Box
+          sx={{
+            backgroundColor: "#1a1a1a",
+            opacity: 0.6,
+            borderRadius: 2,
+            padding: 1.5,
+            alignItems: "center",
+            height: "auto",
+            overflow: "hidden",
+            textAlign: "center",
+            zIndex: 2
+          }}
+        >
+          {filteredTasks.map((task) => (
             <Stack
-              direction="row" // Align title and reward in a row
-              display="flex"
-              justifyContent="space-between" // Space between title and reward
+              key={task.id}
+              direction="row"
+              justifyContent="space-between"
               alignItems="center"
               sx={{
-                gap: 1,
-                width: "100%" // Ensure stack takes full width
+                mt: 1,
+                mb:1,
+                width: "100%",
+                borderBottom: "1px solid green"
               }}
             >
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Typography variant="body1" sx={{ fontSize: "0.7rem" }}>
+                <Typography variant="body2" sx={{ fontSize: "0.9rem", color: "#fff" }}>
                   {task.title}
                 </Typography>
                 <Typography
@@ -182,13 +189,15 @@ const DailyTasks = () => {
                 variant="contained"
                 sx={{
                   borderRadius: 100,
+                  mb:1,
+                  width: "70px",
                   backgroundColor:
                     task.claimed === "pending"
                       ? "#FFD700"
                       : task.claimed
                       ? "#4CAF50"
-                      : "#FFC107", // Green when successfully claimed, yellow when pending
-                  fontSize: "0.6rem",
+                      : "#DOA106",
+                  fontSize: "0.8rem",
                   "&:hover": {
                     backgroundColor:
                       task.claimed === "pending"
@@ -205,11 +214,11 @@ const DailyTasks = () => {
                   ? "Claiming..."
                   : task.claimed
                   ? "Claimed"
-                  : "Start"}
+                  : "Claim"}
               </Button>
             </Stack>
-          </Box>
-        ))}
+          ))}
+        </Box>
       </Box>
     </Box>
   );
