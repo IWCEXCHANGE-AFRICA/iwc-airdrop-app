@@ -1,4 +1,4 @@
-import { Box, Stack, Typography, Button } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import { styles } from "./styles";
 import { useSelector } from "react-redux";
 

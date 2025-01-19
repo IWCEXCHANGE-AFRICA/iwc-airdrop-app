@@ -137,7 +137,7 @@ const HomePage = () => {
             Mining Rate: {miningRate} IWCP per hour
           </Typography>
           <Typography variant="body2" sx={{ color: grey.three }}>
-            1IWC = $0.04567
+            1IWC = $...
           </Typography>
         </Box>
 

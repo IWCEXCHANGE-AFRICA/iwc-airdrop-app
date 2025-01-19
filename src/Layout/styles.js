@@ -1,6 +1,5 @@
 import { native } from "../constants/colors";
 
-const drawerWidth = 240;
 const layoutPad = 32;
 const layoutMargin = 6;
 const navHeight = 60;
@@ -21,13 +20,12 @@ export const styles = {
     flexGrow: 1,
     boxSizing: "border-box",
     width: "100%",
-    pl: layoutPad + "px",
-    pr: layoutPad + "px",
+    height: "100vh",
     pt: navHeight + layoutPad + "px",
     pb: layoutPad + "px",
     p: 3,
     ml: 0 + "px",
-    mt: navHeight + layoutPad + "px"
+    mt: layoutPad + "px"
   },
   navbar: {
     backgroundColor: native.bg,
@@ -37,7 +35,7 @@ export const styles = {
     top: 0,
     left: 10,
     right: 10,
-    pl: { xs: "10px", md: "10px" },
+    pl: layoutPad + "px",
     pr: layoutPad + "px",
     margin: layoutMargin + "px",
     height: navHeight + "px",
