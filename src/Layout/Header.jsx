@@ -11,7 +11,7 @@ const Header = () => {
         <Stack direction={"row"} sx={styles.navRow}>
           <Box>
             <Typography variant="h6" sx={styles.heroTxt}>
-              Iwc Mining
+              IWCP Balance
             </Typography>
           </Box>
         </Stack>

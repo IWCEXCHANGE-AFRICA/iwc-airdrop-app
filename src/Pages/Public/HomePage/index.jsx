@@ -103,9 +103,8 @@ const HomePage = () => {
             sx={[
               styles.spinningAnimation,
               {
-                width: 50,
-                height: 50,
-                bgcolor: "#e0e7ff",
+                width: 170,
+                height: 170,
                 borderRadius: "50%",
                 display: "flex",
                 justifyContent: "center",
@@ -125,17 +124,20 @@ const HomePage = () => {
         <Typography variant="h5" fontWeight="bold" color="#fff">
           Welcome back
         </Typography>
-        <Typography variant="body2" color="#fff" sx={{ mt: 1 }}>
+        <Typography variant="body2" color="#fff">
           {user?.username}
         </Typography>
 
         {/* Mining Details */}
         <Box sx={{ color: "#fff" }}>
-          <Typography variant="h4" sx={{ marginTop: 2 }}>
-            Timer: {formatTime(timer)}
+          <Typography variant="h6" sx={{ marginTop: 1 }}>
+            {formatTime(timer)}
           </Typography>
           <Typography variant="body2" sx={{ color: grey.three }}>
             Mining Rate: {miningRate} IWCP per hour
+          </Typography>
+          <Typography variant="body2" sx={{ color: grey.three }}>
+            1IWC = $0.04567
           </Typography>
         </Box>
 
@@ -173,7 +175,7 @@ const HomePage = () => {
         </Box>
 
         {/* Scrolling Announcements */}
-        <Box sx={{ mt: 6 }}>
+        <Box sx={{ mt: 5 }}>
           <CardCarousel />
         </Box>
       </Box>

@@ -33,7 +33,7 @@ const DailyTasks = () => {
     },
     {
       id: 4,
-      category: "Social",
+      category: "Special",
       title: "Comment tweet",
       reward: "+20K",
       description: "Retweet and comment on the tweet.",
@@ -41,7 +41,7 @@ const DailyTasks = () => {
     },
     {
       id: 5,
-      category: "Social",
+      category: "Special",
       title: "Share a Post",
       reward: "+10K",
       description: "Share and react to the social media post.",
@@ -54,7 +54,7 @@ const DailyTasks = () => {
       reward: "+1M",
       description: "Log in daily to claim your reward.",
       claimed: false
-    },
+    }
   ]);
 
   const [selectedTab, setSelectedTab] = useState(0);
@@ -95,7 +95,7 @@ const DailyTasks = () => {
   };
 
   const filteredTasks = tasks.filter(
-    (task) => task.category === ["Basic", "Social"][selectedTab]
+    (task) => task.category === ["Basic", "Social", "Social"][selectedTab]
   );
 
   return (
@@ -132,6 +132,7 @@ const DailyTasks = () => {
         >
           <Tab label="Basic" />
           <Tab label="Social" />
+          <Tab label="Special" />
         </Tabs>
       </Box>
 
@@ -164,13 +165,16 @@ const DailyTasks = () => {
               alignItems="center"
               sx={{
                 mt: 1,
-                mb:1,
+                mb: 1,
                 width: "100%",
                 borderBottom: "1px solid green"
               }}
             >
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Typography variant="body2" sx={{ fontSize: "0.9rem", color: "#fff" }}>
+                <Typography
+                  variant="body2"
+                  sx={{ fontSize: "0.9rem", color: "#fff" }}
+                >
                   {task.title}
                 </Typography>
                 <Typography
@@ -189,7 +193,7 @@ const DailyTasks = () => {
                 variant="contained"
                 sx={{
                   borderRadius: 100,
-                  mb:1,
+                  mb: 1,
                   width: "70px",
                   backgroundColor:
                     task.claimed === "pending"
