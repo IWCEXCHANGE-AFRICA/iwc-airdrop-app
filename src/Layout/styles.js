@@ -62,9 +62,8 @@ export const styles = {
 
   heroTxt: {
     fontWeight: 500,
-    letterSpacing: "2px",
     textTransform: "uppercase",
-    fontSize: "1.5rem",
+    fontSize: "1rem",
     color: "#FFFFFF"
   },
   pointsBalance: {

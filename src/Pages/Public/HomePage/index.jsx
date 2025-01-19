@@ -103,8 +103,8 @@ const HomePage = () => {
             sx={[
               styles.spinningAnimation,
               {
-                width: 170,
-                height: 170,
+                width: 150,
+                height: 150,
                 borderRadius: "50%",
                 display: "flex",
                 justifyContent: "center",
@@ -130,7 +130,7 @@ const HomePage = () => {
 
         {/* Mining Details */}
         <Box sx={{ color: "#fff" }}>
-          <Typography variant="h6" sx={{ marginTop: 1 }}>
+          <Typography variant="h6" sx={{ marginTop: 1, fontWeight:  "bold" }}>
             {formatTime(timer)}
           </Typography>
           <Typography variant="body2" sx={{ color: grey.three }}>
@@ -142,7 +142,7 @@ const HomePage = () => {
         </Box>
 
         {/* Buttons */}
-        <Box sx={{ display: "flex", gap: 1, mt: 5, mb: 2 }}>
+        <Box sx={{ display: "flex", gap: 1, mt: 1, mb: 2 }}>
           <Button
             variant="contained"
             startIcon={<RocketLaunchIcon />}
@@ -175,7 +175,7 @@ const HomePage = () => {
         </Box>
 
         {/* Scrolling Announcements */}
-        <Box sx={{ mt: 5 }}>
+        <Box sx={{ mt: 3 }}>
           <CardCarousel />
         </Box>
       </Box>
