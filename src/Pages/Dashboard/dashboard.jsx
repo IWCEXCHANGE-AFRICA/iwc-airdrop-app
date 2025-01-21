@@ -4,9 +4,38 @@ import SummaryCards from '../../Components/Dashboard/SummaryCards'
 import ParticipantsTable from '../../Components/Dashboard/ParticipantsTable'
 
 const initialParticipants = [
-  { id: 1, wallet: '0x1234...abcd', tokens: 150, status: 'Eligible' },
-  { id: 2, wallet: '0x5678...efgh', tokens: 0, status: 'Not Eligible' },
-  { id: 3, wallet: '0x9101...ijkl', tokens: 200, status: 'Claimed' }
+  {
+    id: 1,
+    Name: 'john john',
+    email: 'hghjhjjjkj@gmail.com',
+    Username: '@john1234',
+    points: 150,
+    status: 'Eligible'
+  },
+  {
+    id: 2,
+    Name: 'jane doe',
+    email: 'janedoe@gmail.com',
+    Username: '@jane5678',
+    points: 120,
+    status: 'Eligible'
+  },
+  {
+    id: 3,
+    Name: 'alice smith',
+    email: 'alicesmith@gmail.com',
+    Username: '@alice3456',
+    points: 180,
+    status: 'Ineligible'
+  },
+  {
+    id: 4,
+    Name: 'bob brown',
+    email: 'bobbrown@gmail.com',
+    Username: '@bob7890',
+    points: 200,
+    status: 'Eligible'
+  }
 ]
 
 const IwcAirdropDashboard = () => {
@@ -16,7 +45,7 @@ const IwcAirdropDashboard = () => {
     <Box
       sx={{
         backgroundColor: '#E6E6FA', // Improved contrast
-        color: 'white',
+        color: 'black', // Changed to black for better readability
         minHeight: '100vh',
         width: '100%',
         p: 3
@@ -36,9 +65,9 @@ const IwcAirdropDashboard = () => {
         </Grid>
         <Grid item xs={12} md={4}>
           <SummaryCards
-            title='Total Tokens'
+            title='Total Points'
             value={participants.reduce(
-              (acc, participant) => acc + participant.tokens,
+              (acc, participant) => acc + participant.points,
               0
             )}
           />

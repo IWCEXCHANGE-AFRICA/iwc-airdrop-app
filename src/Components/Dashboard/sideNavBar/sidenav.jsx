@@ -29,12 +29,6 @@ const SideNav = () => {
       }}
     >
       <Box>
-        <Typography
-          variant='h5'
-          sx={{ textAlign: 'center', color: '#fff', paddingBottom: 2 }}
-        >
-          Admin Panel
-        </Typography>
         <List>
           {/* Dashboard Button */}
           <ListItem
