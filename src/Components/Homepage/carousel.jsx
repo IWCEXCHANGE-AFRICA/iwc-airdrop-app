@@ -1,39 +1,26 @@
-import React from 'react'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation, Pagination, Autoplay } from 'swiper/modules'
-import 'swiper/css'
-import 'swiper/css/navigation'
-import 'swiper/css/pagination'
-import { Card, CardContent, CardMedia, Typography, Box } from '@mui/material'
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { Card, CardMedia, Typography, Box } from "@mui/material";
 
 // Import local images
-import logo1 from '../../Components/assets/logo.png'
-import logo2 from '../../Components/assets/logo.png'
-import logo3 from '../../Components/assets/logo.png'
-import logo4 from '../../Components/assets/logo.png'
-import logo5 from '../../Components/assets/logo.png'
+import bnr1 from "/assets/img16.jpg";
+import bnr2 from "/assets/img19.jpg";
 
 const cardData = [
   {
-    image: logo1
+    image: bnr1
   },
   {
-    image: logo2
-  },
-  {
-    image: logo3
-  },
-  {
-    image: logo4
-  },
-  {
-    image: logo5
+    image: bnr2
   }
-]
+];
 
 const Slider = () => {
   return (
-    <Box sx={{ width: '100%', maxWidth: 900, mx: 'auto' }}>
+    <Box sx={{ width: "100%", maxWidth: 900, mx: "auto" }}>
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         spaceBetween={20} // Space between slides
@@ -58,21 +45,21 @@ const Slider = () => {
           <SwiperSlide key={index}>
             <Card
               sx={{
-                width: '100%',
-                height: '20vh', // Maintain height of the card
-                borderRadius: 2,
-                border: 'none', // Explicitly remove border
+                width: "100%",
+                height: "25vh", // Maintain height of the card
+                borderRadius: 1,
+                border: "none", // Explicitly remove border
                 boxShadow: 3,
-                '&:focus': { outline: 'none' } // Remove focus outline
+                "&:focus": { outline: "none" } // Remove focus outline
               }}
             >
               <CardMedia
-                component='img'
+                component="img"
                 sx={{
-                  width: '100%', // Make sure the image spans the full width
-                  height: '100%', // Make sure the image spans the full height
-                  objectFit: 'cover', // Ensures the image covers the card without distortion
-                  borderRadius: 'inherit' // Matches the card's border radius for seamless edges
+                  width: "100%", // Make sure the image spans the full width
+                  height: "100%", // Make sure the image spans the full height
+                  objectFit: "cover", // Ensures the image covers the card without distortion
+                  borderRadius: "inherit" // Matches the card's border radius for seamless edges
                 }}
                 image={card.image}
                 alt={card.description}
@@ -82,7 +69,7 @@ const Slider = () => {
         ))}
       </Swiper>
     </Box>
-  )
-}
+  );
+};
 
-export default Slider
+export default Slider;

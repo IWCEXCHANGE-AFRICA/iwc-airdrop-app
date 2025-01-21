@@ -1,57 +1,51 @@
-import React from 'react'
-import { Routes, Route } from 'react-router-dom'
-import ProtectedRoute from '../utilities/protectedRoute'
-import Layout from '../Layout/mainlayout'
-import DashboardLayout from '../Layout/dashboard'
-import HomePage from '../Pages/HomePage/HomePage'
-import TaskPage from '../Pages/Task/TaskPage'
-import FriendsReward from '../Pages/FriendsReward/FrienddsReward'
-import OTPPage from '../Pages/authentication/Otp/OtpPage'
-import ForgotPasswordPage from '../Pages/authentication/ForgotPasword/ForgotapasswordPage'
-import ResetPasswordPage from '../Pages/authentication/ResetPasswordPage/ResetPasswordPage'
-import LoginPage from '../Pages/authentication/login/Login'
-import SignUpPage from '../Pages/authentication/signup/SignUp'
-import UnauthorizedPage from '../Pages/Unauthorized'
-import Dashboard from '../Pages/Dashboard/AdminDashboard/dashboard'
-import Users from '../Pages/Dashboard/Users/User'
-import AddTask from '../Pages/Dashboard/AddTask/Addtask'
+import { Routes, Route } from "react-router-dom";
+import ProtectedRoute from "../utilities/protectedRoute";
+import Layout from "../Layout/UserLayout";
+import DashboardLayout from "../Layout/AdminLayout";
+import {
+  HomePage,
+  TaskPage,
+  ReferralPage,
+  RegisterPage,
+  LoginPage,
+  UnauthorizedPage,
+  ForgotPassword,
+  VerifyOtp,
+  ResetPassword
+} from "../Pages/Public";
+import { Dashboard, Users, AddTask } from "../Pages/Dashboard";
 
 const Router = () => {
-  const currentUser = {
+  const defaultUser = {
     type: 4 // Replace with actual user type logic (e.g., from context or state)
-  }
+  };
 
   return (
     <Routes>
       {/* Public Routes */}
-      <Route path='/sign-up' element={<SignUpPage />} />
-      <Route path='/sign-up/otp' element={<OTPPage />} />
-      <Route path='/forgot-password' element={<ForgotPasswordPage />} />
-      <Route path='/reset-password' element={<ResetPasswordPage />} />
-      <Route path='/' element={<LoginPage />} />
+      <Route path="/sign-up" element={<RegisterPage />} />
+      <Route path="/verify-otp" element={<VerifyOtp />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/" element={<LoginPage />} />
 
       {/* Unauthorized Route */}
+
       <Route
+        path="/unauthorized"
         element={
-          <ProtectedRoute allowedUserTypes={[1, 2, 3, 4]} user={currentUser} />
+          <Layout>
+            <UnauthorizedPage />
+          </Layout>
         }
-      >
-        <Route
-          path='/unauthorized'
-          element={
-            <Layout>
-              <UnauthorizedPage />
-            </Layout>
-          }
-        />
-      </Route>
+      />
 
       {/* Authenticated Routes */}
       <Route
-        element={<ProtectedRoute allowedUserTypes={[4]} user={currentUser} />}
+        element={<ProtectedRoute allowedUserTypes={[4]} user={defaultUser} />}
       >
         <Route
-          path='/homepage'
+          path="/homepage"
           element={
             <Layout>
               <HomePage />
@@ -59,7 +53,7 @@ const Router = () => {
           }
         />
         <Route
-          path='/task'
+          path="/task"
           element={
             <Layout>
               <TaskPage />
@@ -67,10 +61,10 @@ const Router = () => {
           }
         />
         <Route
-          path='/friends-reward'
+          path="/friends-reward"
           element={
             <Layout>
-              <FriendsReward />
+              <ReferralPage />
             </Layout>
           }
         />
@@ -79,11 +73,11 @@ const Router = () => {
       {/* Admin Dashboard Routes */}
       <Route
         element={
-          <ProtectedRoute allowedUserTypes={[1, 2, 4]} user={currentUser} />
+          <ProtectedRoute allowedUserTypes={[1, 2]} user={defaultUser} />
         }
       >
         <Route
-          path='/dashboard'
+          path="/dashboard"
           element={
             <DashboardLayout>
               <Dashboard />
@@ -91,7 +85,7 @@ const Router = () => {
           }
         />
         <Route
-          path='/users'
+          path="/users"
           element={
             <DashboardLayout>
               <Users />
@@ -99,7 +93,7 @@ const Router = () => {
           }
         />
         <Route
-          path='/Addtask'
+          path="/Addtask"
           element={
             <DashboardLayout>
               <AddTask /> {/* Fixed casing */}
@@ -110,7 +104,7 @@ const Router = () => {
 
       {/* Catch-All Route */}
       <Route
-        path='*'
+        path="*"
         element={
           <Layout>
             <UnauthorizedPage />
@@ -118,7 +112,7 @@ const Router = () => {
         }
       />
     </Routes>
-  )
-}
+  );
+};
 
-export default Router
+export default Router;
