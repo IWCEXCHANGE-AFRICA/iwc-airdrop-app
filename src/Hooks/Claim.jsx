@@ -48,27 +48,22 @@ export const useClaimTask = () => {
 export const useClaimbyID = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { config } = useUserContext();
 
-  const claimTask = async (userData) => {
+  const claimTask = async (id, userData) => {
     setLoading(true);
     setError(null);
 
-    console.log("Task Claim Data:", userData);
+    console.log("data:", userData);
 
     try {
-      // API request to claim task
       const response = await axios.post(
-        `${BASE_URL}/tasks/claim/:id
-`,
+        `${BASE_URL}/airdrop/tasks/claim/${id}`,
         userData,
-        {
-          headers: {
-            "Content-Type": "application/json"
-          }
-        }
+        config
       );
 
-      console.log("Claim Task Response:", response);
+      console.log("response:", response);
 
       // Validate the response structure
       if (response?.status === 201 && response?.data) {

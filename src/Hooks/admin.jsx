@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { BASE_URL } from "../config/path";
 import { toast } from "react-toastify";
@@ -17,17 +17,15 @@ export const useStoreTasks = () => {
       const response = await axios.post(
         `${BASE_URL}/airdrop/tasks/add`,
         tasksInfo,
-        {
-          config
-        }
+        config
       );
       console.log(response);
 
       if (response.status === 201) {
-        toast.success("Fetch Successful!");
+        toast.success("Task added successfully!");
         return response.data;
       } else {
-        throw new Error(response.data.message || "Fetch failed.");
+        throw new Error(response.data.message || "Task addition failed.");
       }
     } catch (err) {
       const errMsg = err.response?.data?.message || "Network or server error";
@@ -42,28 +40,29 @@ export const useStoreTasks = () => {
   return { storeTask, loading, error };
 };
 
-export const useGetTask = () => {
+export const useGetTasks = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { config } = useUserContext();
+  const [tasks, setTasks] = useState([]);
 
-  const getTasks = async (tasksInfo) => {
+  const fetchTasks = async () => {
     setLoading(true);
     setError(null);
 
     try {
       const response = await axios.get(
-        `${BASE_URL}/airdrop/tasks/add`,
-        tasksInfo,
-        {
-          config
-        }
+        `${BASE_URL}/airdrop/tasks/getAlladd`,
+        config,
       );
       console.log(response);
 
-      if (response.status === 201) {
-        toast.success("Fetch Successful!");
-        return response.data;
+      const data = response?.data;
+      console.log("data:",data)
+
+      if (data?.success) {
+        setTasks(data?.data);
+
       } else {
         throw new Error(response.data.message || "Fetch failed.");
       }
@@ -77,5 +76,8 @@ export const useGetTask = () => {
     }
   };
 
-  return { getTasks, loading, error };
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+  return { tasks, loading, error, fetchTasks };
 };

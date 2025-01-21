@@ -2,9 +2,6 @@ import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "../utilities/protectedRoute";
 import Layout from "../Layout/UserLayout";
 import DashboardLayout from "../Layout/AdminLayout";
-import Dashboard from "../Pages/Dashboard/AdminDashboard/dashboard";
-import Users from "../Pages/Dashboard/Users/User";
-import AddTask from "../Pages/Dashboard/AddTask/Addtask";
 import {
   HomePage,
   TaskPage,
@@ -16,6 +13,7 @@ import {
   VerifyOtp,
   ResetPassword
 } from "../Pages/Public";
+import { Dashboard, Users, AddTask } from "../Pages/Dashboard";
 
 const Router = () => {
   const defaultUser = {
@@ -31,22 +29,16 @@ const Router = () => {
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/" element={<LoginPage />} />
 
-
       {/* Unauthorized Route */}
+
       <Route
+        path="/unauthorized"
         element={
-          <ProtectedRoute allowedUserTypes={[1, 2, 3, 4]} user={defaultUser} />
+          <Layout>
+            <UnauthorizedPage />
+          </Layout>
         }
-      >
-        <Route
-          path="/unauthorized"
-          element={
-            <Layout>
-              <UnauthorizedPage />
-            </Layout>
-          }
-        />
-      </Route>
+      />
 
       {/* Authenticated Routes */}
       <Route
@@ -81,7 +73,7 @@ const Router = () => {
       {/* Admin Dashboard Routes */}
       <Route
         element={
-          <ProtectedRoute allowedUserTypes={[1, 2, 4]} user={defaultUser} />
+          <ProtectedRoute allowedUserTypes={[1, 2]} user={defaultUser} />
         }
       >
         <Route

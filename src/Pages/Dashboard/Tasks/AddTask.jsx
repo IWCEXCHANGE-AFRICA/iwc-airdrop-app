@@ -13,6 +13,7 @@ import {
   CircularProgress
 } from "@mui/material";
 import { useStoreTasks } from "../../../Hooks/admin";
+import { number } from "joi";
 
 const TaskForm = () => {
   const [formData, setFormData] = useState({
@@ -20,6 +21,7 @@ const TaskForm = () => {
     task_title: "",
     task_link: "",
     task_point: "",
+    task_code: "",
     task_description: "",
     status: ""
   });
@@ -47,21 +49,23 @@ const TaskForm = () => {
       return;
     }
     try {
-      const tasksInfo = { formData };
-      const response = await storeTask(tasksInfo);
-      console.log("Login successful:", response);
+      const tasks = {
+        category: String(formData.category),
+        task_title: formData.task_title,
+        task_link: formData.task_link,
+        task_description: formData.task_description,
+        task_code: Number(formData.task_code),
+        task_point: Number(formData.task_point),
+        status: formData.status ? 1 : 2,
+      };
+
+      console.log(tasks)
+      const response = await storeTask(tasks);
+      console.log("response:", response);
     } catch (err) {
       console.error("Login error:", err);
     }
     setErrors({});
-    setFormData({
-      category: "",
-      task_title: "",
-      task_link: "",
-      task_point: "",
-      task_description: "",
-      status: ""
-    });
   };
 
   const fieldStyles = {
@@ -77,15 +81,20 @@ const TaskForm = () => {
       <Grid container spacing={2}>
         {/* Category Field */}
         <Grid item xs={12}>
-          <TextField
-            label="Category"
-            name="category"
-            fullWidth
-            value={formData.category}
-            onChange={handleChange}
-            error={!!errors.category}
-            helperText={errors.category}
-          />
+          <FormControl fullWidth error={!!errors.category}>
+            <InputLabel id="category-label">Category</InputLabel>
+            <Select
+              labelId="category-label"
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+            >
+              <MenuItem value="Basic">Basic</MenuItem>
+              <MenuItem value="Special">Special</MenuItem>
+              <MenuItem value="Social">Social</MenuItem>
+            </Select>
+            <FormHelperText>{errors.category}</FormHelperText>
+          </FormControl>
         </Grid>
 
         {/* Task Title Field */}
@@ -111,6 +120,19 @@ const TaskForm = () => {
             onChange={handleChange}
             error={!!errors.task_link}
             helperText={errors.task_link}
+          />
+        </Grid>
+
+        {/* Task Code Field */}
+        <Grid item xs={12}>
+          <TextField
+            label="Task Code (Optional)"
+            name="task_code"
+            fullWidth
+            value={formData.task_code}
+            onChange={handleChange}
+            error={!!errors.task_code}
+            helperText={errors.task_code}
           />
         </Grid>
 

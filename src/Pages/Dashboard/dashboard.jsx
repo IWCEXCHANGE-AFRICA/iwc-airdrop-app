@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Box, Typography, Grid } from '@mui/material'
-import SummaryCards from '../../../Components/Dashboard/SummaryCards'
-import ParticipantsTable from '../../../Components/Dashboard/ParticipantsTable'
+import SummaryCards from '../../Components/Dashboard/SummaryCards'
+import ParticipantsTable from '../../Components/Dashboard/ParticipantsTable'
 
 const initialParticipants = [
   { id: 1, wallet: '0x1234...abcd', tokens: 150, status: 'Eligible' },
