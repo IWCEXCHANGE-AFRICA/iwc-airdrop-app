@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Box, TextField, Button, Typography, Grid, Link } from '@mui/material'
 
-const ForgotPasswordPage = () => {
+const ForgotPassword = () => {
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
 
@@ -90,4 +90,4 @@ const ForgotPasswordPage = () => {
   )
 }
 
-export default ForgotPasswordPage
+export default ForgotPassword

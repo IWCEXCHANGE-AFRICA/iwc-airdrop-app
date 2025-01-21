@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Box, TextField, Button, Typography, Grid, Link } from '@mui/material'
 
-const ResetPasswordPage = () => {
+const ResetPassword = () => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [message, setMessage] = useState('')
@@ -153,4 +153,4 @@ const ResetPasswordPage = () => {
   )
 }
 
-export default ResetPasswordPage
+export default ResetPassword

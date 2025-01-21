@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardContent, CardMedia, Typography } from "@mui/material";
-import logo from "../assets/logo.png"; // Adjust path as necessary
+import logo from "../../../public/assets/logo.png"
 
 const ImageCard = () => {
   return (
