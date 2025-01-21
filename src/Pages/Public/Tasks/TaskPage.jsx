@@ -24,9 +24,6 @@ const DailyTasks = () => {
     (task) => task.category === TASK_CATEGORIES[selectedTab]
   );
 
-  console.log("tasks:", tasks);
-  console.log("filter:", tasks);
-
   return (
     <Box>
       {/* Carousel Section */}

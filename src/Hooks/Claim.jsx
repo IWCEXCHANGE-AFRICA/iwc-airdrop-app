@@ -79,9 +79,8 @@ export const useClaimbyID = () => {
         err.message ||
         "Network or server error";
 
-      setError(errMsg); // Update error state
-      toast.error(errMsg);
-      return { success: false, error: errMsg }; // Return error
+      setError(errMsg);
+      return { success: false, error: errMsg };
     } finally {
       setLoading(false);
     }
@@ -99,7 +98,7 @@ export const useGetReferrals = () => {
     try {
       const response = await axios.get(`${BASE_URL}/user/referrals`, config);
       const data = response.data;
-      console.log("data:", response)
+      console.log("data:", response);
 
       if (data?.error === 0) {
         setRefData(data?.result);

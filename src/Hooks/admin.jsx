@@ -19,7 +19,6 @@ export const useStoreTasks = () => {
         tasksInfo,
         config
       );
-      console.log(response);
 
       if (response.status === 201) {
         toast.success("Task added successfully!");
@@ -55,10 +54,8 @@ export const useGetTasks = () => {
         `${BASE_URL}/airdrop/tasks/getAlladd`,
         config,
       );
-      console.log(response);
 
       const data = response?.data;
-      console.log("data:",data)
 
       if (data?.success) {
         setTasks(data?.data);
