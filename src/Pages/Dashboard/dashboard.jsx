@@ -46,9 +46,7 @@ const IwcAirdropDashboard = () => {
       sx={{
         backgroundColor: '#E6E6FA', // Improved contrast
         color: 'black', // Changed to black for better readability
-        minHeight: '100vh',
-        width: '100%',
-        p: 3
+        p: 5
       }}
     >
       <Typography variant='h4' color='rgb(42, 27, 8)' gutterBottom>

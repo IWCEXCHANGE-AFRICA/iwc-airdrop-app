@@ -1,127 +1,127 @@
-import { Link } from 'react-router-dom'
+import React from "react";
 import {
-  Box,
+  Drawer,
   List,
   ListItem,
-  ListItemIcon,
   ListItemText,
-} from '@mui/material'
-import DashboardIcon from '@mui/icons-material/Dashboard'
-import SettingsIcon from '@mui/icons-material/Settings'
-import PeopleIcon from '@mui/icons-material/People'
-import TaskIcon from '@mui/icons-material/Task'
+  ListItemIcon,
+  Box,
+  Toolbar,
+  Divider,
+  Typography
+} from "@mui/material";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import PeopleIcon from "@mui/icons-material/People";
+import { Link } from "react-router-dom";
+import { grey } from "../../../constants/colors";
 
-const SideNav = () => {
+const Sidebar = ({ isOpen, onClose }) => {
+  const navItems = [
+    { text: "Dashboard", icon: <DashboardIcon />, link: "/dashboard" },
+    { text: "Tasks", icon: <AssignmentIcon />, link: "/tasks" },
+    { text: "Users", icon: <PeopleIcon />, link: "/users" }
+  ];
+
   return (
-    <Box
-      sx={{
-        width: 240,
-        position: 'relative',
-        height: '130vh',
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        paddingTop: 2,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between'
-      }}
-    >
-      <Box>
+    <>
+      {/* Persistent Drawer for Large Screens */}
+      <Drawer
+        variant="permanent"
+        sx={{
+          display: { xs: "none", sm: "block" },
+          "& .MuiDrawer-paper": { width: 240, boxSizing: "border-box", backgroundColor: grey.default }
+        }}
+        open
+      >
+        <Typography variant="h5" sx={{mt: 1, p:2, color: "#fff"}}>IWCP DASHBOARD</Typography>
+        <Divider />
+        <Link>
+          
+        </Link>
         <List>
-          {/* Dashboard Button */}
-          <ListItem
-            button
-            component={Link}
-            to='/dashboard'
-            sx={{
-              border: '2px solid transparent',
-              borderRadius: 2,
-              '&:hover': {
-                backgroundColor: 'rgb(86, 55, 15)',
-                border: '2px solid #ffffff',
-                transform: 'scale(1.05)',
-                transition: 'all 0.3s ease-in-out'
-              },
-              marginBottom: 1
-            }}
-          >
-            <ListItemIcon sx={{ color: 'white' }}>
-              <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary='Dashboard' sx={{ color: 'white' }} />
-          </ListItem>
-
-          {/* Users Button */}
-          <ListItem
-            button
-            component={Link}
-            to='/users'
-            sx={{
-              border: '2px solid transparent',
-              borderRadius: 2,
-              '&:hover': {
-                backgroundColor: 'rgb(86, 55, 15)',
-                border: '2px solid #ffffff',
-                transform: 'scale(1.05)',
-                transition: 'all 0.3s ease-in-out'
-              },
-              marginBottom: 1
-            }}
-          >
-            <ListItemIcon sx={{ color: 'white' }}>
-              <PeopleIcon />
-            </ListItemIcon>
-            <ListItemText primary='Users' sx={{ color: 'white' }} />
-          </ListItem>
-
-          <ListItem
-            button
-            component={Link}
-            to='/tasks'
-            sx={{
-              border: '2px solid transparent',
-              borderRadius: 2,
-              '&:hover': {
-                backgroundColor: 'rgb(86, 55, 15)',
-                border: '2px solid #ffffff',
-                transform: 'scale(1.05)',
-                transition: 'all 0.3s ease-in-out'
-              },
-              marginBottom: 1
-            }}
-          >
-            <ListItemIcon sx={{ color: 'white' }}>
-              <TaskIcon />
-            </ListItemIcon>
-            <ListItemText primary='Tasks' sx={{ color: 'white' }} />
-          </ListItem>
-
-          {/* Settings Button */}
-          <ListItem
-            button
-            component={Link}
-            to='/settings'
-            sx={{
-              border: '2px solid transparent',
-              borderRadius: 2,
-              '&:hover': {
-                backgroundColor: 'rgb(86, 55, 15)',
-                border: '2px solid #ffffff',
-                transform: 'scale(1.05)',
-                transition: 'all 0.3s ease-in-out'
-              },
-              marginBottom: 1
-            }}
-          >
-            <ListItemIcon sx={{ color: 'white' }}>
-              <SettingsIcon />
-            </ListItemIcon>
-            <ListItemText primary='Settings' sx={{ color: 'white' }} />
-          </ListItem>
+          {navItems.map((item) => (
+            <ListItem
+              button
+              component={Link}
+              to={item.link}
+              key={item.text}
+              sx={{
+                color: grey.two,
+                cursor: "pointer",
+                "&:hover": {
+                  backgroundColor: "primary.dark",
+                  color: "white"
+                },
+                "&.Mui-selected": {
+                  backgroundColor: "primary.dark",
+                  color: "white"
+                },
+                "&.Mui-selected:hover": {
+                  backgroundColor: "primary.dark"
+                }
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  color: "primary.light"
+                }}
+              >
+                {item.icon}
+              </ListItemIcon>
+              <ListItemText primary={item.text} />
+            </ListItem>
+          ))}
         </List>
-      </Box>
-      <Box></Box>
-    </Box>
-  )
-}
+      </Drawer>
 
-export default SideNav
+      {/* Temporary Drawer for Small Screens */}
+      <Drawer
+        variant="temporary"
+        open={isOpen}
+        onClose={onClose}
+        sx={{
+          display: { xs: "block", sm: "none" },
+          "& .MuiDrawer-paper": { width: 240, boxSizing: "border-box" }
+        }}
+      >
+        <List>
+          {navItems.map((item) => (
+            <ListItem
+              button
+              component={Link}
+              to={item.link}
+              key={item.text}
+              sx={{
+                cursor: "pointer",
+                color: grey.two,
+                "&:hover": {
+                  backgroundColor: "primary.dark",
+                  color: "white"
+                },
+                "&.Mui-selected": {
+                  backgroundColor: "primary.dark",
+                  color: "white"
+                },
+                "&.Mui-selected:hover": {
+                  backgroundColor: "primary.dark"
+                }
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  color: "primary.light"
+                }}
+              >
+                {item.icon}
+              </ListItemIcon>
+              <ListItemText primary={item.text} />
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
+    </>
+  );
+};
+
+export default Sidebar;

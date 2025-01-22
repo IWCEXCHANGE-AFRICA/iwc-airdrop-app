@@ -3,34 +3,30 @@ import { Box, CssBaseline, Toolbar } from "@mui/material";
 import Header from "../Components/Dashboard/Header";
 import Sidebar from "../Components/Dashboard/SideNav";
 import Footer from "../Components/Dashboard/Footer";
+import { useState } from "react";
 
 const AdminLayout = ({ children }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const handleMenuClick = () => setIsSidebarOpen(true);
+  const handleSidebarClose = () => setIsSidebarOpen(false);
+  const drawerWidth = 30
+
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        width: "100%",
-        minHeight: "100vh",
-        overflow: "hidden"
-      }}
-    >
-      <CssBaseline />
-      <Header />
+    <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+      <Header onMenuClick={handleMenuClick} />
       <Box sx={{ display: "flex", flexGrow: 1 }}>
-        <Sidebar />
+        <Sidebar isOpen={isSidebarOpen} onClose={handleSidebarClose} />
         <Box
           component="main"
           sx={{
             flexGrow: 1,
-            padding: "20px",
-            display: "flex",
-            flexDirection: "column",
-            overflowY: "auto"
+            pl: {lg: drawerWidth, xs: 0},
+            marginTop: "64px", // AppBar height
+            marginBottom: "48px" // Footer height
           }}
         >
-          <Toolbar /> {/* Adds spacing below the header */}
-          {children} {/* Renders nested content */}
+          {children}
         </Box>
       </Box>
       <Footer />

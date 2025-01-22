@@ -11,6 +11,7 @@ import {
   Paper,
   IconButton,
   Tooltip,
+  Card,
   Button
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
@@ -24,7 +25,7 @@ const initialUsers = [
     email: "john@example.com",
     username: "johndoe",
     points: 250,
-    status: "Active",
+    status: "Active"
   },
   {
     id: 2,
@@ -32,7 +33,7 @@ const initialUsers = [
     email: "jane@example.com",
     username: "janesmith",
     points: 180,
-    status: "Inactive",
+    status: "Inactive"
   },
   {
     id: 3,
@@ -40,7 +41,7 @@ const initialUsers = [
     email: "alice@example.com",
     username: "alicej",
     points: 320,
-    status: "Active",
+    status: "Active"
   },
   {
     id: 4,
@@ -48,7 +49,7 @@ const initialUsers = [
     email: "bob@example.com",
     username: "bobbrown",
     points: 100,
-    status: "Pending",
+    status: "Pending"
   }
 ];
 
@@ -75,126 +76,128 @@ const Users = () => {
         p: 4
       }}
     >
-      <Typography
-        variant="h4"
+      <Card
         sx={{
-          fontWeight: "bold",
-          mb: 4,
-          color: "#333"
+          mt: 2,
+          p: 2,
+          boxShadow: 3,
+          borderRadius: 2
         }}
       >
-        Users Management
-      </Typography>
+        <Typography
+          variant="h4"
+          sx={{
+            fontWeight: "bold",
+            mb: 4,
+            color: "#333"
+          }}
+        >
+          Users Management
+        </Typography>
 
-      {/* Users Table */}
-      <TableContainer
-        component={Paper}
-        sx={{
-          boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
-          borderRadius: "8px"
-        }}
-      >
-        <Table>
-          <TableHead>
-            <TableRow sx={{ backgroundColor: "#1976d2" }}>
-              <TableCell sx={{ color: "white", fontWeight: "bold" }}>
-                ID
-              </TableCell>
-              <TableCell sx={{ color: "white", fontWeight: "bold" }}>
-                Name
-              </TableCell>
-              <TableCell sx={{ color: "white", fontWeight: "bold" }}>
-                Email
-              </TableCell>
-              <TableCell sx={{ color: "white", fontWeight: "bold" }}>
-                Username
-              </TableCell>
-              <TableCell sx={{ color: "white", fontWeight: "bold" }}>
-                Points
-              </TableCell>
-              <TableCell sx={{ color: "white", fontWeight: "bold" }}>
-                Status
-              </TableCell>
-              <TableCell
-                sx={{ color: "white", fontWeight: "bold" }}
-                align="center"
-              >
-                Actions
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {users.map((user) => (
-              <TableRow
-                key={user.id}
-                sx={{
-                  "&:hover": {
-                    backgroundColor: "#f1f1f1"
-                  }
-                }}
-              >
-                <TableCell>{user.id}</TableCell>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>{user.username}</TableCell>
-                <TableCell>{user.points}</TableCell>
-                <TableCell>
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      color:
-                        user.status === "Active"
-                          ? "green"
-                          : user.status === "Inactive"
-                          ? "red"
-                          : "orange",
-                      fontWeight: "bold"
-                    }}
-                  >
-                    {user.status}
-                  </Typography>
+        {/* Users Table */}
+        <TableContainer
+          component={Paper}
+          sx={{
+            boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+            borderRadius: "8px"
+          }}
+        >
+          <Table>
+            <TableHead
+              sx={{
+                backgroundColor: "secondary.main",
+                "& th": { color: "white", fontWeight: "bold" }
+              }}
+            >
+                <TableCell sx={{ color: "white", fontWeight: "bold" }}>
+                  ID
                 </TableCell>
-                <TableCell align="center">
-                  <Tooltip title="View">
-                    <IconButton
-                      color="primary"
-                      onClick={() => handleView(user.id)}
-                    >
-                      <VisibilityIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Edit">
-                    <IconButton
-                      color="success"
-                      onClick={() => handleEdit(user.id)}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Delete">
-                    <IconButton
-                      color="error"
-                      onClick={() => handleDelete(user.id)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </Tooltip>
+                <TableCell sx={{ color: "white", fontWeight: "bold" }}>
+                  Name
                 </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-
-      {/* Add User Button */}
-      <Button
-        variant="contained"
-        color="primary"
-        sx={{ mt: 4 }}
-        onClick={() => console.log("Add New User")}
-      >
-        Add New User
-      </Button>
+                <TableCell sx={{ color: "white", fontWeight: "bold" }}>
+                  Email
+                </TableCell>
+                <TableCell sx={{ color: "white", fontWeight: "bold" }}>
+                  Username
+                </TableCell>
+                <TableCell sx={{ color: "white", fontWeight: "bold" }}>
+                  Points
+                </TableCell>
+                <TableCell sx={{ color: "white", fontWeight: "bold" }}>
+                  Status
+                </TableCell>
+                <TableCell
+                  sx={{ color: "white", fontWeight: "bold" }}
+                  align="center"
+                >
+                  Actions
+                </TableCell>
+            </TableHead>
+            <TableBody>
+              {users.map((user) => (
+                <TableRow
+                  key={user.id}
+                  sx={{
+                    "&:hover": {
+                      backgroundColor: "#f1f1f1"
+                    }
+                  }}
+                >
+                  <TableCell>{user.id}</TableCell>
+                  <TableCell>{user.name}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>{user.username}</TableCell>
+                  <TableCell>{user.points}</TableCell>
+                  <TableCell>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color:
+                          user.status === "Active"
+                            ? "green"
+                            : user.status === "Inactive"
+                            ? "red"
+                            : "orange",
+                        fontWeight: "bold"
+                      }}
+                    >
+                      {user.status}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Tooltip title="View">
+                      <IconButton
+                        color="primary"
+                        onClick={() => handleView(user.id)}
+                      >
+                        <VisibilityIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Edit">
+                      <IconButton
+                        color="success"
+                        onClick={() => handleEdit(user.id)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Delete">
+                      <IconButton
+                        color="error"
+                        onClick={() => handleDelete(user.id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Card>
     </Box>
   );
 };
