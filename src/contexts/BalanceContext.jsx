@@ -24,7 +24,7 @@ const BalanceProvider = ({ children }) => {
   };
 
   const updateBalance = (amount) => {
-    setGrossBalance((prevBalance) => prevBalance + amount);
+    setGrossBalance((prevBalance) => parseFloat(Number(prevBalance) + Number(amount)));
   };
 
   return (

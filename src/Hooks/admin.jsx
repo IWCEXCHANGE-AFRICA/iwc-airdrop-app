@@ -78,7 +78,64 @@ export const useGetTasks = () => {
   useEffect(() => {
     fetchTasks();
   }, []);
-  return { tasks, loading, error, fetchTasks };
+  return { tasks, loading, error, refetch:fetchTasks };
+};
+
+export const useUpdateTask = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const { config } = useUserContext();
+
+  const updateTask = async (id, tasksData) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await axios.put(
+        `${BASE_URL}/airdrop/tasks/update/${id}`,
+        tasksData,
+        config
+      );
+
+      console.log(response)
+
+      if (response.data.success) {
+        toast.success("Task Updated successfully!");
+        return response.data;
+      } else {
+        throw new Error(response.data.message || "Task update failed.");
+      }
+    } catch (err) {
+      const errMsg = err.response?.data?.message || "Network or server error";
+      toast.error(errMsg);
+      setError(errMsg);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { updateTask, loading, error };
+};
+
+export const useDeleteTask = () => {
+  const { config } = useUserContext();
+
+  return async (id) => {
+    try {
+      const response = await axios.delete(
+        `${BASE_URL}/airdrop/tasks/delete/${id}`,
+        config,
+      );
+      console.log(response)
+      toast.success(response.data.message);
+      return response.data;
+    } catch (error) {
+      console.error("Error:", error.response?.data || error.message);
+      toast.error("An error occurred while deleting category.");
+      throw error;
+    }
+  };
 };
 
 export const useGetUsers = () => {
@@ -98,6 +155,8 @@ export const useGetUsers = () => {
         `${BASE_URL}/admin/get-allusers`,
         config,
       );
+
+      console.log(response)
 
       const data = response?.data;
 

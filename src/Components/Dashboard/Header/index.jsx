@@ -29,7 +29,11 @@ const Header = ({ onMenuClick }) => {
           <Box>
             <img src="/assets/logo.png" width={70} height={70} />
           </Box>
-          <Typography variant="h6" component="div">
+          <Typography
+            variant="h6"
+            sx={{ display: { lg: "none", xs: "block" } }}
+            component="div"
+          >
             IWCP DASHBOARD
           </Typography>
         </Box>

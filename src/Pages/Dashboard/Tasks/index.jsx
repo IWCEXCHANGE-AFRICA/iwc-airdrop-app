@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Stack,
   CircularProgress,
@@ -16,13 +16,34 @@ import {
   Typography
 } from "@mui/material";
 import { useNavigate, Link } from "react-router-dom";
-import { useGetTasks } from "../../../Hooks/admin";
+import { useGetTasks, useDeleteTask } from "../../../Hooks/admin";
 import { toast } from "react-toastify";
 import { grey } from "../../../constants/colors";
 
 const Tasks = () => {
   const navigate = useNavigate();
-  const { tasks, loading } = useGetTasks();
+  const { tasks, loading, refetch } = useGetTasks();
+  const deleteTask = useDeleteTask();
+  const [loadingTaskId, setLoadingTaskId] = useState(null);
+
+  const handleDelete = async (id) => {
+    setLoadingTaskId(id);
+    try {
+      const response = await deleteTask(id);
+
+      if (response?.success) {
+        await refetch();
+        toast.success("Task deleted successfully.");
+      } else {
+        toast.error(response?.message || "Failed to delete task.");
+      }
+    } catch (error) {
+      console.error("Error deleting task:", error);
+      toast.error("An error occurred while trying to delete the task.");
+    } finally {
+      setLoadingTaskId(null);
+    }
+  };
 
   return (
     <Box
@@ -84,7 +105,7 @@ const Tasks = () => {
             <TableBody>
               {loading ? (
                 <TableRow>
-                  <TableCell colSpan={4} align="center">
+                  <TableCell colSpan={6} align="center">
                     <CircularProgress color="secondary" />
                   </TableCell>
                 </TableRow>
@@ -140,11 +161,14 @@ const Tasks = () => {
                           variant="contained"
                           color="error"
                           size="small"
-                          onClick={() =>
-                            toast.error("Delete action not yet implemented")
-                          }
+                          onClick={() => handleDelete(task.id)}
+                          disabled={loadingTaskId === task.id} // Disable button during loading
                         >
-                          Delete
+                          {loadingTaskId === task.id ? (
+                            <CircularProgress size={20} color="inherit" />
+                          ) : (
+                            "Delete"
+                          )}
                         </Button>
                       </Stack>
                     </TableCell>
@@ -152,7 +176,7 @@ const Tasks = () => {
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={4} align="center">
+                  <TableCell colSpan={6} align="center">
                     No Tasks available at the moment
                   </TableCell>
                 </TableRow>

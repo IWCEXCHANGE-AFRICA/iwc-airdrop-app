@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -14,6 +14,7 @@ import { native } from "../../../constants/colors";
 import { useGetTasks } from "../../../Hooks/admin";
 import { toast } from "react-toastify";
 import { useBalance } from "../../../contexts/BalanceContext";
+import { grey } from "../../../constants/colors";
 
 const TASK_CATEGORIES = ["Basic", "Social", "Special"];
 
@@ -22,11 +23,21 @@ const DailyTasks = () => {
   const [loadingTaskId, setLoadingTaskId] = useState(null);
   const { claimTask } = useClaimbyID();
   const { tasks, loading } = useGetTasks();
-  const { updateBalance } = useBalance();
+  const { updateBalance, fetchBalance } = useBalance();
+  const [startedTasks, setStartedTasks] = useState({}); // Track tasks that were started
 
   const filteredTasks = tasks.filter(
     (task) => task.category === TASK_CATEGORIES[selectedTab]
   );
+
+  useEffect(() => {
+    fetchBalance();
+  }, []);
+
+  const handleStartTask = (task) => {
+    setStartedTasks((prev) => ({ ...prev, [task.id]: true }));
+    window.open(task.task_link, "_blank");
+  };
 
   const handleClaimById = async (task) => {
     try {
@@ -34,7 +45,6 @@ const DailyTasks = () => {
       const response = await claimTask(task.id);
       console.log(response);
       if (response.success) {
-        window.location.href = task.task_link;
         toast.success(response.data.message);
         updateBalance(task.task_point);
       } else {
@@ -50,12 +60,10 @@ const DailyTasks = () => {
 
   return (
     <Box>
-      {/* Carousel Section */}
       <Box sx={{ position: "relative", zIndex: 2, mt: 5 }}>
         <Carousel />
       </Box>
 
-      {/* Tabs Section */}
       <Box sx={{ position: "relative", zIndex: 2, mt: 3 }}>
         <Tabs
           value={selectedTab}
@@ -77,11 +85,10 @@ const DailyTasks = () => {
         </Tabs>
       </Box>
 
-      {/* Task List Section */}
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2, zIndex: 2 }}>
         <Box
           sx={{
-            backgroundColor: "#1a1a1a",
+            backgroundColor: grey.default,
             opacity: 0.9,
             borderRadius: 2,
             p: 2,
@@ -107,7 +114,6 @@ const DailyTasks = () => {
                   borderBottom: "1px solid green"
                 }}
               >
-                {/* Task Title and Reward */}
                 <Typography
                   variant="body2"
                   sx={{ color: "#fff", fontWeight: "bold" }}
@@ -134,24 +140,31 @@ const DailyTasks = () => {
                     </Box>
                   </Box>
                 </Typography>
-                {/* Claim Button */}
                 <Button
                   variant="contained"
                   sx={{
                     borderRadius: 100,
                     mb: 1,
                     width: "80px",
-                    backgroundColor: task.claimed ? "#4CAF50" : "#D0A106",
+                    backgroundColor: startedTasks[task.id]
+                      ? "#4CAF50"
+                      : "#D0A106",
                     fontSize: "0.8rem",
-                    "&:hover": { backgroundColor: "#FFC107" }
+                    "&:hover": { backgroundColor: "#80B400" }
                   }}
                   disabled={task.completed || loadingTaskId === task.id}
-                  onClick={() => handleClaimById(task)}
+                  onClick={
+                    startedTasks[task.id]
+                      ? () => handleClaimById(task)
+                      : () => handleStartTask(task)
+                  }
                 >
                   {loadingTaskId === task.id ? (
                     <CircularProgress size={20} color="inherit" />
-                  ) : (
+                  ) : startedTasks[task.id] ? (
                     "Claim"
+                  ) : (
+                    "Start"
                   )}
                 </Button>
               </Stack>

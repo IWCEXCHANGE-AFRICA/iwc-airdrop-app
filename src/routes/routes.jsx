@@ -18,7 +18,8 @@ import {
   Users,
   Tasks,
   AddTasks,
-  Settings
+  Settings,
+  TaskEditForm
 } from "../Pages/Dashboard";
 
 const Router = () => {
@@ -111,6 +112,14 @@ const Router = () => {
           element={
             <DashboardLayout>
               <AddTasks /> {/* Fixed casing */}
+            </DashboardLayout>
+          }
+        />
+        <Route
+          path="/dashboard/tasks/edit"
+          element={
+            <DashboardLayout>
+              <TaskEditForm /> {/* Fixed casing */}
             </DashboardLayout>
           }
         />
