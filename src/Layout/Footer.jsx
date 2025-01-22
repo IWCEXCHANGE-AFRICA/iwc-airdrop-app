@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Box, Stack, Tabs, Tab } from "@mui/material";
+import { Box, Stack, Tabs, Tab, Button } from "@mui/material";
 import { styles } from "./styles";
 import HomeIcon from "@mui/icons-material/Home";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
@@ -95,8 +95,7 @@ const Footer = () => {
             <Tab
               icon={<Logout sx={{ fontSize: 28 }} />}
               label="Logout"
-              component={Link}
-              to="/friends-reward"
+              component={Button}
               onClick={logout}
               sx={{
                 fontSize: "10px",

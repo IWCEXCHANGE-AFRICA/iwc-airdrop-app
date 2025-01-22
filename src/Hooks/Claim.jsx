@@ -49,7 +49,6 @@ export const useClaimbyID = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { config } = useUserContext();
-  const dispatch = useDispatch();
 
   const claimTask = async (id) => {
     setLoading(true);
@@ -66,7 +65,6 @@ export const useClaimbyID = () => {
       console.log("Hres:",response);
 
       if (response.status === 200) {
-        dispatch(updateGrossPointBalance(response?.data?.result));
         return { success: true, data: response.data };
 
       } else {

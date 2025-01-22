@@ -1,9 +1,14 @@
 import { Box, Stack, Typography } from "@mui/material";
 import { styles } from "./styles";
-import { useSelector } from "react-redux";
+import { useBalance } from "../contexts/BalanceContext";
+import { useEffect } from "react";
 
 const Header = () => {
-  const grosspointbalance = useSelector((state) => state.grosspointbalance);
+  const { grossBalance, fetchBalance } = useBalance();
+
+  useEffect(() => {
+    fetchBalance();
+  }, []);
 
   return (
     <>
@@ -30,7 +35,7 @@ const Header = () => {
               component="span"
               sx={{ display: "inline-flex", alignItems: "center", gap: 0.5 }}
             >
-              {grosspointbalance}
+              {grossBalance}
               <Box component="span" sx={{ ml: 0.5, fontSize: 10 }}>
                 IWCP
               </Box>

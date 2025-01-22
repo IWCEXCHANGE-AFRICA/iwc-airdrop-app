@@ -2,8 +2,18 @@ import React from "react";
 import { AppBar, Toolbar, Typography, IconButton, Box } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { clearUser } from "../../../stores/slices/userSlice";
 
 const Header = ({ onMenuClick }) => {
+  const _dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  function logout() {
+    _dispatch(clearUser());
+    navigate("/");
+  }
   return (
     <AppBar position="fixed">
       <Toolbar>
@@ -17,13 +27,13 @@ const Header = ({ onMenuClick }) => {
             <MenuIcon />
           </IconButton>
           <Box>
-            <img src="/assets/logo.png" width={70}height={70} />
+            <img src="/assets/logo.png" width={70} height={70} />
           </Box>
           <Typography variant="h6" component="div">
             IWCP DASHBOARD
           </Typography>
         </Box>
-        <IconButton color="inherit" aria-label="logout">
+        <IconButton onClick={logout} color="inherit" aria-label="logout">
           <LogoutIcon />
         </IconButton>
       </Toolbar>

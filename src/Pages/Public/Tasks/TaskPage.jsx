@@ -13,28 +13,38 @@ import { useClaimbyID } from "../../../Hooks/Claim";
 import { native } from "../../../constants/colors";
 import { useGetTasks } from "../../../Hooks/admin";
 import { toast } from "react-toastify";
+import { useBalance } from "../../../contexts/BalanceContext";
 
 const TASK_CATEGORIES = ["Basic", "Social", "Special"];
 
 const DailyTasks = () => {
   const [selectedTab, setSelectedTab] = useState(0);
+  const [loadingTaskId, setLoadingTaskId] = useState(null);
   const { claimTask } = useClaimbyID();
   const { tasks, loading } = useGetTasks();
+  const { updateBalance } = useBalance();
 
   const filteredTasks = tasks.filter(
     (task) => task.category === TASK_CATEGORIES[selectedTab]
   );
 
-  const handleClaimById = async (e, id) => {
-    e.preventDefault();
+  const handleClaimById = async (task) => {
     try {
-      const response = await claimTask(id);
-      console.log("response:", response);
+      setLoadingTaskId(task.id);
+      const response = await claimTask(task.id);
+      console.log(response);
       if (response.success) {
+        window.location.href = task.task_link;
         toast.success(response.data.message);
+        updateBalance(task.task_point);
+      } else {
+        toast.error(response.error);
       }
     } catch (error) {
       console.error(error);
+      toast.error("An error occurred while claiming the task.");
+    } finally {
+      setLoadingTaskId(null);
     }
   };
 
@@ -135,13 +145,13 @@ const DailyTasks = () => {
                     fontSize: "0.8rem",
                     "&:hover": { backgroundColor: "#FFC107" }
                   }}
-                  disabled={task.claimed}
-                  onClick={() => handleClaimById(task.id)}
+                  disabled={task.completed || loadingTaskId === task.id}
+                  onClick={() => handleClaimById(task)}
                 >
-                  {loading ? (
+                  {loadingTaskId === task.id ? (
                     <CircularProgress size={20} color="inherit" />
                   ) : (
-                    "Start"
+                    "Claim"
                   )}
                 </Button>
               </Stack>

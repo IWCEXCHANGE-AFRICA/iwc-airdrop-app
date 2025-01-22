@@ -27,10 +27,10 @@ const ParticipantsTable = ({ participants, setParticipants }) => {
           {participants.map((participant) => (
             <TableRow key={participant.id}>
               <TableCell>{participant.id}</TableCell>
-              <TableCell>{participant.Name}</TableCell>
+              <TableCell>{participant.name}</TableCell>
               <TableCell>{participant.email}</TableCell>
-              <TableCell>{participant.Username}</TableCell>
-              <TableCell>{participant.points}</TableCell>
+              <TableCell>{participant.username}</TableCell>
+              <TableCell>{participant.decrypted_balance}</TableCell>
               <TableCell>{participant.status}</TableCell>
             </TableRow>
           ))}
