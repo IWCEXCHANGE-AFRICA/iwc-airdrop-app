@@ -16,8 +16,11 @@ const Header = ({ onMenuClick }) => {
           >
             <MenuIcon />
           </IconButton>
+          <Box>
+            <img src="/assets/logo.png" width={70}height={70} />
+          </Box>
           <Typography variant="h6" component="div">
-            Logo
+            IWCP DASHBOARD
           </Typography>
         </Box>
         <IconButton color="inherit" aria-label="logout">
