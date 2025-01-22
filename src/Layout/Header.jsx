@@ -30,8 +30,8 @@ const Header = () => {
               component="span"
               sx={{ display: "inline-flex", alignItems: "center", gap: 0.5 }}
             >
-              {grosspointbalance.toLocaleString()}
-              <Box component="span" sx={{ ml: 0.5, fontSize:10 }}>
+              {grosspointbalance}
+              <Box component="span" sx={{ ml: 0.5, fontSize: 10 }}>
                 IWCP
               </Box>
             </Box>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import {
   Table,
   TableBody,
@@ -7,11 +7,11 @@ import {
   TableHead,
   TableRow,
   Paper
-} from '@mui/material'
+} from "@mui/material";
 
 const ParticipantsTable = ({ participants, setParticipants }) => {
   return (
-    <TableContainer component={Paper} sx={{ backgroundColor: '#f5f5f5' }}>
+    <TableContainer component={Paper} sx={{ backgroundColor: "#f5f5f5" }}>
       <Table>
         <TableHead>
           <TableRow>
@@ -24,7 +24,7 @@ const ParticipantsTable = ({ participants, setParticipants }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {participants.map(participant => (
+          {participants.map((participant) => (
             <TableRow key={participant.id}>
               <TableCell>{participant.id}</TableCell>
               <TableCell>{participant.Name}</TableCell>
@@ -37,7 +37,7 @@ const ParticipantsTable = ({ participants, setParticipants }) => {
         </TableBody>
       </Table>
     </TableContainer>
-  )
-}
+  );
+};
 
-export default ParticipantsTable
+export default ParticipantsTable;

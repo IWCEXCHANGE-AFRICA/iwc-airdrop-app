@@ -3,7 +3,7 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { Card, CardMedia, Typography, Box } from "@mui/material";
+import { Card, CardMedia, Box } from "@mui/material";
 
 // Import local images
 import bnr1 from "/assets/img16.jpg";
@@ -15,7 +15,7 @@ const cardData = [
   },
   {
     image: bnr2
-  }
+  },
 ];
 
 const Slider = () => {

@@ -8,10 +8,11 @@ import {
   Tabs,
   CircularProgress
 } from "@mui/material";
-import Carousel from "../../../Components/Homepage/carousel";
+import Carousel from "../../../Components/carousel";
 import { useClaimbyID } from "../../../Hooks/Claim";
 import { native } from "../../../constants/colors";
 import { useGetTasks } from "../../../Hooks/admin";
+import { toast } from "react-toastify";
 
 const TASK_CATEGORIES = ["Basic", "Social", "Special"];
 
@@ -23,6 +24,19 @@ const DailyTasks = () => {
   const filteredTasks = tasks.filter(
     (task) => task.category === TASK_CATEGORIES[selectedTab]
   );
+
+  const handleClaimById = async (e, id) => {
+    e.preventDefault();
+    try {
+      const response = await claimTask(id);
+      console.log("response:", response);
+      if (response.success) {
+        toast.success(response.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <Box>
@@ -122,7 +136,7 @@ const DailyTasks = () => {
                     "&:hover": { backgroundColor: "#FFC107" }
                   }}
                   disabled={task.claimed}
-                  onClick={() => claimTask(task.id)}
+                  onClick={() => handleClaimById(task.id)}
                 >
                   {loading ? (
                     <CircularProgress size={20} color="inherit" />

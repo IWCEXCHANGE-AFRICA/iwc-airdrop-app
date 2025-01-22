@@ -1,8 +1,8 @@
 import React from "react";
 import { Box, CssBaseline, Toolbar } from "@mui/material";
-import Header from "../Components/Dashboard/Header/header";
-import Sidebar from "../Components/Dashboard/sideNavBar/sidenav";
-import Footer from "../Components/Dashboard/Footer/footer";
+import Header from "../Components/Dashboard/Header";
+import Sidebar from "../Components/Dashboard/SideNav";
+import Footer from "../Components/Dashboard/Footer";
 
 const AdminLayout = ({ children }) => {
   return (

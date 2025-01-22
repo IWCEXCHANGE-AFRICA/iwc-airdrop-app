@@ -1,5 +1,5 @@
 import { createTheme, responsiveFontSizes } from "@mui/material";
-import { native } from "../constants/colors";
+import { grey, native } from "../constants/colors";
 
 const baseTheme = createTheme({
   breakpoints: {
@@ -17,11 +17,8 @@ const baseTheme = createTheme({
       main: native.primary
     },
     secondary: {
-      main: native.bg
+      main: grey.default
     },
-    success: {
-      main: native.primary
-    }
   },
   typography: {
     fontFamily: "Raleway",

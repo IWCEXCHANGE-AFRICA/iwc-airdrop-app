@@ -13,7 +13,13 @@ import {
   VerifyOtp,
   ResetPassword
 } from "../Pages/Public";
-import { Dashboard, Users, AddTask } from "../Pages/Dashboard";
+import {
+  Dashboard,
+  Users,
+  Tasks,
+  AddTasks,
+  Settings
+} from "../Pages/Dashboard";
 
 const Router = () => {
   const defaultUser = {
@@ -93,10 +99,26 @@ const Router = () => {
           }
         />
         <Route
-          path="/Addtask"
+          path="/tasks"
           element={
             <DashboardLayout>
-              <AddTask /> {/* Fixed casing */}
+              <Tasks /> {/* Fixed casing */}
+            </DashboardLayout>
+          }
+        />
+        <Route
+          path="/dashboard/tasks/add"
+          element={
+            <DashboardLayout>
+              <AddTasks /> {/* Fixed casing */}
+            </DashboardLayout>
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <DashboardLayout>
+              <Settings /> {/* Fixed casing */}
             </DashboardLayout>
           }
         />

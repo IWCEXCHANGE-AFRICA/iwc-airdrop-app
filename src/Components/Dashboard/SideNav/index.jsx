@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 import {
   Box,
@@ -6,13 +5,11 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Typography
 } from '@mui/material'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import SettingsIcon from '@mui/icons-material/Settings'
 import PeopleIcon from '@mui/icons-material/People'
 import TaskIcon from '@mui/icons-material/Task'
-import AddCircleIcon from '@mui/icons-material/AddCircle'
 
 const SideNav = () => {
   return (
@@ -79,7 +76,7 @@ const SideNav = () => {
           <ListItem
             button
             component={Link}
-            to='/Addtask'
+            to='/tasks'
             sx={{
               border: '2px solid transparent',
               borderRadius: 2,
@@ -95,7 +92,7 @@ const SideNav = () => {
             <ListItemIcon sx={{ color: 'white' }}>
               <TaskIcon />
             </ListItemIcon>
-            <ListItemText primary='AddTask' sx={{ color: 'white' }} />
+            <ListItemText primary='Tasks' sx={{ color: 'white' }} />
           </ListItem>
 
           {/* Settings Button */}

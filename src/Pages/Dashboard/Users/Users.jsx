@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from "react";
 import {
   Box,
   Typography,
@@ -9,136 +9,176 @@ import {
   TableHead,
   TableRow,
   Paper,
+  IconButton,
+  Tooltip,
   Button
-} from '@mui/material'
-import EditUserModal from '../../../Components/Dashboard/User/Editmodal'
+} from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const initialUsers = [
   {
     id: 1,
-    name: 'John Doe',
-    email: 'john@example.com',
-    username: 'johndoe',
+    name: "John Doe",
+    email: "john@example.com",
+    username: "johndoe",
     points: 250,
-    status: 'Active'
+    status: "Active",
   },
   {
     id: 2,
-    name: 'Jane Smith',
-    email: 'jane@example.com',
-    username: 'janesmith',
+    name: "Jane Smith",
+    email: "jane@example.com",
+    username: "janesmith",
     points: 180,
-    status: 'Inactive'
+    status: "Inactive",
   },
   {
     id: 3,
-    name: 'Alice Johnson',
-    email: 'alice@example.com',
-    username: 'alicej',
+    name: "Alice Johnson",
+    email: "alice@example.com",
+    username: "alicej",
     points: 320,
-    status: 'Active'
+    status: "Active",
   },
   {
     id: 4,
-    name: 'Bob Brown',
-    email: 'bob@example.com',
-    username: 'bobbrown',
+    name: "Bob Brown",
+    email: "bob@example.com",
+    username: "bobbrown",
     points: 100,
-    status: 'Pending'
+    status: "Pending",
   }
-]
+];
 
 const Users = () => {
-  const [users, setUsers] = useState(initialUsers)
-  const [openModal, setOpenModal] = useState(false)
-  const [selectedUser, setSelectedUser] = useState(null)
+  const [users, setUsers] = useState(initialUsers);
 
-  const handleOpenModal = user => {
-    setSelectedUser(user)
-    setOpenModal(true)
-  }
+  const handleEdit = (id) => {
+    console.log(`Edit user with ID: ${id}`);
+  };
 
-  const handleCloseModal = () => {
-    setSelectedUser(null)
-    setOpenModal(false)
-  }
+  const handleDelete = (id) => {
+    console.log(`Delete user with ID: ${id}`);
+  };
 
-  const handleUpdateUser = () => {
-    if (selectedUser) {
-      const updatedUsers = users.map(user =>
-        user.id === selectedUser.id ? selectedUser : user
-      )
-      setUsers(updatedUsers)
-      handleCloseModal()
-    }
-  }
-
-  const handleInputChange = (field, value) => {
-    setSelectedUser(prevState => ({
-      ...prevState,
-      [field]: value
-    }))
-  }
-
-  const handleDeleteUser = userId => {
-    const updatedUsers = users.filter(user => user.id !== userId)
-    setUsers(updatedUsers)
-  }
+  const handleView = (id) => {
+    console.log(`View details for user with ID: ${id}`);
+  };
 
   return (
     <Box
       sx={{
-        backgroundColor: 'rgba(255, 255, 255, 0.95)',
-        color: 'black',
-        minHeight: '100vh',
-        p: 3
+        backgroundColor: "#f9f9f9",
+        minHeight: "100vh",
+        p: 4
       }}
     >
-      <Typography variant='h4' color='rgb(42, 27, 8)' gutterBottom>
+      <Typography
+        variant="h4"
+        sx={{
+          fontWeight: "bold",
+          mb: 4,
+          color: "#333"
+        }}
+      >
         Users Management
       </Typography>
 
       {/* Users Table */}
-      <TableContainer component={Paper} sx={{ mt: 3 }}>
+      <TableContainer
+        component={Paper}
+        sx={{
+          boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+          borderRadius: "8px"
+        }}
+      >
         <Table>
           <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Username</TableCell>
-              <TableCell>Points</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell align='center'>Actions</TableCell>
+            <TableRow sx={{ backgroundColor: "#1976d2" }}>
+              <TableCell sx={{ color: "white", fontWeight: "bold" }}>
+                ID
+              </TableCell>
+              <TableCell sx={{ color: "white", fontWeight: "bold" }}>
+                Name
+              </TableCell>
+              <TableCell sx={{ color: "white", fontWeight: "bold" }}>
+                Email
+              </TableCell>
+              <TableCell sx={{ color: "white", fontWeight: "bold" }}>
+                Username
+              </TableCell>
+              <TableCell sx={{ color: "white", fontWeight: "bold" }}>
+                Points
+              </TableCell>
+              <TableCell sx={{ color: "white", fontWeight: "bold" }}>
+                Status
+              </TableCell>
+              <TableCell
+                sx={{ color: "white", fontWeight: "bold" }}
+                align="center"
+              >
+                Actions
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.map(user => (
-              <TableRow key={user.id}>
+            {users.map((user) => (
+              <TableRow
+                key={user.id}
+                sx={{
+                  "&:hover": {
+                    backgroundColor: "#f1f1f1"
+                  }
+                }}
+              >
                 <TableCell>{user.id}</TableCell>
                 <TableCell>{user.name}</TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.username}</TableCell>
                 <TableCell>{user.points}</TableCell>
-                <TableCell>{user.status}</TableCell>
-                <TableCell align='center'>
-                  <Button
-                    variant='contained'
-                    size='small'
-                    sx={{ backgroundColor: 'rgb(42, 27, 8)', color: '#fff' }}
-                    onClick={() => handleOpenModal(user)}
+                <TableCell>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color:
+                        user.status === "Active"
+                          ? "green"
+                          : user.status === "Inactive"
+                          ? "red"
+                          : "orange",
+                      fontWeight: "bold"
+                    }}
                   >
-                    Edit
-                  </Button>
-                  <Button
-                    variant='outlined'
-                    size='small'
-                    color='error'
-                    sx={{ ml: 1 }}
-                    onClick={() => handleDeleteUser(user.id)}
-                  >
-                    Delete
-                  </Button>
+                    {user.status}
+                  </Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Tooltip title="View">
+                    <IconButton
+                      color="primary"
+                      onClick={() => handleView(user.id)}
+                    >
+                      <VisibilityIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Edit">
+                    <IconButton
+                      color="success"
+                      onClick={() => handleEdit(user.id)}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Delete">
+                    <IconButton
+                      color="error"
+                      onClick={() => handleDelete(user.id)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </Tooltip>
                 </TableCell>
               </TableRow>
             ))}
@@ -146,16 +186,17 @@ const Users = () => {
         </Table>
       </TableContainer>
 
-      {/* Edit User Modal */}
-      <EditUserModal
-        open={openModal}
-        onClose={handleCloseModal}
-        user={selectedUser}
-        onChange={handleInputChange}
-        onUpdate={handleUpdateUser}
-      />
+      {/* Add User Button */}
+      <Button
+        variant="contained"
+        color="primary"
+        sx={{ mt: 4 }}
+        onClick={() => console.log("Add New User")}
+      >
+        Add New User
+      </Button>
     </Box>
-  )
-}
+  );
+};
 
-export default Users
+export default Users;

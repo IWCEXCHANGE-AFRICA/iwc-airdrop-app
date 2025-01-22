@@ -7,7 +7,7 @@ import { styles } from "./styles";
 import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import { useClaimTask } from "../../../Hooks/Claim";
 import HardwareIcon from "@mui/icons-material/Hardware";
-import CardCarousel from "../../../Components/Homepage/carousel";
+import CardCarousel from "../../../Components/carousel";
 
 const spinKeyframes = `@keyframes spin {
   0% { transform: rotate(0deg); }
