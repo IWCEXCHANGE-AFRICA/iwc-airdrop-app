@@ -3,14 +3,13 @@ import axios from "axios";
 import { BASE_URL } from "../config/path";
 import { toast } from "react-toastify";
 import { useUserContext } from "../contexts";
-import { useDispatch } from "react-redux";
-import { updateGrossPointBalance } from "../stores/slices/userSlice";
+import { useBalance } from "../contexts/BalanceContext";
 
 export const useClaimTask = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { config } = useUserContext();
-  const dispatch = useDispatch();
+  const { updateBalance } = useBalance();
 
   const claimTask = async () => {
     setLoading(true);
@@ -23,8 +22,10 @@ export const useClaimTask = () => {
         config
       );
 
+      console.log("bddd:",response)
+
       if (response.status === 200) {
-        dispatch(updateGrossPointBalance(response?.data?.result));
+        updateBalance(response?.data?.result);
         return { success: true, data: response.data };
       } else {
         return {
@@ -62,11 +63,10 @@ export const useClaimbyID = () => {
         config
       );
 
-      console.log("Hres:",response);
+      console.log("Hres:", response);
 
       if (response.status === 200) {
         return { success: true, data: response.data };
-
       } else {
         const errorMessage = response?.data?.message || "Task claim failed.";
         throw new Error(errorMessage);

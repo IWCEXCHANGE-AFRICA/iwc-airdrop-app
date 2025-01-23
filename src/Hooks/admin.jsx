@@ -54,9 +54,7 @@ export const useGetTasks = () => {
         `${BASE_URL}/airdrop/tasks/getAlladd`,
         config,
       );
-
-      console.log(response)
-
+      
       const data = response?.data;
 
       if (data?.success) {
