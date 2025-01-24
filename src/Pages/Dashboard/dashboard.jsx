@@ -11,19 +11,14 @@ import {
   TableHead,
   Paper,
   Card,
-  Tooltip,
-  IconButton,
   Button,
   CircularProgress
 } from "@mui/material";
 import SummaryCards from "../../Components/Dashboard/SummaryCards";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useGetUsers } from "../../Hooks/admin";
 
 const IwcAirdropDashboard = () => {
-  const { fetchUsers, users, data, loading } = useGetUsers();
+  const { users, data, loading } = useGetUsers();
   const [visibleUsers, setVisibleUsers] = useState(10);
 
   const handleViewMore = () => {
@@ -97,7 +92,6 @@ const IwcAirdropDashboard = () => {
               <TableCell>Username</TableCell>
               <TableCell>Points</TableCell>
               <TableCell>Status</TableCell>
-              <TableCell align="center">Actions</TableCell>
             </TableHead>
             <TableBody>
               {loading ? (
@@ -140,23 +134,6 @@ const IwcAirdropDashboard = () => {
                           ? "inactive"
                           : "pending"}
                       </Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Tooltip title="View">
-                        <IconButton color="primary">
-                          <VisibilityIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Edit">
-                        <IconButton color="success">
-                          <EditIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Delete">
-                        <IconButton color="error">
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
                     </TableCell>
                   </TableRow>
                 ))

@@ -9,19 +9,14 @@ import {
   TableHead,
   TableRow,
   Paper,
-  IconButton,
-  Tooltip,
   Card,
   CircularProgress,
   Button
 } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useGetUsers } from "../../../Hooks/admin";
 
 const Users = () => {
-  const { fetchUsers, users, loading } = useGetUsers();
+  const { users, loading } = useGetUsers();
   const [currentPage, setCurrentPage] = useState(1);
   const [paginatedUsers, setPaginatedUsers] = useState([]);
   const usersPerPage = 15;
@@ -96,7 +91,6 @@ const Users = () => {
                 <TableCell>Username</TableCell>
                 <TableCell>Points</TableCell>
                 <TableCell>Status</TableCell>
-                <TableCell align="center">Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -140,23 +134,6 @@ const Users = () => {
                           ? "Inactive"
                           : "Pending"}
                       </Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Tooltip title="View">
-                        <IconButton color="primary">
-                          <VisibilityIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Edit">
-                        <IconButton color="success">
-                          <EditIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Delete">
-                        <IconButton color="error">
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
                     </TableCell>
                   </TableRow>
                 ))
