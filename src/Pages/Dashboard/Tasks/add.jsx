@@ -24,7 +24,8 @@ const TaskForm = () => {
     task_point: "",
     task_code: "",
     task_description: "",
-    status: ""
+    status: "",
+    task_duration: ""
   });
 
   const { storeTask, loading } = useStoreTasks();
@@ -40,6 +41,9 @@ const TaskForm = () => {
     if (!formData.category) newErrors.category = "Category is required";
     if (!formData.task_title) newErrors.task_title = "Task Title is required";
     if (!formData.task_point) newErrors.task_point = "Task Points are required";
+    if (!formData.task_duration)
+      newErrors.task_duration = "Task Interal is required";
+
     return newErrors;
   };
 
@@ -57,7 +61,8 @@ const TaskForm = () => {
         task_description: formData.task_description,
         task_code: Number(formData.task_code),
         task_point: Number(formData.task_point),
-        status: formData.status ? 1 : 2
+        status: formData.status ? 1 : 2,
+        task_duration: String(formData.task_duration)
       };
       console.log(tasks);
       const response = await storeTask(tasks);
@@ -99,6 +104,24 @@ const TaskForm = () => {
                   <MenuItem value="Social">Social</MenuItem>
                 </Select>
                 <FormHelperText>{errors.category}</FormHelperText>
+              </FormControl>
+            </Grid>
+
+            {/* Task Field */}
+            <Grid item xs={12}>
+              <FormControl fullWidth error={!!errors.task_duration}>
+                <InputLabel id="task_duration-label">Interval</InputLabel>
+                <Select
+                  labelId="task_duration-label"
+                  name="task_duration"
+                  value={formData.task_duration}
+                  onChange={handleChange}
+                  fullWidth
+                >
+                  <MenuItem value="daily">Daily</MenuItem>
+                  <MenuItem value="one-time">Once</MenuItem>
+                </Select>
+                <FormHelperText>{errors.task_duration}</FormHelperText>
               </FormControl>
             </Grid>
 
