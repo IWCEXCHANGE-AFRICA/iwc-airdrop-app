@@ -103,7 +103,7 @@ const FriendsReward = () => {
           >
             <Typography variant="body1">{friend.name}</Typography>
             <Typography variant="body2" color="#D0A106">
-              +{friend.reward} IWCP
+              +{friend.point_balance} IWCP
             </Typography>
           </Box>
         ))}

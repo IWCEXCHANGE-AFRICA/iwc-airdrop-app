@@ -95,6 +95,9 @@ export const useGetReferrals = () => {
   const fetchReferrals = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/user/referrals`, config);
+
+      console.log("ref:",response)
+
       const data = response.data;
 
       if (data?.error === 0) {
