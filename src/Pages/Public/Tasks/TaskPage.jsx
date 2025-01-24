@@ -42,7 +42,7 @@ const DailyTasks = () => {
     Object.keys(storedTasks).forEach((taskId) => {
       const startTime = storedTasks[taskId];
       const elapsed = Math.floor((Date.now() - startTime) / 1000);
-      const remainingTime = Math.max(60 - elapsed, 0);
+      const remainingTime = Math.max(30 - elapsed, 0);
 
       if (remainingTime > 0) {
         timers[taskId] = remainingTime;
@@ -94,7 +94,7 @@ const DailyTasks = () => {
   const handleStartTask = (task) => {
     const startTime = Date.now();
     setStartedTasks((prev) => ({ ...prev, [task.id]: true }));
-    setTaskTimers((prev) => ({ ...prev, [task.id]: 60 }));
+    setTaskTimers((prev) => ({ ...prev, [task.id]: 30 }));
 
     // Store the start time in localStorage
     localStorage.setItem(
@@ -279,7 +279,7 @@ const DailyTasks = () => {
                     `${Math.ceil(dailyTimers[task.id] / 3600000)}h`
                   ) : startedTasks[task.id] ? (
                     taskTimers[task.id] > 0 ? (
-                      `${taskTimers[task.id]}s`
+                      `Checking...`
                     ) : (
                       "Claim"
                     )
