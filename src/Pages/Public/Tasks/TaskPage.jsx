@@ -116,7 +116,9 @@ const DailyTasks = () => {
       });
     }, 1000);
 
-    window.open(task.task_link, "_blank");
+    if (task.task_duration !== "daily") {
+      window.open(task.task_link, "_blank");
+    }
   };
 
   const handleClaimById = async (task) => {
@@ -146,7 +148,7 @@ const DailyTasks = () => {
 
         await refetch();
       } else {
-        toast.error(response.error);
+        console.error(response.error);
       }
     } catch (error) {
       console.error(error);

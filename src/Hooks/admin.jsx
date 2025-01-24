@@ -65,7 +65,7 @@ export const useGetTasks = () => {
       }
     } catch (err) {
       const errMsg = err.response?.data?.message || "Network or server error";
-      toast.error(errMsg);
+      console.error(errMsg);
       setError(errMsg);
       return null;
     } finally {
