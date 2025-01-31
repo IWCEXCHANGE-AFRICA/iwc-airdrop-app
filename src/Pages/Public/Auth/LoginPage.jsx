@@ -102,25 +102,6 @@ const SignInForm = () => {
         </Typography>
         {error && <FormHelperText error>{error}</FormHelperText>}
 
-        {/* Social Login Buttons */}
-        <Box sx={{ display: "flex", gap: 1, mt: 3, mb: 2 }}>
-          <Button
-            variant="contained"
-            startIcon={<GoogleIcon />}
-            sx={{ flex: 1, textTransform: "none" }}
-          >
-            Google
-          </Button>
-          <Button
-            variant="contained"
-            startIcon={<FacebookIcon />}
-            sx={{ flex: 1, textTransform: "none" }}
-          >
-            Facebook
-          </Button>
-        </Box>
-        <Divider>or</Divider>
-
         {/* Form */}
         <Box sx={{ mt: 2 }}>
           <TextField

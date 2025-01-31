@@ -14,9 +14,6 @@ const BalanceProvider = ({ children }) => {
   const fetchBalance = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/user/get-point-balance`, config);
-
-      console.log(response);
-
       setGrossBalance(response.data.point_balance);
     } catch (error) {
       console.error("Error fetching balance:", error);

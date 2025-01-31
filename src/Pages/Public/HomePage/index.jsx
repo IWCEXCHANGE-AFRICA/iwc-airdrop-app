@@ -5,16 +5,16 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { styles } from "./styles";
 import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
-import { useClaimTask } from "../../../Hooks/Claim";
+import { useClaimTask, useGetLastClaim } from "../../../Hooks/Claim";
 import HardwareIcon from "@mui/icons-material/Hardware";
 import CardCarousel from "../../../Components/carousel";
+import { formatTime, getRemainingTime } from "../../../utilities/functions";
 
 const spinKeyframes = `@keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }`;
 
-// Adding keyframes for fade-in animation
 const fadeInKeyframes = `@keyframes fadeIn {
   0% { opacity: 0; }
   100% { opacity: 1; }
@@ -26,40 +26,23 @@ const HomePage = () => {
   const { claimTask, loading, error } = useClaimTask();
   const [buttonText, setButtonText] = useState("Claim");
   const [miningRate, setMiningRate] = useState(user?.mining_power);
+  const { loading: lastClaimLoading, lastClaimed } = useGetLastClaim();
 
-  const formatTime = (seconds) => {
-    const hrs = Math.floor(seconds / 3600);
-    const mins = Math.floor((seconds % 3600) / 60);
-    const secs = seconds % 60;
-    return `${hrs}hr(s) ${mins}m ${secs}s`;
-  };
-
+  // Set timer based on lastClaimed time
   useEffect(() => {
-    // Load timer from localStorage on mount
-    const storedTimer = localStorage.getItem("claimTimer");
-    if (storedTimer) {
-      const timeRemaining = parseInt(storedTimer) - Date.now();
-      if (timeRemaining > 0) {
-        setTimer(Math.ceil(timeRemaining / 1000)); // Convert ms to seconds
-      } else {
-        localStorage.removeItem("claimTimer");
-      }
+    if (lastClaimed) {
+      const timeRemaining = getRemainingTime(lastClaimed)
+      setTimer(timeRemaining);
     }
-  }, []);
+  }, [lastClaimed, lastClaimLoading]);  
 
+  // Start countdown
   useEffect(() => {
-    // Start countdown if timer is active
     if (timer > 0) {
       const interval = setInterval(() => {
-        setTimer((prev) => {
-          const newTime = prev - 1;
-          if (newTime <= 0) {
-            clearInterval(interval);
-            localStorage.removeItem("claimTimer");
-          }
-          return newTime;
-        });
+        setTimer((prev) => Math.max(prev - 1, 0));
       }, 1000);
+
       return () => clearInterval(interval);
     }
   }, [timer]);
@@ -72,7 +55,6 @@ const HomePage = () => {
       toast.success("Claim Successful");
       setButtonText("Claim");
       setTimer(43200); // 12 hours in seconds
-      localStorage.setItem("claimTimer", Date.now() + 43200000); // 12 hours in ms
     } else {
       console.error("Claim Failed:", result.error);
     }
@@ -86,7 +68,6 @@ const HomePage = () => {
         alignItems: "center"
       }}
     >
-      {/* Inject keyframes for spinning and fade-in animations */}
       <style>{spinKeyframes}</style>
       <style>{fadeInKeyframes}</style>
       <Box
@@ -130,14 +111,14 @@ const HomePage = () => {
 
         {/* Mining Details */}
         <Box sx={{ color: "#fff" }}>
-          <Typography variant="h6" sx={{ marginTop: 1, fontWeight:  "bold" }}>
-            {formatTime(timer)}
+          <Typography variant="h6" sx={{ marginTop: 1, fontWeight: "bold" }}>
+            {lastClaimLoading ? "Loading..." : formatTime(timer)}
           </Typography>
           <Typography variant="body2" sx={{ color: grey.three }}>
             Mining Rate: {miningRate} IWCP per hour
           </Typography>
           <Typography variant="body2" sx={{ color: grey.three }}>
-            1IWC = $...
+            1 IWC = $...
           </Typography>
         </Box>
 

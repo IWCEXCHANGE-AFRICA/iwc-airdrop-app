@@ -18,7 +18,7 @@ const baseTheme = createTheme({
     },
     secondary: {
       main: grey.default
-    },
+    }
   },
   typography: {
     fontFamily: "Raleway",
@@ -87,19 +87,31 @@ const baseTheme = createTheme({
           color: "#FFFFFF",
           fontWeight: 500,
           textTransform: "none",
-          fontSize: "14spx"
+          fontSize: "14px",
+          "&.Mui-disabled": {
+            color: "#FFFFFF", // Ensures text color remains white when disabled
+            backgroundColor: "rgba(255, 255, 255, 0.3)", // Adjust background transparency if needed
+            opacity: 0.5 // Optional: Makes the disabled button look visually different
+          }
         },
         sizeMedium: {
           padding: "8px 40px"
         },
         containedPrimary: {
-          backgroundColor: native.secondary
+          backgroundColor: native.secondary,
+          "&.Mui-disabled": {
+            backgroundColor: "rgba(255, 255, 255, 0.3)" // Keeps background light when disabled
+          }
         },
         containedInfo: {
           backgroundColor: "#FFF",
           color: "#000",
           "&:hover": {
             color: "red"
+          },
+          "&.Mui-disabled": {
+            color: "#FFFFFF", // Ensures white text for disabled state
+            backgroundColor: "rgba(255, 255, 255, 0.3)" // Adjust for a faded look
           }
         }
       }

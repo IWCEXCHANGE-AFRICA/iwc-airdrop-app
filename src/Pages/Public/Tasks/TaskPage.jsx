@@ -13,8 +13,8 @@ import Carousel from "../../../Components/carousel";
 import { useClaimbyID } from "../../../Hooks/Claim";
 import { useGetTasks } from "../../../Hooks/admin";
 import { useBalance } from "../../../contexts/BalanceContext";
-import { native } from "../../../constants/colors";
-import { grey } from "../../../constants/colors";
+import { native, grey } from "../../../constants/colors";
+import { formatTime, getRemainingTime } from "../../../utilities/functions";
 
 const TASK_CATEGORIES = ["Basic", "Social", "Special"];
 
@@ -23,7 +23,7 @@ const DailyTasks = () => {
   const [loadingTaskId, setLoadingTaskId] = useState(null);
   const { claimTask } = useClaimbyID();
   const { tasks, loading, refetch } = useGetTasks();
-  const { updateBalance, fetchBalance } = useBalance();
+  const { updateBalance } = useBalance();
   const [startedTasks, setStartedTasks] = useState({});
   const [taskTimers, setTaskTimers] = useState({});
   const [dailyTimers, setDailyTimers] = useState({});
@@ -33,70 +33,24 @@ const DailyTasks = () => {
   );
 
   useEffect(() => {
-    fetchBalance();
-
-    // Restore timers from localStorage for one-minute tasks
-    const storedTasks = JSON.parse(localStorage.getItem("startedTasks")) || {};
-    const timers = {};
-
-    Object.keys(storedTasks).forEach((taskId) => {
-      const startTime = storedTasks[taskId];
-      const elapsed = Math.floor((Date.now() - startTime) / 1000);
-      const remainingTime = Math.max(30 - elapsed, 0);
-
-      if (remainingTime > 0) {
-        timers[taskId] = remainingTime;
-        setStartedTasks((prev) => ({ ...prev, [taskId]: true }));
-
-        const interval = setInterval(() => {
-          setTaskTimers((prev) => {
-            if (prev[taskId] > 1) {
-              return { ...prev, [taskId]: prev[taskId] - 1 };
-            } else {
-              clearInterval(interval);
-              return { ...prev, [taskId]: 0 };
-            }
-          });
-        }, 1000);
+    filteredTasks.forEach((task) => {
+      if (task.lastclaimedtime) {
+        const timeRemaining = task.lastclaimedtime ? getRemainingTime(task.lastclaimedtime, 86400) : 0;
+        setDailyTimers((prev) => ({
+          ...prev,
+          [task.id]: timeRemaining
+        }));
       }
     });
-
-    setTaskTimers(timers);
-
-    // Restore daily timers from localStorage
-    const storedDailyTimers =
-      JSON.parse(localStorage.getItem("dailyTimers")) || {};
-    const updatedDailyTimers = {};
-
-    Object.keys(storedDailyTimers).forEach((taskId) => {
-      const nextClaimTime = storedDailyTimers[taskId];
-      const remainingTime = Math.max(nextClaimTime - Date.now(), 0);
-
-      if (remainingTime > 0) {
-        updatedDailyTimers[taskId] = remainingTime;
-
-        const interval = setInterval(() => {
-          setDailyTimers((prev) => {
-            if (prev[taskId] > 1000) {
-              return { ...prev, [taskId]: prev[taskId] - 1000 };
-            } else {
-              clearInterval(interval);
-              return { ...prev, [taskId]: 0 };
-            }
-          });
-        }, 1000);
-      }
-    });
-
-    setDailyTimers(updatedDailyTimers);
-  }, []);
-
+  }, [loading]);
+  
+  // Handle starting a task
   const handleStartTask = (task) => {
     const startTime = Date.now();
     setStartedTasks((prev) => ({ ...prev, [task.id]: true }));
     setTaskTimers((prev) => ({ ...prev, [task.id]: 30 }));
 
-    // Store the start time in localStorage
+    // Store start time in localStorage
     localStorage.setItem(
       "startedTasks",
       JSON.stringify({
@@ -105,12 +59,13 @@ const DailyTasks = () => {
       })
     );
 
-    const timer = setInterval(() => {
+    // Countdown timer
+    const interval = setInterval(() => {
       setTaskTimers((prev) => {
         if (prev[task.id] > 1) {
           return { ...prev, [task.id]: prev[task.id] - 1 };
         } else {
-          clearInterval(timer);
+          clearInterval(interval);
           return { ...prev, [task.id]: 0 };
         }
       });
@@ -121,38 +76,23 @@ const DailyTasks = () => {
     }
   };
 
+  // Handle claiming a task
   const handleClaimById = async (task) => {
     try {
       setLoadingTaskId(task.id);
       const response = await claimTask(task.id);
-      console.log(response);
+
       if (response.success) {
         toast.success(response.data.message);
         updateBalance(task.task_point);
 
-        if (task.task_duration === "daily") {
-          const nextClaimTime = new Date();
-          nextClaimTime.setHours(24, 0, 0, 0); // Set to midnight
-
-          const timeLeft = nextClaimTime - Date.now();
-          setDailyTimers((prev) => ({ ...prev, [task.id]: timeLeft }));
-
-          localStorage.setItem(
-            "dailyTimers",
-            JSON.stringify({
-              ...JSON.parse(localStorage.getItem("dailyTimers") || "{}"),
-              [task.id]: nextClaimTime.getTime()
-            })
-          );
-        }
-
         await refetch();
       } else {
-        console.error(response.error);
+        toast.error(response.error || "Failed to claim the task.");
       }
     } catch (error) {
-      console.error(error);
       toast.error("An error occurred while claiming the task.");
+      console.error(error);
     } finally {
       setLoadingTaskId(null);
     }
@@ -172,9 +112,9 @@ const DailyTasks = () => {
           aria-label="task categories"
           sx={{ marginBottom: 1, pb: 1 }}
         >
-          {TASK_CATEGORIES.map((category) => (
+          {TASK_CATEGORIES.map((category, index) => (
             <Tab
-              key={category}
+              key={index}
               label={category}
               sx={{
                 color: "gray",
@@ -246,12 +186,12 @@ const DailyTasks = () => {
                     borderRadius: 100,
                     mb: 1,
                     width: "80px",
-                    backgroundColor: task.completed
+                    backgroundColor: task.task_duration !== "daily" && task.completed
                       ? "#808080"
                       : dailyTimers[task.id] > 0
                       ? "#FF5733"
                       : startedTasks[task.id]
-                      ? taskTimers[task.id] > 0
+                      ? dailyTimers[task.id] > 0
                         ? "#FF5733"
                         : "#4CAF50"
                       : "#D0A106",
@@ -259,31 +199,29 @@ const DailyTasks = () => {
                     "&:hover": { backgroundColor: "#80B400" }
                   }}
                   disabled={
-                    task.completed ||
                     loadingTaskId === task.id ||
                     dailyTimers[task.id] > 0
                   }
-                  onClick={
+                  onClick={() =>
                     startedTasks[task.id]
                       ? taskTimers[task.id] > 0
-                        ? null // Do nothing while timer is running
-                        : () => handleClaimById(task)
-                      : () => handleStartTask(task)
+                        ? null
+                        : handleClaimById(task)
+                      : handleStartTask(task)
                   }
                 >
+                {console.log(task, dailyTimers[task.id])}
                   {loadingTaskId === task.id ? (
                     <CircularProgress size={20} color="inherit" />
-                  ) : task.completed && task.task_duration !== "daily" ? (
+                  ) : task.task_duration !== "daily" && task.completed ? (
                     "Claimed"
-                  ) : dailyTimers[task.id] > 0 ? (
-                    `${Math.ceil(dailyTimers[task.id] / 3600000)}h`
                   ) : startedTasks[task.id] ? (
                     taskTimers[task.id] > 0 ? (
-                      `Checking...`
+                      "Checking..."
                     ) : (
                       "Claim"
                     )
-                  ) : (
+                  ) : dailyTimers[task.id] > 0 ? formatTime(dailyTimers[task.id],true) : (
                     "Start"
                   )}
                 </Button>

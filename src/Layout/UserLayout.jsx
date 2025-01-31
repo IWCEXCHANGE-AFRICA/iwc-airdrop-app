@@ -3,6 +3,7 @@ import Footer from "./Footer";
 import Header from "./Header";
 import { useLocation } from "react-router-dom";
 import { styles } from "./styles";
+import CustomMarque from "../Components/Marque";
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -15,6 +16,8 @@ const Layout = ({ children }) => {
     <Box sx={styles.wrap}>
       <CssBaseline />
       <Box component="main" sx={[styles.contents]}>
+      <CustomMarque />
+
         <Header sx={styles.navbar} />
 
         <Container>

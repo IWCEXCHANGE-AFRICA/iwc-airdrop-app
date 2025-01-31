@@ -6,12 +6,9 @@ import {
   Button,
   InputAdornment,
   IconButton,
-  Divider,
   CircularProgress,
   FormHelperText
 } from "@mui/material";
-import GoogleIcon from "@mui/icons-material/Google";
-import FacebookIcon from "@mui/icons-material/Facebook";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useNavigate } from "react-router-dom";
@@ -209,26 +206,6 @@ const SignUpForm = () => {
         >
           {loading ? <CircularProgress size={20} color="inherit" /> : "Sign Up"}
         </Button>
-
-        <Divider>or</Divider>
-
-        {/* Social Login Buttons */}
-        <Box sx={{ display: "flex", gap: 1, m: 1 }}>
-          <Button
-            variant="contained"
-            startIcon={<GoogleIcon />}
-            sx={{ flex: 1, textTransform: "none" }}
-          >
-            Google
-          </Button>
-          <Button
-            variant="contained"
-            startIcon={<FacebookIcon />}
-            sx={{ flex: 1, textTransform: "none" }}
-          >
-            Facebook
-          </Button>
-        </Box>
 
         {/* Footer */}
         <Box sx={{ mt: 2, textAlign: "center" }}>

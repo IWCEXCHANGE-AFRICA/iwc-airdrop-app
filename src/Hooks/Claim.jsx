@@ -9,7 +9,7 @@ export const useClaimTask = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { config } = useUserContext();
-  const { updateBalance } = useBalance();
+  const { updateBalance, fetchBalance } = useBalance();
 
   const claimTask = async () => {
     setLoading(true);
@@ -22,10 +22,10 @@ export const useClaimTask = () => {
         config
       );
 
-      console.log("bddd:",response)
+      console.log("bddd:", response);
 
       if (response.status === 200) {
-        updateBalance(response?.data?.result);
+        await fetchBalance()
         return { success: true, data: response.data };
       } else {
         return {
@@ -96,8 +96,6 @@ export const useGetReferrals = () => {
     try {
       const response = await axios.get(`${BASE_URL}/user/referrals`, config);
 
-      console.log("ref:",response)
-
       const data = response.data;
 
       if (data?.error === 0) {
@@ -119,4 +117,37 @@ export const useGetReferrals = () => {
     fetchReferrals();
   }, []);
   return { refData, loading, fetchReferrals };
+};
+
+export const useGetLastClaim = () => {
+  const [lastClaimed, setLastClaimed] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { config } = useUserContext();
+
+  const getLastClaimed = async () => {
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/airdrop/get/last-claim`,
+        config
+      );
+      const data = response.data;
+      
+      if (data?.error === 0) {
+        setLastClaimed(data?.lastclaimedtime);
+      }
+      if (data?.error) {
+        toast.error(data?.message);
+        return false;
+      }
+    } catch (error) {
+      console.log("Error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getLastClaimed();
+  }, []);
+  return { lastClaimed, loading, getLastClaimed };
 };

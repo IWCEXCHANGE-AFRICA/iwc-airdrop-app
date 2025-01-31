@@ -8,7 +8,8 @@ export const styles = {
   wrap: {
     display: "flex",
     width: "100vw",
-    maxHeight: "100vh",
+    height: "auto",
+    maxHeight: "100%",
     backgroundImage: "url('/assets/img13.jpg')",
     backgroundSize: "cover",
     backgroundPosition: "center",
@@ -32,7 +33,7 @@ export const styles = {
     color: native.default,
     borderRadius: "50px",
     position: "fixed",
-    top: 0,
+    top: 40,
     left: 10,
     right: 10,
     pl: layoutPad + "px",
@@ -45,6 +46,28 @@ export const styles = {
     transition: "width 0.3s ease-in-out",
     zIndex: 1990
   },
+
+  marque: {
+    backgroundColor: "#D0A106",
+    opacity: 0.5,
+    color: native.default,
+    borderRadius: "10px",
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    pl: layoutPad + "px",
+    pr: layoutPad + "px",
+    margin: layoutMargin + "px",
+    height: navHeight - 25  + "px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    transition: "width 0.3s ease-in-out",
+    zIndex: 1990
+  },
+
+      
 
   navRow: {
     direction: "row",
