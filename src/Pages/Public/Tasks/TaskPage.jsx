@@ -43,6 +43,8 @@ const DailyTasks = () => {
       }
     });
   }, [loading]);
+
+  console.log("dailyTimers",dailyTimers)
   
   // Handle starting a task
   const handleStartTask = (task) => {
@@ -210,7 +212,6 @@ const DailyTasks = () => {
                       : handleStartTask(task)
                   }
                 >
-                {console.log(task, dailyTimers[task.id])}
                   {loadingTaskId === task.id ? (
                     <CircularProgress size={20} color="inherit" />
                   ) : task.task_duration !== "daily" && task.completed ? (
