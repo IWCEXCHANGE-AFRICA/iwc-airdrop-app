@@ -26,7 +26,8 @@ function CustomMarque() {
           }
         }}
       >
-        Second IWC airdrop round ends April 25th 2025
+        Congratulations! IWC Airdrop 2 has Ended
+
       </Typography>
     </Box>
   );
