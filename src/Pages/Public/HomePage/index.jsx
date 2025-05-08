@@ -1,168 +1,219 @@
-import { useState, useEffect } from "react";
-import { Box, Typography, Button, CircularProgress } from "@mui/material";
-import { grey } from "../../../constants/colors";
-import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
-import { styles } from "./styles";
-import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
-import { useClaimTask, useGetLastClaim } from "../../../Hooks/Claim";
-import HardwareIcon from "@mui/icons-material/Hardware";
-import CardCarousel from "../../../Components/carousel";
-import { formatTime, getRemainingTime } from "../../../utilities/functions";
-
-const spinKeyframes = `@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}`;
-
-const fadeInKeyframes = `@keyframes fadeIn {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
-}`;
-
-const HomePage = () => {
-  const user = useSelector((state) => state.user);
-  const [timer, setTimer] = useState(0);
-  const { claimTask, loading, error } = useClaimTask();
-  const [buttonText, setButtonText] = useState("Claim");
-  const [miningRate, setMiningRate] = useState(user?.mining_power);
-  const { loading: lastClaimLoading, lastClaimed } = useGetLastClaim();
-
-  // Set timer based on lastClaimed time
-  useEffect(() => {
-    if (lastClaimed) {
-      const timeRemaining = getRemainingTime(lastClaimed)
-      setTimer(timeRemaining);
-    }
-  }, [lastClaimed, lastClaimLoading]);  
-
-  // Start countdown
-  useEffect(() => {
-    if (timer > 0) {
-      const interval = setInterval(() => {
-        setTimer((prev) => Math.max(prev - 1, 0));
-      }, 1000);
-
-      return () => clearInterval(interval);
-    }
-  }, [timer]);
-
-  const handleClaimTask = async (e) => {
-    e.preventDefault();
-    const result = await claimTask();
-
-    if (result.success) {
-      toast.success("Claim Successful");
-      setButtonText("Claim");
-      setTimer(43200); // 12 hours in seconds
-    } else {
-      console.error("Claim Failed:", result.error);
-    }
-  };
-
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center"
-      }}
-    >
-      <style>{spinKeyframes}</style>
-      <style>{fadeInKeyframes}</style>
+import {
+    Box,
+    Typography,
+    Button,
+    Container,
+    List,
+    ListItem,
+    useMediaQuery,
+    useTheme,
+    Link,
+    Stack
+  } from "@mui/material";
+  import TelegramIcon from "@mui/icons-material/Telegram";
+  import { keyframes } from "@mui/system";
+  import HowToRegIcon from '@mui/icons-material/HowToReg';
+  
+  // Define animations
+  const floatIn = keyframes`
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+  `;
+  
+  const spin = keyframes`
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  `;
+  
+  const HomePage = () => {
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  
+    return (
       <Box
         sx={{
-          width: "100%",
-          p: 2,
-          maxWidth: 550,
-          textAlign: "center"
+          height: "100vh",
+          width: "100vw",
+          bgcolor: "#1B1B1B",
         }}
       >
-        {/* Logo */}
-        <Box sx={{ mb: 2, display: "flex", justifyContent: "center" }}>
-          <Box
-            sx={[
-              styles.spinningAnimation,
-              {
-                width: 150,
-                height: 150,
-                borderRadius: "50%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop:7,
-              }
-            ]}
-          >
-            <img
-              style={{ maxWidth: "100%", height: "auto" }}
+        <Box
+          sx={{
+            position: "relative",
+            width: "100%",
+            py: isMobile ? 6 : 10,
+            backgroundImage: `url('https://iwcexchange.io/assets/images/frontend/product/666e3f7ad473f1718501242.png')`,
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            "&::after": {
+              content: '""',
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              bgcolor: "rgba(27, 27, 27, 0.6)",
+              zIndex: 1
+            }
+          }}
+        >
+          <Container maxWidth="lg" sx={{ position: "relative", zIndex: 2, textAlign: "center" }}>
+            <Box
+              component="img"
               src={"/assets/logo.png"}
-              alt="Logo"
+              alt="IWC Coin Logo"
+              sx={{
+                width: isMobile ? 80 : 100,
+                height: isMobile ? 80 : 100,
+                mx: "auto",
+                mb: 2,
+                animation: `${spin} 4s linear infinite`
+              }}
             />
-          </Box>
+            
+            <Typography
+              variant={isMobile ? "h4" : "h3"}
+              fontWeight="bold"
+              color="#FFD700"
+              sx={{
+                mb: 1,
+                textShadow: "2px 2px 4px #000",
+                animation: `${floatIn} 1.5s ease forwards`,
+                opacity: 0,
+                animationDelay: "0.3s"
+              }}
+            >
+              Congratulations! IWC Airdrop 2 Ended
+            </Typography>
+            
+            <Typography
+              variant="h6"
+              color="#FFF8DC"
+              sx={{
+                mb: 4,
+                textShadow: "2px 2px 4px #000",
+                animation: `${floatIn} 1.5s ease forwards`,
+                opacity: 0,
+                animationDelay: "0.6s"
+              }}
+            >
+              Snapshot and Allocations in Progress
+            </Typography>
+            
+            <Button
+              variant="contained"
+              startIcon={<TelegramIcon />}
+              component={Link}
+              href="https://t.me/iwcofficial"
+              target="_blank"
+              rel="noopener noreferrer"
+              sx={{
+                bgcolor: "#FFD700",
+                color: "#1B1B1B",
+                fontWeight: "bold",
+                py: 1.5,
+                px: 3,
+                borderRadius: 2,
+                textTransform: "none",
+                animation: `${floatIn} 1.5s ease forwards`,
+                opacity: 0,
+                animationDelay: "0.9s",
+                "&:hover": {
+                  bgcolor: "#FFC300"
+                }
+              }}
+            >
+              Join Community
+            </Button>
+          </Container>
         </Box>
-
-        {/* Welcome Message */}
-        <Typography variant="h5" fontWeight="bold" color="#fff">
-          Welcome back
-        </Typography>
-        <Typography variant="body2" color="#fff">
-          {user?.username}
-        </Typography>
-
-        {/* Mining Details */}
-        <Box sx={{ color: "#fff" }}>
-          <Typography variant="h6" sx={{ marginTop: 1, fontWeight: "bold" }}>
-            {lastClaimLoading ? "Loading..." : formatTime(timer)}
-          </Typography>
-          <Typography variant="body2" sx={{ color: grey.three }}>
-            Mining Rate: {miningRate} IWCP per hour
-          </Typography>
-          <Typography variant="body2" sx={{ color: grey.three }}>
-            1 IWC = $...
-          </Typography>
+  
+        {/* Info Section */}
+        <Box
+          sx={{
+            bgcolor: "#1B1B1B",
+            py: isMobile ? 5 : 8,
+            flexGrow: 1,
+            display: "flex",
+            alignItems: "center"
+          }}
+          id="airdrop"
+        >
+          <Container maxWidth="lg">
+            <Stack spacing={3} alignItems="center" textAlign="center">
+              <Typography
+                variant={isMobile ? "h4" : "h3"}
+                fontWeight="bold"
+                color="#FFD700"
+                sx={{
+                  textShadow: "2px 2px 4px #000",
+                  animation: `${floatIn} 1.5s ease forwards`,
+                  opacity: 0,
+                  animationDelay: "0.3s"
+                }}
+              >
+                Eligibility Criteria
+              </Typography>
+              
+              <List
+                sx={{
+                  width: "100%",
+                  animation: `${floatIn} 1.5s ease forwards`,
+                  opacity: 0,
+                  animationDelay: "0.6s"
+                }}
+              >
+                {["No bots No Cheat Pass", "Basic Tasks Completion Pass", "Referral Bonus"].map((item, index) => (
+                  <ListItem key={index} sx={{ justifyContent: "center" }}>
+                    <Typography
+                      variant="body1"
+                      color="#FFF8DC"
+                      textAlign="center"
+                      fontSize={isMobile ? "1rem" : "1.1rem"}
+                      sx={{ textShadow: "1px 1px 2px #000" }}
+                    >
+                      {item}
+                    </Typography>
+                  </ListItem>
+                ))}
+              </List>
+              
+              <Button
+                variant="contained"
+                startIcon={<HowToRegIcon />}
+                sx={{
+                  bgcolor: "#FFD700",
+                  color: "#1B1B1B",
+                  fontWeight: "bold",
+                  py: 1.5,
+                  px: 3,
+                  borderRadius: 2,
+                  textTransform: "none",
+                  animation: `${floatIn} 1.5s ease forwards`,
+                  opacity: 0,
+                  animationDelay: "0.9s",
+                  "&:hover": {
+                    bgcolor: "#FFC300"
+                  }
+                }}
+              >
+                Register Now
+              </Button>
+            </Stack>
+          </Container>
         </Box>
-
-        {/* Buttons */}
-        <Box sx={{ display: "flex", gap: 1, mt: 1, mb: 2 }}>
-          <Button
-            variant="contained"
-            startIcon={<RocketLaunchIcon />}
-            sx={[
-              styles.boostButton,
-              {
-                flex: 1,
-                textTransform: "none"
-              }
-            ]}
-          >
-            Boost
-          </Button>
-
-          <Button
-            onClick={handleClaimTask}
-            disabled={loading || timer > 0} // Disable when loading or timer active
-            startIcon={!loading && <HardwareIcon />}
-            sx={[styles.claimButton, { flex: 1, textTransform: "none" }]}
-          >
-            {loading ? (
-              <CircularProgress size={20} color="inherit" />
-            ) : timer > 0 ? (
-              `Mining...`
-            ) : (
-              buttonText
-            )}
-          </Button>
-          {error && <p style={{ color: "red" }}>{error}</p>}
-        </Box>
-
-        {/* Scrolling Announcements */}
-        <Box sx={{ mt: 3 }}>
-          <CardCarousel />
+  
+        {/* Footer */}
+        <Box sx={{ bgcolor: "#000000", py: 2, textAlign: "center" }}>
+          <Typography variant="body2" color="#FFD700" sx={{ textShadow: "1px 1px 2px #000" }}>
+            &copy; 2025 IWC Exchange. All rights reserved.
+          </Typography>
         </Box>
       </Box>
-    </Box>
-  );
-};
-
-export default HomePage;
+    );
+  };
+  
+  export default HomePage;

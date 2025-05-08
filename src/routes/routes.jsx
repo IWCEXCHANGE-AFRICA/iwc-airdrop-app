@@ -36,6 +36,16 @@ const Router = () => {
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/" element={<LoginPage />} />
 
+      {/* Formerly authorized Route */}
+      <Route
+        path="/homepage"
+        element={
+          <Layout>
+            <HomePage />
+          </Layout>
+        }
+      />
+
       {/* Unauthorized Route */}
 
       <Route
@@ -51,14 +61,6 @@ const Router = () => {
       <Route
         element={<ProtectedRoute allowedUserTypes={[4]} user={defaultUser} />}
       >
-        <Route
-          path="/homepage"
-          element={
-            <Layout>
-              <HomePage />
-            </Layout>
-          }
-        />
         <Route
           path="/task"
           element={

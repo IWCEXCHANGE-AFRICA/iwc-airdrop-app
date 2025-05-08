@@ -1,4 +1,4 @@
-import { Box, CssBaseline, Container } from "@mui/material";
+import { Box, CssBaseline } from "@mui/material";
 import Footer from "./Footer";
 import Header from "./Header";
 import { useLocation } from "react-router-dom";
@@ -7,24 +7,22 @@ import CustomMarque from "../Components/Marque";
 
 const Layout = ({ children }) => {
   const location = useLocation();
+  const route = location.pathname;
 
-  const isAuthPage = ["/", "/sign-up"].includes(
-    location.pathname.toLowerCase()
-  );
+  const noHeader = route === "/homepage" || "";
+  const noFooter = route === "/homepage";
 
   return (
-    <Box sx={styles.wrap}>
+    <Box sx={!noHeader && styles.wrap}>
       <CssBaseline />
-      <Box component="main" sx={[styles.contents]}>
-      <CustomMarque />
+      <Box component="main" sx={[!noHeader && styles.contents]}>
+        <CustomMarque />
 
-        <Header sx={styles.navbar} />
+        {!noHeader && <Header sx={styles.navbar} />}
 
-        <Container>
           <Box sx={styles.children}>{children}</Box>
-        </Container>
 
-        <Footer sx={styles.footer} />
+        {!noFooter && <Footer sx={styles.footer} />}
       </Box>
     </Box>
   );
