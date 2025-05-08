@@ -34,7 +34,12 @@ const Router = () => {
       <Route path="/verify-otp" element={<VerifyOtp />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
-      <Route path="/" element={<LoginPage />} />
+
+      {/* formerly default index Pages */}
+      <Route path="/sign-in" element={<LoginPage />} />
+
+      {/* formerly default index Pages */}
+      <Route path="/" element={<HomePage />} />
 
       {/* Formerly authorized Route */}
       <Route
